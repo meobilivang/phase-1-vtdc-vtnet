@@ -11,6 +11,7 @@
 **2. Knowledge**:
 - Basic Linux, Networking concepts.
 - Basic Docker usage.
+- Comfortable using Vim :wink:
 
 ## System Configuration on VM(s):
 
@@ -33,17 +34,64 @@ Please refer to this official doc for further details [Install Docker CE Ubuntu]
 
 ### Basic must-know diagnostic commands:
 ### A. Docker:
-**1. View Logs of container**:
+**1. View logs of container**:
 
 ```
 $ docker logs <Container's id/name>
 ```
+**Flags**:
 <dl>
-  <dt>
-  </dt>
+    <dt>
+      -f
+    </dt>
+    <dd>
+      Follow log output
+    </dd>
 </dl>
 
-### B. Linux:
+**2. Runs command in a container**:
+
+```
+$ docker exec -it -u0 <Container's id/name> <Program>
+```
+
+**E.g:**
+> Runs interactive `bash` shell in the container. Now user can enter it can take control from inside
+```
+$ docker exec -it -u0 wordpress bash
+```
+**Flags**:
+<dl>
+    <dt>
+      -i
+    </dt>
+    <dd>
+      Interactive
+    </dd>
+    <dt>
+      -t
+    </dt>
+    <dd>
+      Keep STDIN open even if not attached
+    </dd>
+    <dt>
+      -u
+    </dt>
+    <dd>
+      Username (<code>-u0</code> as <code>root</code>)
+    </dd>
+</dl>
+
+**3. View Info of Container:**
+> Displayed in JSON format
+
+```
+$ docker inspect <Container's id/name>
+```
+
+
+### B. Linux: `TODO`
+
 
 ## I. Practice 1: `Deploy WordPress with Command Line`
 
