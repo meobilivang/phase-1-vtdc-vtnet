@@ -255,7 +255,7 @@ $ docker run -d --name wordpress  -p 8080:8080 -p 8443:8443   --env MARIADB_HOST
 > According to logs from `Wordpress` container, it is unable to establish connection to `MariaDB` container. `Wordpress` container exits after 36 tries fails.
 
 > **Note**:
-*There might be a bug in default Image. Despite passing a customized `--env MARIADB_HOST="some-host"`as environment variable, container receives this variable but still uses the default `mariadb` when starting*
+*There might be a bug in default Image. Despite passing `--env MARIADB_HOST="some-host"`as environment variable, container receives this variable but still uses the default `mariadb` when starting*
 
 #### **Diagnosis:**
   - Network connection
