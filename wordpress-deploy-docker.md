@@ -347,6 +347,7 @@ EXPOSE 8080 8443
 
 USER 1001
 ```
+
 - Configure `/etc/hosts` manually:
 > I recommend using `mariadb` as hostname for MariaDB ser
 ```
@@ -420,8 +421,10 @@ $ vi /opt/bitnami/apache/conf/bitnami/bitnami.conf
 <img src="./imgs/hw 3 - mariadb node.png">
 
 > Landing Page (HTTP via port 8080):
+
 <img src="./imgs/hw 3 - page8080.png">
 
 
 > Landing Page (HTTPS via port 8443):
+
 <img src="./imgs/hw 3 - page.png">
