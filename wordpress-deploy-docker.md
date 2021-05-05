@@ -3,7 +3,7 @@
 ## **Author:** *Julian (Phong) Ng.*
 **Date of issue**: *May 4th 2021*
 
-> My first doc & take-home project at **Viettelnet**. Enjoy reading :smile_cat:. Feel free to contact me if you find anuthing need to be edited!
+> My first doc & take-home project at **Viettelnet**. Enjoy reading :smile_cat:. Feel free to contact me if you find anything needs to be edited!
 
 ## Requirements:
 **1. System**:
