@@ -1,4 +1,4 @@
-# VIETTEL DIGITAL TALEN 2021
+# VIETTEL DIGITAL TALENT 2021
 ## Phase 1: Training - Viettelnet
 
 ### Week 1: 
