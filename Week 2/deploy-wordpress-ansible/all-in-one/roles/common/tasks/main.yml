@@ -1,3 +1,39 @@
 ---
+- name: Ping Deployment Node
+  ping:
+  register: ping_result
+
+- name: Show ping result
+  debug:
+    var: ping_result
+
 - name: Install essentials packages
   apt:
+    name: net-tools, vim, git
+    state: present
+
+- name: Set vim as default editor
+  community.general.alternatives:
+    name: editor
+    path: /usr/bin/vim.basic  
+
+- name: Install Docker
+  apt: 
+    name: docker.io
+    state: present
+
+- name: Ensure Docker is running
+  service:
+    name: docker
+    state: started
+
+- name: Allow access to specific ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - 8080
+    - 8443
+    - 3306
+

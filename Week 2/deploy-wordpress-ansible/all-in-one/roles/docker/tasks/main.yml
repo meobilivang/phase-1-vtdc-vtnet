@@ -1,0 +1,46 @@
+---
+- name: Create "{{ network_docker }}" network
+  docker_network:
+    name: "{{ network_docker }}"
+
+- name: Create MariaDB volume
+  docker_volume:
+    name: "{{ volume_mariadb }}"
+
+- name: Create WordPress volume
+  docker_volume:
+    name: "{{ volume_wordpress }}"
+
+- name: Start MariaDB container
+  docker:
+    name: mariadb
+    image: "{{ mariadb_img }}"
+    state: reloaded
+    pull: always
+    volumes:
+    - "/dev/sda:/dev/xvda:rwm"
+    extra_hosts:
+      host1: "192.168.0.1"
+      host2: "192.168.0.2"
+    env:
+        ALLOW_EMPTY_PASSWORD: yes
+        MARIADB_USER: "{{ db_user }}"
+        MARIADB_DATABASE: "{{ db_name }}"
+        MARIADB_PASSWORD: "{{ db_password }}"
+
+- name: Start WordPress container
+  docker:
+    name: wordpress
+    image: "{{ wordpress_img }}"
+    state: reloaded
+    pull: always
+    volumes:
+    - "/dev/sda:/dev/xvda:rwm"
+    extra_hosts:
+      host1: "192.168.0.1"
+      host2: "192.168.0.2"
+    env:
+        ALLOW_EMPTY_PASSWORD: yes
+        MARIADB_USER: "{{ db_user }}"
+        MARIADB_DATABASE: "{{ db_name }}"
+        MARIADB_PASSWORD: "{{ db_password }}"
