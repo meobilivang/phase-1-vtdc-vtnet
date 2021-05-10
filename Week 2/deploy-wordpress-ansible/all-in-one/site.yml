@@ -1,0 +1,9 @@
+---
+- name: Install WordPress with MariaDB on a single Node
+  hosts:
+  gather_facts: false
+  remote_user: pnguyen
+
+  roles:
+    - common
+    - docker

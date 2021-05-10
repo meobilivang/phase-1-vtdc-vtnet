@@ -1,0 +1,3 @@
+---
+- name: Install essentials packages
+  apt:
