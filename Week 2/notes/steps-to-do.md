@@ -119,6 +119,12 @@ pipelining = True
     <dd>
        Prompting for confirmation of the key. (<b>Default</b>: true)
     </dd>
+	<dt>
+		pipelining
+	</dt>
+	<dd>
+		Speed up Ansible
+	</dd>
 </dl>
 
 
@@ -128,63 +134,89 @@ $ pip install paramiko
 $ ansible-playbook -i <inv-file> -c paramiko <entry-point> 			#Running playing w/ paramiko
 ```
 
+## 7. Configure `hosts` / `hosts.yml`:
+Specifying below information: 
+
+1. **Hosts**
+2. **Variables**
+
+
+`host` configuration file can be some following format: `.ini`, `no format`, `.yml`
+
+**Example:**
+````
+[mariadb-node]
+192.168.80.xxx    ansible_ssh_user=pnguyen    ansible_ssh_pass=12345678
+
+[all:vars]
+network_docker=all-in-one-wordpress
+db_host=192.168.80.136
+db_user=pnguyen
+db_name=wordpress_ansible
+db_password=12345678
+
+[mariadb-node:vars]
+mariadb_img=bitnami/mariadb:latest
+...
+
+````
+
 # III. ANSIBLE MODULES STEP-BY-STEP:
 
 ### Before Proceeding:
-> Ensure that all the Nodes has been properly **CREATED** & **BOOTED**.
+> Ensure that all the Nodes have been properly **CREATED** & **BOOTED**.
 
 ## A. General Configurations:
-> Done on all `Managed Node`
+> Done on all `Managed Nodes` before running Asnible on `Controller Node`
 
-- Configure `ansible.conf`:
-	+ Make ansible runs faster
+- Allow port 22 for establishing `ssh` connection from `Controller`:
 
-- ssh-keygen & copy-key:
-````
-$ ssh-keygen
-
-$ ssh-copyid <user-name>:<ip-address>
-````
-
-- Allow port 22:
+```
 $ sudo ufw allow ssh
-
-- Edit `sudoer` on Controller Node:
-=> allow user execute all commands
-	Note: NOT RECOMMENDED on Production
-<user> 
+```
 
 
-- Configure `hosts` / `hosts.yml`:
-	> Specifying Hostname - IP Address
+## B. PRACTICE 1: `All-in-one Deployment`
+### **1. Directory Layout:**
+```
+│   ansible.cfg						--> Configuration file for Ansible
+│   hosts							--->  Storing info on hosts (/host groups), varibles 
+│   hosts.yml						---> Similar to `hosts` but in .YAML format
+│   README.md
+│   site.yml						---> Entrypoint to playbook
+│
+└───roles
+    ├───common						---> Basic environment set-up for machine
+    │   └───tasks
+    │           main.yml
+    │
+    └───docker						---> Running Docker commands
+        └───tasks
+                main.yml
 
-A. PRACTICE 1: `All-in-one Deployment`
-Note:
-> Change IP address in `deploy-node`
+```
 
-1. Set up environment:
--  Check connection to Node  
+### **Structure**:
+- 1 Major `Playbook` (accessing via `site.yml`) with 2 **Roles** (smaller playbooks):
+	+ **`common`**
+	+ **`docker`**
+
+### **2. Step-by-step `Ansible`:**
+> Each section (**a,b,...** corresponding to a) \
+> Each headlines (`-`) matches a task
+
+#### a. Set up environment:
+-  Check connection to Node:
 
 -  Update apt
-	$ apt update -y
+```	
+$ apt update -y
+```
 
 -  Install dependencies: net-tools, vim, git,...
 	$ apt get net-tools vim git 
 
 -  Install Docker (via `apt`):
-	Link:
-	````
-	https://techviewleo.com/ansible-check-if-software-package-is-installed/
-	````
-		
-	````
-	https://www.axelerant.com/resources/team-blog/managing-docker-containers-using-ansible
-	`````
-
-	````
-	https://techviewleo.com/manage-docker-containers-with-ansible/
-	````
-
 
 	+ Dependencies for Docker 
 
@@ -215,10 +247,53 @@ b. WordPress:
 
 - Run container
 
-B, PRACTICE 2: `Multinode`
+#### **3. Expected Outcomes:**
+ <!-- > Running Container on `Wordpress` Node:
+
+<img src="./imgs/hw 3 - wordpress node.png">
+
+> Running Container on `MariaDB` Node:
+
+<img src="./imgs/hw 3 - mariadb node.png">
+
+> Landing Page (HTTP via port 8080):
+
+<img src="./imgs/hw 3 - page8080.png"> -->
 
 
-III. DEBUGGING:
+## B. PRACTICE 2: `Multinode`
+### **1. Directory Layout:**
+````
+│   ansible.cfg
+│   hosts
+│   hosts.yml
+│   README.md
+│   site.yml
+│
+└───roles
+    ├───common
+    │   └───tasks
+    │           main.yml
+    │
+    ├───mariadb
+    │   └───tasks
+    │           main.yml
+    │
+    └───wordpress
+        └───tasks
+                main.yml
+````
+### **Structure**:
+- 1 Major `Playbook` (accessing via `site.yml`) with 3 **Roles** (smaller playbooks):
+	+ **`common`**
+	+ **`mariadb`**
+	+ **`wordpress`**
+
+### **2. Step-by-step Ansible:**
+
+### **3. Expected Outcomes:**
+
+# IV. DEBUGGING:
 1. `Timeout (12s) waiting for privilege escalation prompt`
 - Solution:
 	+ Install `paramiko`
@@ -226,26 +301,3 @@ III. DEBUGGING:
 	
 	+ Deploy `playbook`:
 	$ ansible-playbook -i hosts -c paramiko site.yml
-
-IV. DOCUMENTATION:
-- Write .md Documentation
-- Draw diagrams for each Architecture:
-	+ Multinode 
-	+ Single node
-- Structure:
-```
-├───all-in-one
-│   └───roles
-│       ├───common
-│       │   └───tasks
-│       └───docker
-│           └───tasks
-└───multinode
-    └───roles
-        ├───common
-        │   └───tasks
-        ├───mariadb
-        │   └───tasks
-        └───wordpress
-            └───tasks
-```
