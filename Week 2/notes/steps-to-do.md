@@ -28,9 +28,19 @@ $ ssh-keygen
 $ ssh-copyid <user-name>:<ip-address>
 ````
 
+- Edit `sudoer` on Controller Node:
+=> allow user execute all commands
+	Note: NOT RECOMMENDED on Production
+<user> 
+
+- SSH password-based login with sshpass:
+$ sudo apt update
+
 A. PRACTICE 1: `All-in-one Deployment`
 
 1. Set up environment:
+- [ ] Check connection to Node  
+
 - [ ] Update apt
 	$ apt update -y
 

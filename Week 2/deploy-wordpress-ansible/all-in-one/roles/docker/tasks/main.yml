@@ -43,4 +43,4 @@
         ALLOW_EMPTY_PASSWORD: yes
         MARIADB_USER: "{{ db_user }}"
         MARIADB_DATABASE: "{{ db_name }}"
-        MARIADB_PASSWORD: "{{ db_password }}"
+        MARIADB_PASSWORD: "{{ db_password }}" 
