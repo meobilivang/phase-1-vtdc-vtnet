@@ -1,11 +1,32 @@
-		DEPLOY WORDPRESS
+# WEEK-2 PRACTICES DOCUMENTATION
+# AUTOMATION w/ ANSIBLE
+---
+## **Author:** *Julian (Phong) Ng.*
+**Date of issue**: *May 11th 2021*
+
+> Welcome back! This is the documentation for my second training project at **Viettelnet**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
+
+## **I. GENERAL**:
+## 1. KNOWLEDGE:
+- Basic on Linux, networking
+- Basic on `Ansible`
+- Again, hope you familiar with this one :wink:
+<img src="./img/vim.jpg">
+
+## 2. Infrastructure Setup:
+### **Note:**
+> *- Controller Node: where Ansible scripts runs & establish SSH connections to other node(s)*
+> *- Managed Node(s): Running WordPress & its data persistence server (`MariaDB`)*
+### A. Practice 1: `All-in-one WordPress Deployment` 
+
+### B. Practice 2: `Multinode WordPress Deployment`
 
 I. PREP PHASE:
 
-- [ ] Set Up Blank Ubuntu 20.04 Nodes:
+- Set Up Blank Ubuntu 20.04 Nodes:
 	**Practice 1:**
-	1. Deployment Node
-	2. Master Node
+	1. Controlled Node
+	2. Managed Node
 
 	**Practice 2:**
 	1. WordPress Node

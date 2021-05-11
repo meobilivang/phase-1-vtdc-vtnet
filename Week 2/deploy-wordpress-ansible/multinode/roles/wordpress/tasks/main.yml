@@ -16,6 +16,8 @@
     ports:
       - "8080:8080"
       - "8443:8443"
+    etc_hosts:
+        mariadb: "{{ db_host | quote }}"
     env:
         ALLOW_EMPTY_PASSWORD: "yes"
         WORDPRESS_DATABASE_USER: "{{ db_user | quote }}"
