@@ -18,9 +18,9 @@
       - "8443:8443"
     env:
         ALLOW_EMPTY_PASSWORD: "yes"
-        WORDPRESS_DATABASE_USER: "{{ db_user }}"
-        WORDPRESS_DATABASE_NAME: "{{ db_name }}"
-        WORDPRESS_DATABASE_PASSWORD: "{{ db_password }}" 
+        WORDPRESS_DATABASE_USER: "{{ db_user | quote }}"
+        WORDPRESS_DATABASE_NAME: "{{ db_name | quote }}"
+        WORDPRESS_DATABASE_PASSWORD: "{{ db_password | quote }}" 
 
 - name: View WordPress status
   debug: 

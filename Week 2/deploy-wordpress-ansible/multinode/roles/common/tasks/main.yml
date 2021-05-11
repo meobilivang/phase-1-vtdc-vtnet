@@ -1,5 +1,5 @@
 ---
-- name: Ping Deployment Node
+- name: Ping Deployment Nodes
   ping:
   register: ping_result
 
@@ -9,7 +9,6 @@
 
 - name: Update apt
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
-
 
 - name: Install essentials packages
   apt:

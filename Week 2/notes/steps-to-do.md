@@ -45,9 +45,13 @@ $ sudo apt update
 	> Specifying Hostname - IP Address
 
 
-
+* CONFIGURE CONTROLLER NODE:
+- Virtual env
+- Paramiko
 
 A. PRACTICE 1: `All-in-one Deployment`
+Note:
+> Change IP address in `deploy-node`
 
 1. Set up environment:
 - [ ] Check connection to Node  
@@ -119,3 +123,19 @@ IV. DOCUMENTATION:
 - [ ] Draw diagrams for each Architecture:
 	+ Multinode 
 	+ Single node
+- [ ] Structure:
+	C:.
+├───all-in-one
+│   └───roles
+│       ├───common
+│       │   └───tasks
+│       └───docker
+│           └───tasks
+└───multinode
+    └───roles
+        ├───common
+        │   └───tasks
+        ├───mariadb
+        │   └───tasks
+        └───wordpress
+            └───tasks

@@ -15,9 +15,9 @@
     network_mode: host
     env:
         ALLOW_EMPTY_PASSWORD: "yes"
-        MARIADB_USER: "{{ db_user }}"
-        MARIADB_DATABASE: "{{ db_name }}"
-        MARIADB_PASSWORD: "{{ db_password }}"
+        MARIADB_USER: "{{ db_user | quote }}"
+        MARIADB_DATABASE: "{{ db_name | quote }}"
+        MARIADB_PASSWORD: "{{ db_password | quote }}"
 
 - name: View MariaDB status
   debug: 
