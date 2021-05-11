@@ -17,13 +17,13 @@
     state: present
 
 - name: Set vim as default editor
-  community.general.alternatives:
+  alternatives:
     name: editor
     path: /usr/bin/vim.basic  
 
-- name: Install Docker
+- name: Install Docker & Docker SDK
   apt: 
-    name: docker.io
+    name: docker.io, python3-docker
     state: present
 
 - name: Ensure Docker is running

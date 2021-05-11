@@ -1,5 +1,5 @@
 ---
-- name: Perform common operations on 2 nodes
+- name: Set up basic environment on 2 nodes
   hosts: all
   gather_facts: no
   remote_user: pnguyen
@@ -8,7 +8,7 @@
   roles:
     - common
 
-- name: Installations & Deployments on Mariadb Node
+- name: Installations & Deployments Mariadb on database node
   hosts: mariadb-node
   gather_facts: no
   remote_user: pnguyen
@@ -17,7 +17,7 @@
   roles:
     - mariadb
 
-- name: Installations & Deployments on WordPress Node
+- name: Installations & Deployments WordPress on wordpress node
   hosts: wordpress-node
   gather_facts: no
   remote_user: pnguyen

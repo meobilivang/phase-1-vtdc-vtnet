@@ -8,6 +8,7 @@
 ansible_become_pass=12345678
 ansible_ssh_user=pnguyen
 ansible_ssh_pass=12345678
+ansible_sudo_pass=12345678
 network_docker=all-in-one-wordpress
 db_user=pnguyen
 db_name=wordpress_ansible
