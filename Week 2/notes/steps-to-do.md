@@ -20,6 +20,8 @@ I. PREP PHASE:
 
 
 II. WORK ON ANSIBLE MODULES:
+- Configure `ansible.conf`:
+	+ Make ansible runs faster
 
 - ssh-keygen & copy-key:
 ````
@@ -28,6 +30,9 @@ $ ssh-keygen
 $ ssh-copyid <user-name>:<ip-address>
 ````
 
+- Allow port 22:
+$ sudo ufw allow ssh
+
 - Edit `sudoer` on Controller Node:
 => allow user execute all commands
 	Note: NOT RECOMMENDED on Production
@@ -35,6 +40,12 @@ $ ssh-copyid <user-name>:<ip-address>
 
 - SSH password-based login with sshpass:
 $ sudo apt update
+
+- Configure `hosts` / `hosts.yml`:
+	> Specifying Hostname - IP Address
+
+
+
 
 A. PRACTICE 1: `All-in-one Deployment`
 
@@ -94,8 +105,16 @@ b. WordPress:
 B, PRACTICE 2: `Multinode`
 
 
+III. DEBUGGING:
+1. `Timeout (12s) waiting for privilege escalation prompt`
+- Solution:
+	+ Install `paramiko`
+	$ pip install paramiko
+	
+	+ Deploy `playbook`:
+	$ ansible-playbook -i hosts -c paramiko site.yml
 
-III. DOCUMENTATION:
+IV. DOCUMENTATION:
 - [ ] Write .md Documentation
 - [ ] Draw diagrams for each Architecture:
 	+ Multinode 

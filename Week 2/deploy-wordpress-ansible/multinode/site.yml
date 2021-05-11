@@ -1,0 +1,28 @@
+---
+- name: Perform common operations on 2 nodes
+  hosts: all
+  gather_facts: no
+  remote_user: pnguyen
+  become: yes
+
+  roles:
+    - common
+
+- name: Installations & Deployments on Mariadb Node
+  hosts: mariadb-node
+  gather_facts: no
+  remote_user: pnguyen
+  become: yes
+
+  roles:
+    - mariadb
+
+- name: Installations & Deployments on WordPress Node
+  hosts: wordpress-node
+  gather_facts: no
+  remote_user: pnguyen
+  become: yes
+
+  roles:
+    - wordpress
+

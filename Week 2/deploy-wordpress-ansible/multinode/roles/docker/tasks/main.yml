@@ -24,9 +24,9 @@
       - name: "{{ network_docker }}"
     env:
         ALLOW_EMPTY_PASSWORD: "yes"
-        MARIADB_USER: "{{ db_user | quote }}"
-        MARIADB_DATABASE: "{{ db_name | quote }}"
-        MARIADB_PASSWORD: "{{ db_password | quote }}"
+        MARIADB_USER: "{{ db_user }}"
+        MARIADB_DATABASE: "{{ db_name }}"
+        MARIADB_PASSWORD: "{{ db_password }}"
 
 - name: View MariaDB status
   debug: 
@@ -48,9 +48,9 @@
       - "8443:8443"
     env:
         ALLOW_EMPTY_PASSWORD: "yes"
-        WORDPRESS_DATABASE_USER: "{{ db_user | quote }}"
-        WORDPRESS_DATABASE_NAME: "{{ db_name | quote }}"
-        WORDPRESS_DATABASE_PASSWORD: "{{ db_password | quote }}" 
+        WORDPRESS_DATABASE_USER: "{{ db_user }}"
+        WORDPRESS_DATABASE_NAME: "{{ db_name }}"
+        WORDPRESS_DATABASE_PASSWORD: "{{ db_password }}" 
 
 - name: View WordPress status
   debug: 
