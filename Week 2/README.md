@@ -1,5 +1,5 @@
 # WEEK-2 PRACTICES DOCUMENTATION
-# AUTOMATION with ANSIBLE
+# AUTOMATION WITH ANSIBLE
 ---
 ## **Author:** *Julian (Phong) Ng.* 
 **Date of issue**: *May 11th 2021*
@@ -347,9 +347,9 @@ $ sudo ufw allow ssh
 
 #### a. Approach 1: `Using Paramiko`
 	- Install `paramiko`
-    ```
+```
     $ pip install paramiko
-	```
+```
 
 	- Deploy `playbook`:
 	$ ansible-playbook -i hosts -c paramiko site.yml
