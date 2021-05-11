@@ -6,3 +6,8 @@
 2. `Virtualization`
 3. `Docker`
 4. `Container`
+
+### Week 2: 
+1. `Ansible: Automation & Configuration
+Management`
+
