@@ -1,23 +1,23 @@
 # WEEK-2 PRACTICES DOCUMENTATION
 # AUTOMATION with ANSIBLE
 ---
-## **Author:** *Julian (Phong) Ng.*
+## **Author:** *Julian (Phong) Ng.* 
 **Date of issue**: *May 11th 2021*
 
 > Welcome back! This is the documentation for my second training project at **Viettelnet**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
 
 # **I. OVERVIEW**:
-## 1. KNOWLEDGE:
+## 1. Need to know:
 - Basic on System Administration (Linux, Networking, etc)
 - Basic on `Ansible`:
-> *Ansible is an open source community project sponsored by Red Hat, it's the simplest way to automate IT. Ansible is the only automation language that can be used across entire IT teams from systems and network administrators to developers and managers.*
+> *Ansible is an open-source software provisioning, configuration management, and application-deployment tool enabling infrastructure as code*
 - Again, hope you familiar with this one :wink: :
 
-<img src="./img/vim.jpg">
+<img src="./imgs/vim.jpg">
 
 ## 2. Infrastructure Setup:
 
-### **Terms Explained:**
+### **Terms Explained:** :fire:
 > **Controller Node**: where Ansible scripts runs & establish SSH connections to other node(s) \
 > **Managed Node(s)**: Running WordPress & its Data Persistence server (`MariaDB`)
 
@@ -31,7 +31,7 @@
 
 ### A. Practice 1: `All-in-one WordPress Deployment` 
 
-<img src="./img/aio-diagram.png">
+<img src="./imgs/aio-diagram.png">
 
 > In my **local deployment**, Nodes have following addresses.
 
@@ -44,7 +44,7 @@
 
 ### B. Practice 2: `Multinode WordPress Deployment`
 
-<img src="./img/multinode-diagram.png">
+<img src="./imgs/multinode-diagram.png">
 
 ### 1. Controller Node:
 -  IP: `192.168.80.135`
@@ -202,84 +202,75 @@ $ sudo ufw allow ssh
 	+ **`docker`**
 
 ### **2. Step-by-step `Ansible`:**
-> Each section (**a,b,...** corresponding to a) \
-> Each headlines (`-`) matches a task
+> Below are the explainations of `Ansible` playbooks in a human-readable, simplified format. The described steps here are executed by Ansible in project `all-in-one`, `multinode`.
 
-#### a. Set up environment:
--  Check connection to Node:
+**Notes**:
+> Each **section** (**a, b,...**) corresponding to a `Role`. \
+> Each **headlines** (`-`) matches a single `Task`.
+
+#### 2.1 Set up environment: `common`
+
+- Validate connection to other Nodes (via `ping`)
 
 -  Update apt
-```	
-$ apt update -y
-```
 
 -  Install dependencies: net-tools, vim, git,...
-	$ apt get net-tools vim git 
 
--  Install Docker (via `apt`):
+- Set `vim` as  Default editor
 
-	+ Dependencies for Docker 
+-  Install Docker & Docker SDK (via `apt`):
+    - `docker.io` 
+    - `python3-docker`
 
-	$ sudo apt-get install curl apt-transport-https ca-certificates software-properties-common
+-  Allows connection on specific ports: 
+    - `3306`: MariaDB port
+    - `8080`: HTTP port
+    - `8443`: HTTPS port
 
-	+ Docker io, ce. 
-	$ sudo apt-get install docker-ce docker-ce-cli containerd.io
+#### 2.2 Docker Tasks: `docker`
 
--  Allows connection on specific ports: 3306, 8080, 8443
-+ Open ports:
-	
-
--  Test connection to other Nodes (via `ping`)
-
-2. Docker Commands:
-
-a. MariaDB 
 - Create network
 
-- Create volume
+- Create volume for `MariaDB`
 
-- Run container
+- Create volume for `WordPress`
 
-b. WordPress:
-- Create network
+- Run container `MariaDB`
 
-- Create volume
+- Run container `WordPress`
 
-- Run container
+### **3. Expected Outcomes:**
+> Deployment Process
 
-#### **3. Expected Outcomes:**
- <!-- > Running Container on `Wordpress` Node:
+<img src="./imgs/aio-process-deploy.png">
 
-<img src="./imgs/hw 3 - wordpress node.png">
+> Playbook runs successfully
 
-> Running Container on `MariaDB` Node:
+<img src="./imgs/success-aio.png">
 
-<img src="./imgs/hw 3 - mariadb node.png">
+> Landing page
 
-> Landing Page (HTTP via port 8080):
-
-<img src="./imgs/hw 3 - page8080.png"> -->
-
+<img src="./imgs/aoi-landing-remote.png">
 
 ## B. PRACTICE 2: `Multinode`
 ### **1. Directory Layout:**
 ````
-│   ansible.cfg
-│   hosts
+│   ansible.cfg             --> Configuration file for Ansible
+│   hosts                   --->  Storing info on hosts (/host groups), varibles 
 │   hosts.yml
 │   README.md
-│   site.yml
+│   site.yml                ---> Entrypoint to playbook
 │
 └───roles
-    ├───common
+    ├───common              ---> Basic environment set-up for machine
     │   └───tasks
     │           main.yml
     │
-    ├───mariadb
+    ├───mariadb             ----> Running Container for MariaDB on its remote host
     │   └───tasks
     │           main.yml
     │
-    └───wordpress
+    └───wordpress           ----> Running Container for WordPress on its remote host
         └───tasks
                 main.yml
 ````
@@ -291,13 +282,105 @@ b. WordPress:
 
 ### **2. Step-by-step Ansible:**
 
+
+#### 2.1 Set up environment: `common`
+
+> Below steps are executed on **BOTH** `Managed Nodes`.
+
+**Notes**:
+> Each **section** (**a, b,...**) corresponding to a `Role`. \
+> Each **headlines** (`-`) matches a single `Task`.
+
+- Validate connection to other Nodes (via `ping`)
+
+-  Update apt
+
+-  Install dependencies: net-tools, vim, git,...
+
+- Set `vim` as  Default editor
+
+-  Install Docker & Docker SDK (via `apt`):
+    - `docker.io` 
+    - `python3-docker`
+
+-  Allows connection on specific ports: 
+    - `3306`: MariaDB port -> `MariaDB Node`
+    - `8080`: HTTP port -> `WordPress Node`
+    - `8443`: HTTPS port -> `WordPress Node`
+
+#### 2.2 MariaDB Tasks: `mariadb`
+
+> Executed on `MariaDB Node`.
+
+- Create volume for `MariaDB`
+
+- Run container `MariaDB`
+
+#### 2.3 WordPress Tasks: `wordpress`
+
+> Executed on `WordPress Node`.
+
+- Create volume for `WordPress`
+
+- Run container `WordPress`
+
 ### **3. Expected Outcomes:**
+> Deployment Process
+
+<img src="./imgs/multinode-ping.png">
+
+> Playbook runs successfully on **BOTH NODES**
+
+<img src="./imgs/multinode-success-ansible.png">
+
+> Landing page
+
+<img src="./imgs/multinode-landing-page.png">
 
 # IV. DEBUGGING:
-1. `Timeout (12s) waiting for privilege escalation prompt`
-- Solution:
-	+ Install `paramiko`
-	$ pip install paramiko
-	
-	+ Deploy `playbook`:
+
+> Some issues embraced while working on will be mentioned here.
+
+### 1. `Timeout (12s) waiting for privilege escalation prompt`
+
+<img src="./imgs/timeout.png">
+
+#### a. Approach 1: `Using Paramiko`
+	- Install `paramiko`
+    ```
+    $ pip install paramiko
+	```
+
+	- Deploy `playbook`:
 	$ ansible-playbook -i hosts -c paramiko site.yml
+
+#### b. Approach 2: `Configure ansible.cfg` 
+
+- Insert following line:
+
+```
+$  vi ansible.cfg
+
+....
+> host_key_checking = False				
+....
+```
+### 2. `Non-string value found for <x> option`:
+**Possible Reason:** Occurs when using Variables without specifying type.
+
+- Follow following syntax:
+
+    - **Issue**:
+    ```
+    env:
+        WORDPRESS_DATABASE_USER: "{{ db_user }}"
+
+    ```
+    
+    - **Debug**:
+
+    ```
+    env:
+        WORDPRESS_DATABASE_USER: "{{ db_user | quote }}"
+
+    ```
