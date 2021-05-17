@@ -25,13 +25,26 @@
 
 # **I. OVERVIEW**:
 ## **A. `OPENSTACK`**: 
+### **1. Overview:**
 
+> An **open source platform** that uses pooled virtual resources to build and manage private and public clouds
+
+- Currently the **Most Widely Deployed Opens Source Cloud System**.
+- An implementation of **IaaS** - *Infrastructure As a Service*. This platform manages a great amount of `compute, storage, and networking` resources. 
+- 
 <img src="./imgs/openstack.jpg">
 
+### **2. Basic Components:**
+
+**Architecture Philosophy**
+
+> Openstack is designed with a `modular` architecture - facilitates the scaling & integration of components.  
+
+<img src="./imgs/openstack-compos.jpg">
 
 ## **B. `KOLLA-ANSIBLE`**: 
 
-> To provide production-ready containers and deployment tools for operating
+> To provide **production-ready** containers and deployment tools for operating
 OpenStack clouds.
 
 <img src="./imgs/kolla-ansible.jpg">
@@ -39,13 +52,15 @@ OpenStack clouds.
 
 # **II. PREREQUISITE**:
 ## **A. Knowledge Requirements:**
-- Basics on [`Ansible`](https://docs.ansible.com/) 
+- Basics on [`Ansible`](https://docs.ansible.com/).
+	+ Recommended to know fundemental concepts of Automation with `Ansible` (*Playbook, Role, task, etc, inventory*)
 
-- Basics on [`Docker`](https://docs.docker.com/get-started/)
+- Basics on [`Docker`](https://docs.docker.com/get-started/).
+	+ Recommended to comprehend `Docker` management commands.
 
-- Basics on Linux, Networking
+- Basics on Linux, Networking.
 
-- Intro to `Googling` :wink:. Trust me this saves lots of time. Should be added as a job requirement for IT employees :sunglasses:
+- `Intro to Googling` :wink:. Trust me this saves ur life. Should be added as a job requirement for IT employees :sunglasses:
 
 ## **B. Infrastructure Requirements:** 
 
@@ -65,10 +80,12 @@ OpenStack clouds.
 
 - **Disks**:
 	- `sda`: 20 GB
-	- `sdb`: lvm partition for `cinder` - *block storage component of Openstack*
+	- `sdb`: 20 GB - `lvm` partition for `cinder` - *block storage component of Openstack*
 
-- **Networks**:	2 Interfaces
-	- `ens33`
+- **Networks**:	2 Interfaces with following IP addresses
+	- **External/Provider Network**: `ens33` - **192.168.80.137**
+	- **API + Internal Network**: `ens38` - **192.168.1.12**
+
 	<img src="./imgs/network-diagram.png">
 
 # **III. STEP-BY-STEP**:
@@ -82,6 +99,9 @@ $ sudo apt update
 
 $ sudo apt install python3-dev libffi-dev gcc libssl-dev
 ```
+
+### 2. Time Synchronization Configuration: **(Recommended)**
+> Please refer to this [Documentation](https://linuxconfig.org/ubuntu-20-04-ntp-server)
 
 ### 2. Using `virtualenv`:
 - Install `virtualenv`:
@@ -114,7 +134,7 @@ $ pip install kolla-ansible
 
 **Notes:**
 
-> Due to the fact that `openVSwitch` might get `MACAddress` of network interace, which blocks connection to the Internet. Can install Openstack CLI from this step.
+> Due to the fact that `open vSwitch` might capture `MAC Address` of network interace, which blocks connection to the Internet. Can install Openstack CLI from this step.
 
 ```
 $ pip install python-openstackclient python-glanceclient python-neutronclient
@@ -148,7 +168,7 @@ $ echo -e $config >> /etc/ansible/ansible.cfg
 
 ### 1. Configure `all-in-one` (`inventory` file)
 **Note**
-> Optional. Should defaults for `all-in-one`
+> Optional. Should use defaults for `all-in-one`
 
 ### 2. Run `ad-hoc` command `ping` to check configurations:
 ```
