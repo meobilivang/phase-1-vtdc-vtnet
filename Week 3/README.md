@@ -2,29 +2,78 @@
 # ALL-IN-ONE OPENSTACK DEPLOYMENT
 ---
 ## **Author:** *Julian (Phong) Ng.* 
-**Date of issue**: *May 16th 2021*
+**Date of issue**: *May 17th 2021*
 
 > Welcome back! This is the documentation for my second training project at **Viettelnet**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
 
 ---
-## **Table of Contents:**
 
-#### [I. Overview](#I.-OVERVIEW)
-#### [II. Prerequisite](#II.-Prerequisite)
-#### [III. Step-by-step](#III.-Step-by-step)
-#### [IV. Debugging](#IV.-Debugging)
-#### [V. References](#V.-References)
+# **Table of Contents:**
+
+## [I. Overview](#I.-OVERVIEW)
+
+### [A. Openstack](#'A.-`OPENSTACK`')
+### [B. Kolla-Ansible](#'B.-`KOLLA-ANSIBLE`')
+
+## [II. Prerequisite](#II.-Prerequisite)
+
+## [III. Step-by-step](#III.-Step-by-step)
+ 
+## [IV. Debugging](#IV.-Debugging)
+
+## [V. References](#V.-References)
 
 # **I. OVERVIEW**:
-## A. `OPENSTACK`
+## **A. `OPENSTACK`**: 
 
-## B. `KOLLA-ANSIBLE`
+<img src="./imgs/openstack.jpg">
+
+
+## **B. `KOLLA-ANSIBLE`**: 
+
+> To provide production-ready containers and deployment tools for operating
+OpenStack clouds.
+
+<img src="./imgs/kolla-ansible.jpg">
+
 
 # **II. PREREQUISITE**:
+## **A. Knowledge Requirements:**
+- Basics on [`Ansible`](https://docs.ansible.com/) 
+
+- Basics on [`Docker`](https://docs.docker.com/get-started/)
+
+- Basics on Linux, Networking
+
+- Intro to `Googling` :wink:. Trust me this saves lots of time. Should be added as a job requirement for IT employees :sunglasses:
+
+## **B. Infrastructure Requirements:** 
+
+#### **a. General:**
+- **Operating System:** Ubuntu Server Image (**Ubuntu 20.04** is used in below practices: [Download image](https://ubuntu.com/download/server)) / CentOS 7 [Download CentOS7](https://www.centos.org/download/) 
+
+- **Desktop Hypervisor:** VMware Workstation (Other options: *Virtual Box, etc*)
+
+#### **b. VM Hardware Specification:**
+
+| Specification(s) | Minimal | Personal Config |
+| ----------- | ----------- | ----------- |
+|  CPU | 4 cores | 2 cores |
+| RAM | 8 GB | 4 GB |
+|  HDD | 2 Disks | 2 Disks |
+| Network | 2 NICs | 2 NICs |
+
+- **Disks**:
+	- `sda`: 20 GB
+	- `sdb`: lvm partition for `cinder` - *block storage component of Openstack*
+
+- **Networks**:	2 Interfaces
+	- `ens33`
+	<img src="./imgs/network-diagram.png">
 
 # **III. STEP-BY-STEP**:
 
-## A. SET UP ENIVRONMENT:
+## **A. SET UP ENIVRONMENT**:
 
 ### 1. Update `apt` & install essentails dependencies:
 
@@ -32,7 +81,6 @@
 $ sudo apt update
 
 $ sudo apt install python3-dev libffi-dev gcc libssl-dev
-
 ```
 
 ### 2. Using `virtualenv`:
@@ -62,9 +110,9 @@ $ pip install kolla-ansible
 ```
 
 ### 4. Install `Openstack CLI`:
+> *Optional at this point*
 
 **Notes:**
-> *Optional at this point*
 
 > Due to the fact that `openVSwitch` might get `MACAddress` of network interace, which blocks connection to the Internet. Can install Openstack CLI from this step.
 
@@ -72,7 +120,7 @@ $ pip install kolla-ansible
 $ pip install python-openstackclient python-glanceclient python-neutronclient
 ```
 
-## B. CONFIGURE `Kolla-Ansible` & `Ansible`:
+## **B. CONFIGURE `Kolla-Ansible` & `Ansible`**:
 ### 1. Create `/etc/kolla`  directory:
 
 ```
@@ -96,7 +144,7 @@ $ config="[defaults]\nhost_key_checking=False\npipelining=True\nforks=100"
 $ echo -e $config >> /etc/ansible/ansible.cfg
 ```
 
-## C. PRE-DEPLOY CONFIGURATIONS:
+## **C. PRE-DEPLOY CONFIGURATIONS**:
 
 ### 1. Configure `all-in-one` (`inventory` file)
 **Note**
@@ -161,8 +209,8 @@ enable_cinder_backend_lvm: "yes"
 
 ```
 
-## D. DEPLOY `OPENSTACK`
-- Bootstrap:
+## **D. DEPLOY `OPENSTACK`**
+- Bootstrap Server:
 
 > **Debug**: [*Ansible Module Missing*](#'2.-`Cannot-import-name-'AnsibleCollectionLoader'-from-'ansible.utils.collection_loader'-during-Boostrapping`')
 
@@ -175,16 +223,16 @@ $ kolla-ansible -i all-in-one bootstrap-servers
 <img src="./imgs/success-bootstrap.png">
 
 
-- Prechecks:
+- Precheck Server:
 ```
 $ kolla-ansible -i all-in-one prechecks
 ```
 
-> Boostrapping Success
+> Prechecking Success
 
-<img src="./imgs/success-bootstrap.png">
+<img src="./imgs/precheck-success.png">
 
-- Pull Images:
+- Pull Images to VM:
 ```
 $ kolla-ansible -i all-in-one pull
 ```
@@ -207,7 +255,7 @@ $ kolla-ansible -i all-in-one deploy
 $ kolla-ansible -i all-in-one post-deploy
 ```
 
-## E. POST-DEPLOYMENT:
+## **E. POST-DEPLOYMENT**:
 - Install Openstack CLI:
 ```
 $ pip install python-openstackclient python-glanceclient python-neutronclient
@@ -229,7 +277,7 @@ $ openstack token issue
 <img src="./imgs/token-issue.png">
 
 
-## F. ACESSING `HORIZON` DASHBOARD:
+## F. **ACESSING `HORIZON` DASHBOARD**:
 
 > Openstack Login page
 
@@ -247,6 +295,11 @@ $ openstack token issue
 ```
 $ ip r
 ```
+
+- `Bring Up` an Interface:
+```
+$ sudo ifconfig <Interface-name> up
+``` 
 
 - Remove old IP & Request new IP via `DHCP`:
 
@@ -278,6 +331,7 @@ $ pip install 'ansible==2.9'
 $ vi /etc/kolla/admin-openrc.sh
 
 --------------------------------
+
 export OS_PROJECT_DOMAIN_ID=default
 export OS_USER_DOMAIN_ID=default
 export OS_PROJECT_NAME=admin
@@ -291,20 +345,20 @@ export OS_IDENTITY_API_VERSION=<API-VER>
 **Explains**:
 <dl>
     <dt>
-      INTERNAL-IP-ADDRESS
+      <b>INTERNAL-IP-ADDRESS</b>
     </dt>
     <dd>
-       Defined internal Network interface.
+       Defined Internal Network interface.
        <dd><b>Current deployment</b>: ens33 - 192.168.80.137</dd>
     </dd>
 	<dt>
-		PORT-OF-KEYSTONE
+		<b>PORT-OF-KEYSTONE</b>
 	</dt>
 	<dd>
 		Port running Keystone Service - Authentication Component (<b>Default</b>: 35357)
 	</dd>
     <dt>
-		API-VER
+		<b>API-VER</b>
 	</dt>
 	<dd>
 		API Version (<b>Default</b>: 3)
@@ -313,4 +367,8 @@ export OS_IDENTITY_API_VERSION=<API-VER>
 
 # **V. REFERENCES**:
 
+- [Official Document of `Kolla Ansible` - Deploy All-in-one Openstack](https://docs.openstack.org/kolla-ansible/latest/user/quickstart.html)
+
+
+- [Deploy All-in-one Openstack - NhanHoa](https://news.cloud365.vn/openstack-kolla-phan-1-huong-dan-cai-dat-openstack-train-all-in-one-bang-kolla-ansible/)
 
