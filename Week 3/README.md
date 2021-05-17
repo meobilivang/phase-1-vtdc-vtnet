@@ -6,7 +6,7 @@
 ## **Author:** *Julian (Phong) Ng.* 
 **Date of issue**: *May 17th 2021*
 
-> Welcome back! This is the documentation for my second training project at **Viettelnet**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
+> Welcome back! This is the documentation for my second training project at **Viettel Network**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
 
 ---
 
@@ -88,7 +88,7 @@ OpenStack clouds.
 	+ Recommended to know fundemental concepts of Automation with `Ansible` (*Playbook, Role, task, etc, inventory*)
 
 - Basics on [`Docker`](https://docs.docker.com/get-started/).
-	+ Recommended to comprehend `Docker` management commands.
+	+ Recommended understand how to manage `Docker` resources (images, ) commands.
 
 - Basics on Linux, Networking.
 
@@ -119,9 +119,19 @@ OpenStack clouds.
 	- `sda`: 20 GB
 	- `sdb`: 20 GB - `lvm` partition for `cinder` - *block storage component of Openstack*
 
+	**Note** 
+	> Follow the below steps to mount another `Disk` to VM 
+	
+	- Choose `Edit Virtual Machines` -> `Add` -> `Hard Disk`:
+	<img src="./imgs/add-disk-1.png">
+
+	- Select `SCSI`-> `Create a new virtual Disk` -> Specify `Disk space`:
+	<img src="./imgs/add-disk-2.png">
+
+
 - **Networks**:	2 Interfaces with following IP addresses
-	- **External/Provider Network**: `ens33` - **192.168.80.137**
-	- **API + Internal Network**: `ens38` - **192.168.1.12**
+	- **API + Internal Network**: `ens33` - **192.168.80.137**
+	- **External/Provider Network**: `ens38` - **192.168.1.12**
 
 	<img src="./imgs/network-diagram.png">
 
@@ -312,6 +322,11 @@ $ kolla-ansible -i all-in-one post-deploy
 ```
 
 ## **E. POST-DEPLOYMENT**:
+
+**Note**
+> At this point, user may be unable to access Internet due to the activation of `OpenvSwitch`.
+ 
+
 - Install Openstack CLI:
 ```
 $ pip install python-openstackclient python-glanceclient python-neutronclient
