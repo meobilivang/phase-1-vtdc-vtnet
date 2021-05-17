@@ -1,6 +1,8 @@
 # WEEK-3 PRACTICES DOCUMENTATION
 # ALL-IN-ONE OPENSTACK DEPLOYMENT
+
 ---
+
 ## **Author:** *Julian (Phong) Ng.* 
 **Date of issue**: *May 17th 2021*
 
@@ -10,18 +12,28 @@
 
 # **Table of Contents:**
 
-## [I. Overview](#I.-OVERVIEW)
+## [I. Overview](#**I.-OVERVIEW**)
 
-### [A. Openstack](#'A.-`OPENSTACK`')
-### [B. Kolla-Ansible](#'B.-`KOLLA-ANSIBLE`')
+### [A. Openstack](#**A.-`OPENSTACK`**)
 
-## [II. Prerequisite](#II.-Prerequisite)
+### [B. Kolla-Ansible](#**B.-`KOLLA-ANSIBLE`**)
 
-## [III. Step-by-step](#III.-Step-by-step)
- 
-## [IV. Debugging](#IV.-Debugging)
+## [II. Prerequisite](#**II.-PREREQUISITE**)
+### [A. Knowledge Requirements](#'A.-Knowledge-Requirements')
+### [B. Infrastructure Requirements](#**B.-Infrastructure-Requirements**)
 
-## [V. References](#V.-References)
+## [III. Step-by-step](#III.-STEP-BY-STEP)
+
+### [A.Set up Environment](#**A.-SET-UP-ENIVRONMENT**:)
+### [B. Configure Kolla-Ansible & Ansible](#**B.-CONFIGURE-`Kolla-Ansible`-&-`Ansible`**:)
+### [C. Pre-deploy-configurations](#**C.-PRE-DEPLOY-CONFIGURATIONS**:)
+### [D. Deploy OPENSTACK](#**D.-DEPLOY-`OPENSTACK`**)
+### [E. Post-deployment](#**E.-POST-DEPLOYMENT**:)
+### [F. Accessing HORIZON Dashboard](#F.-**ACESSING-`HORIZON`-DASHBOARD**:)
+
+## [IV. Debugging](#IV.-DEBUGGING)
+
+## [V. References](#V.-REFERENCES)
 
 # **I. OVERVIEW**:
 ## **A. `OPENSTACK`**: 
@@ -29,16 +41,33 @@
 
 > An **open source platform** that uses pooled virtual resources to build and manage private and public clouds
 
-- Currently the **Most Widely Deployed Opens Source Cloud System**.
-- An implementation of **IaaS** - *Infrastructure As a Service*. This platform manages a great amount of `compute, storage, and networking` resources. 
-- 
+- An implementation of **IaaS** - *Infrastructure As a Service*. This platform manages a great amount of `Compute, Storage, and Networking` resources. 
+- A completely **open-source** Cloud solution - **Most Widely Deployed Opens Source Cloud System**.
+- Started as a cooperative project between `NASA` & `RackSpace` back in 2010.
+- Hosted & supported by [`Open Infrastructure Founndation`](https://openinfra.dev/)
+
 <img src="./imgs/openstack.jpg">
 
-### **2. Basic Components:**
+### **2. Core Components:**
 
 **Architecture Philosophy**
 
 > Openstack is designed with a `modular` architecture - facilitates the scaling & integration of components.  
+
+#### **a. Nova**
+ - Manages the computing resources of an OpenStack cloud
+
+#### **b. Neutron**
+ - Network agent of `Openstack`. Manages & Performs all network configurations, operations.
+
+#### **c. Glance**
+ - Maintains and manages server images for a cloud.
+
+#### **d. Keystone**
+ - Authentication & Authorization Service
+
+#### **e. Cinder**
+- `Block Storage` provisioning service.
 
 <img src="./imgs/openstack-compos.jpg">
 
@@ -46,6 +75,10 @@
 
 > To provide **production-ready** containers and deployment tools for operating
 OpenStack clouds.
+
+
+- `Kolla` projects offers Openstack with built-in deployment solutions including `Monitoring`, `Rolling upgrades`, `HA`, etc.
+- 
 
 <img src="./imgs/kolla-ansible.jpg">
 
@@ -65,11 +98,16 @@ OpenStack clouds.
 ## **B. Infrastructure Requirements:** 
 
 #### **a. General:**
-- **Operating System:** Ubuntu Server Image (**Ubuntu 20.04** is used in below practices: [Download image](https://ubuntu.com/download/server)) / CentOS 7 [Download CentOS7](https://www.centos.org/download/) 
+- **Operating System:** *Either options works*
 
+	- Ubuntu Server (**Ubuntu 20.04** is used in below practices: [Download Ubuntu Server](https://ubuntu.com/download/server)) 
+	- CentOS 7: [Download CentOS7](https://www.centos.org/download/) 
 - **Desktop Hypervisor:** VMware Workstation (Other options: *Virtual Box, etc*)
 
-#### **b. VM Hardware Specification:**
+**Note**
+>  **Ubuntu Server** is used in this Deployment
+
+#### **b. Host VM Specifications:**
 
 | Specification(s) | Minimal | Personal Config |
 | ----------- | ----------- | ----------- |
