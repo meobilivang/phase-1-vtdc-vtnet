@@ -226,7 +226,7 @@ $ sudo vgcreate cinder-volumes /dev/sdb
 ```
 
 ### 4. Generate Passwords for `Kolla`:
-- Stored in `/etc/kolla/passwords.yml`, run commands:
+- Stored in `/etc/kolla/passwords.yml` , run commands:
 
 ```
 $ kolla-genpwd
@@ -263,7 +263,6 @@ enable_haproxy: "no"
 enable_cinder: "yes"
 enable_cinder_backup: "no"
 enable_cinder_backend_lvm: "yes"
-
 ```
 
 ## **D. DEPLOY `OPENSTACK`**
