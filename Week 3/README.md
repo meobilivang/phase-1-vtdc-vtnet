@@ -14,9 +14,9 @@
 
 ## [I. Overview](#**I.-OVERVIEW**)
 
- - ### [A. Openstack](#**A.-`OPENSTACK`**)
+- ### [A. Openstack](#**A.-`OPENSTACK`**)
 
- - ### [B. Kolla-Ansible](#**B.-`KOLLA-ANSIBLE`**)
+- ### [B. Kolla-Ansible](#**B.-`KOLLA-ANSIBLE`**)
 
 ## [II. Prerequisite](#**II.-PREREQUISITE**)
 - ### [A. Knowledge Requirements](#'A.-Knowledge-Requirements')
@@ -24,12 +24,12 @@
 
 ## [III. Step-by-step](#III.-STEP-BY-STEP)
 
-- ### [A.Set up Environment](#**A.-SET-UP-ENIVRONMENT**:)
-- ### [B. Configure Kolla-Ansible & Ansible](#**B.-CONFIGURE-`Kolla-Ansible`-&-`Ansible`**:)
-- ### [C. Pre-deploy-configurations](#**C.-PRE-DEPLOY-CONFIGURATIONS**:)
+- ### [A.Set up Environment](#**A.-SET-UP-ENIVRONMENT**)
+- ### [B. Configure Kolla-Ansible & Ansible](#**B.-CONFIGURE-`Kolla-Ansible`-&-`Ansible`**)
+- ### [C. Pre-deploy-configurations](#**C.-PRE-DEPLOY-CONFIGURATIONS**)
 - ### [D. Deploy Openstack](#**D.-DEPLOY-`OPENSTACK`**)
-- ### [E. Post-deployment](#**E.-POST-DEPLOYMENT**:)
-- ### [F. Accessing Horizon Dashboard](#F.-**ACESSING-`HORIZON`-DASHBOARD**:)
+- ### [E. Post-deployment](#**E.-POST-DEPLOYMENT**)
+- ### [F. Accessing Horizon Dashboard](#F.-**ACESSING-`HORIZON`-DASHBOARD**)
 
 ## [IV. Debugging](#IV.-DEBUGGING)
 
