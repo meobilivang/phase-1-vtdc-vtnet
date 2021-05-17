@@ -140,7 +140,7 @@ $ sudo apt install python3-dev libffi-dev gcc libssl-dev
 ### 2. Time Synchronization Configuration: **(Recommended)**
 > Please refer to this [Documentation](https://linuxconfig.org/ubuntu-20-04-ntp-server)
 
-### 2. Using `virtualenv`:
+### 3. Using `virtualenv`:
 - Install `virtualenv`:
 ```
 $ sudo apt install python3-venv
@@ -153,7 +153,7 @@ $ python3 -m venv /path/to/venv
 $ source /path/to/venv/bin/activate
 ```
 
-### 3. Install `Ansible` & `Kolla-Ansible` (within `virtualenv`):
+### 4. Install `Ansible` & `Kolla-Ansible` (within `virtualenv`):
 
 - Install `Ansible`:
 ```
@@ -166,7 +166,7 @@ $ pip install 'ansible==2.9'
 $ pip install kolla-ansible
 ```
 
-### 4. Install `Openstack CLI`:
+### 5. Install `Openstack CLI`:
 > *Optional at this point*
 
 **Notes:**
