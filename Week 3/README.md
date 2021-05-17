@@ -36,7 +36,7 @@
 ## [V. References](#V.-REFERENCES)
 
 # **I. OVERVIEW**:
-## **A. `OPENSTACK`**: 
+## **A. OPENSTACK**: 
 ### **1. Overview:**
 
 > An **open source platform** that uses pooled virtual resources to build and manage private and public clouds
@@ -71,7 +71,7 @@
 
 <img src="./imgs/openstack-compos.jpg">
 
-## **B. `KOLLA-ANSIBLE`**: 
+## **B. KOLLA-ANSIBLE**: 
 
 > To provide **production-ready** containers and deployment tools for operating
 OpenStack clouds.
@@ -443,3 +443,4 @@ export OS_IDENTITY_API_VERSION=<API-VER>
 
 - [Deploy All-in-one Openstack - NhanHoa](https://news.cloud365.vn/openstack-kolla-phan-1-huong-dan-cai-dat-openstack-train-all-in-one-bang-kolla-ansible/)
 
+- [Deploy Openstack w/ `Kolla-Ansible` - HocChuDong](https://github.com/hocchudong/openstack-tools/tree/master/docs/kolla)
