@@ -46,7 +46,7 @@
 - Started as a cooperative project between `NASA` & `RackSpace` back in 2010.
 - Hosted & supported by [`Open Infrastructure Founndation`](https://openinfra.dev/)
 
-<img src="./imgs/openstack.jpg">
+<img src="./imgs/openstack-logo.png">
 
 ### **2. Core Components:**
 
@@ -444,3 +444,5 @@ export OS_IDENTITY_API_VERSION=<API-VER>
 - [Deploy All-in-one Openstack - NhanHoa](https://news.cloud365.vn/openstack-kolla-phan-1-huong-dan-cai-dat-openstack-train-all-in-one-bang-kolla-ansible/)
 
 - [Deploy Openstack w/ `Kolla-Ansible` - HocChuDong](https://github.com/hocchudong/openstack-tools/tree/master/docs/kolla)
+
+---
