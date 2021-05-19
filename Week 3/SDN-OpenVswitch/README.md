@@ -15,7 +15,9 @@
 
 ## [II. Step-by-step](#**II.-STEP-BY-STEP**)
 
-### Env
+### A. Set Up Environment(#A.-SET-UP-ENVIRONMENT)
+
+### B. Network Configurations (#B.-Network-Configurations):
 
 ## [III. Q/A](#III. Q/A)
 
@@ -60,10 +62,12 @@ $ sudo ovs-vswitchd
 $ systemctl status ovs-vswitchd
 ```
 
-## **B. CONFIGURE HOSTS**:
+## **B. NETWORK CONFIGURATIONS**:
 
 ### **1. Host 1**:
+
 - Adding Bridges:
+
 ```
 $ sudo ovs-vsctl add-br br0
 $ sudo ovs-vsctl add-br br1
@@ -106,9 +110,46 @@ $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:
 ```
 
 ## **B. `VXLAN` CONNECTIVITY BETWEEN 2 NODES**:
-- `tcpdump`:
+**Configuration**
+> 
 
- - `wiretshark`:
+- Check connection to other node via `VXLAN` with Ping:
+	- **Host 1**
+```
+$ ping -I br1 10.1.3.11
+```
+	- **Host 2**
+```
+$ ping -I br1 10.1.3.10
+```
+
+- Captures & Store data packets with `tcpdump` on `host-0`:
+
+```
+$ sudo tcpdump -i any -c 10 -nn -s 0 -w vxlan.pcap
+```
+**Options**:
+<dl>
+    <dt>
+      <b>-i</b>
+    </dt>
+    <dd>
+       Defined Internal Network interface.
+       <dd><b>Current deployment</b>: ens33 - 192.168.80.137</dd>
+    </dd>
+	
+</dl>
+<img src="./imgs/dump-correct-nic.png">
+
+- Decapsulate & Analyze packets with `wireshark`:
+```
+$ wireshark
+```
+
+
+> **Packet is successfully Encapuslated, this `VXLAN` deployment works**
+
+<img src="./imgs/wireshark-success-output.png">
 
 ## Q/A Section:
 
