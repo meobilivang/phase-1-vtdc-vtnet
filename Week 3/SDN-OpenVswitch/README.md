@@ -143,6 +143,9 @@ $ sudo ifconfig br1 10.1.3.10 netmask 255.255.255.0
 $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=192.168.50.128
 ```
 
+**Note**:
+	- `remote_ip`: **MUST** be address of other node, `host-1`. 
+
 - Full `openvSwitch` configuration on `host-0`:
 
 ```
@@ -187,7 +190,7 @@ $ sudo route add default gw 192.168.50.1 br0
 
 - Configure IP of `br1`:
 ```
-$ sudo ifconfig br1 10.1.3.10 netmask 255.255.255.0
+$ sudo ifconfig br1 10.1.3.11 netmask 255.255.255.0
 ```
 
 - Configure VXLAN tunnel for `br1`:
@@ -196,19 +199,24 @@ $ sudo ifconfig br1 10.1.3.10 netmask 255.255.255.0
 $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=192.168.50.130
 ```
 
+**Note**:
+	- `remote_ip`: **MUST** be address of other node, `host-0`. 
 
 - Full `openvSwitch` configuration on `host-1`:
 
 ```
 $ sudo ovs-vsctl show
 ```
+**Note**
+> Pardon me for the mismatch of `remove_ip` for `vxlan1`. This was changed due to `DHCP`.
 
 <img src="./imgs/host-1-ovs-show.png">
 
 ## **B. `VXLAN` CONNECTIVITY BETWEEN 2 NODES**:
 
 **Configuration Remark**
-> 
+	- `host-0`: Reply & Captures request from remote host `host-1`
+	- `host-1`: Sends `icmp` echo requests
 
 - Check connection to other node via `VXLAN` with Ping:
 	- **Host 0 ----> Host 1**
