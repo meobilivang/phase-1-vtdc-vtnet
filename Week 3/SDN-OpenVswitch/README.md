@@ -385,9 +385,10 @@ $ sudo ovs-vsctl show
       What are Advantages & Disadvantages of using `VXLA` network in a Datacenter?
   ````
 ### Advantages:
-- **Scalibility**: Solving limitations in terms of L2 identitifier quantity. In fact, VLAN supports only 4096 segments at maximum but VXLAN can reach up to 16 millions with 24bit VNI.
-- **Multi-tenancy & Isolation**: As 
-- **IP Mobility**: 
+- **Scalibility**: Solving limitations in terms of L2 identitifier quantity. In fact, VLAN provides only 4095 possible segments at maximum but VXLAN can reach up to 16 millions with 24bit VNI.
+- **Isolation & Security**: `VXLAN` employs `VNI` to ensure the isolation of traffic. Each segment, definied by `VNI`, is an isolated environment, which expects to enhance the network traffic security.
+- **Multi-tenancy**: `Segmentation` & `Isolation` of `VXLAN` enables multi-tentant model. Multiple tenants can share the same infrastructure, and this leads to more efficient resources usage.  
+- **VM Mobility**: VM migration is now independent of physical network configuration. Those machines can be moved from a subnet on a host to another host with another subnet while its IP remains unchanged.
 - ****
 - **Hardware Support**: Increasing become a standard. Supported by multiple modern switching devices.
 
