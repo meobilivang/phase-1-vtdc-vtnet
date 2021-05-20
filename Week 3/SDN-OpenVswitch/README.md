@@ -192,13 +192,18 @@ $ sudo ovs-vsctl add-br br1
 $ sudo ovs-vsctl add-port br0 ens33
 ```
 
-- Disbale `ens33` & Configure IP for `br0`
+- Disbale `ens33`
 
 **Note**
  > *At this point, `br0` posseses **IP**, **netmask**, **MAC address** of `ens33`.*
 
 ```
-$ sudo ifconfig ens33 0 && sudo ifconfig br0 192.168.50.130 netmask 255.255.255.0
+$ sudo ifconfig ens33 0
+```
+
+- Configure IP for `br0`
+```
+$ sudo ifconfig br0 192.168.50.130 netmask 255.255.255.0
 ```
 
 - (Optional) Modify `default gateway` - *Allocated by VMware for mother machine*
@@ -259,14 +264,19 @@ $ sudo ovs-vsctl add-br br1
 $ sudo ovs-vsctl add-port br0 ens33
 ```
 
-- Disbale `ens33` & Configure IP for `br0`
+- Disbale `ens33`
 
 **Note**
  > At this point, `br0` posseses **IP**, **netmask**, **MAC address** of `ens33`.
 
 ```
-$ sudo ifconfig ens33 0 && sudo ifconfig br0 192.168.50.128 netmask 255.255.255.0
+$ sudo ifconfig ens33 0
 ```
+
+- Configure IP for `br0`
+````
+$ sudo ifconfig br0 192.168.50.128 netmask 255.255.255.0
+````
 
 - (Optional) Modify `default gateway` - *Allocated by VMware for mother machine*
 ```
