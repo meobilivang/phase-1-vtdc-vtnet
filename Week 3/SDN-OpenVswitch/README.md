@@ -103,6 +103,7 @@
 
 **Notes on `NICs`**
 - `ens33` is **mainly used**.
+
 - `ens38` (**NAT**) is for **Internet Connection** only. Can disable it after all dependencies/packages are installed
 
 # **III. STEP-BY-STEP**:
