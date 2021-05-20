@@ -401,7 +401,7 @@ $ sudo ovs-vsctl show
 <img src="./imgs/wireshark-gu.png">
 
 **Note**
-> Interactive GUI of `wireshark` would be automatically starts with above command.
+> Interactive GUI of `wireshark` would be automatically starts with above command. (Required: **Using MobaXterm**)
 
 - **Packet is successfully encapuslated with `VXLAN` header**
 
