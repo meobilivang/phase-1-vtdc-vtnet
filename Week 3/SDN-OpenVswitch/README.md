@@ -28,16 +28,28 @@
 
 
 # **I. OVERVIEW**:
-## **A. VXLAN**:
-- `Overlay Network`
-- VXLAN:
-	- Create a phys L2 over IP
-	- Establishing connection via `tunnel` -> extends L2 on L3
-	- `VTEP`: 
-		+ VXLAN Tunnel End Point -> stays on Hypervisor on host of VMs
-		+ Can be on switch/ phys server or phys/software
+## **A. VXLAN**: `Virtual eXtensible Local Area Network`
+
+- **Definition:** An `Overlay Network Virtualization` (*over Layer 3*) technology. An extension to `Virtual Local Area Network` (VLAN)
+
+- **How it works?**
+    - `Encapsulation`: VXLAN encapsulate Ethernet frame on Layer 2 into a UDP datagram & send it over Layer 3.
+    - `Tunneling`: establish connection via `tunnel` between the sender & destination devices. Network traffic are encapsulated & forward through such route.
+
+- **Component**:
+	- `VTEP`: *VXLAN Tunnel Endpoint*
+      - Stays on Hypervisor on host of VMs
+      - Responsible for `encapsulating` & `decapsulating` Layer 2 traffic.
+
+<img src="./imgs/vxlan-topo.jpg">
   
 ## **B. OpenvSwitch**:
+
+- A `open-source` SDN-based solution under `Apache 2.0 License`.
+- Implementing `virtual multiplayer switch` - also known as `soft-switch`.
+- Support multiple Linux-based Virtualization technologies (E.g: `KVM`, `VirtualBox`, `Qemu`,etc) 
+
+<img src="./imgs/ovs-logo.jpg">
 
 # **II. PREREQUISITE**:
 ## **A. Knowledge Requirements:**
@@ -86,7 +98,7 @@
       - **ens38**: *NAT*        - `192.168.80.0/24`
 
 **Notes on `NICs`**
-- `ens33`is **mainly used**.
+- `ens33` is **mainly used**.
 - `ens38` (**NAT**) is for **Internet Connection** only. Can disable it after all dependencies/packages are installed
 
 # **III. STEP-BY-STEP**:
@@ -99,7 +111,7 @@ $ sudo apt update
 $ sudo apt upgrade
 ```
 
-- `Must-have` packages via `apt`: `net-tools`, `tcpdump`, `wireshark`
+- **Must-have** packages via `apt`: `net-tools`, `tcpdump`, `wireshark`
 	- `net-tools`: *collection of programs for controlling the network subsystem of the Linux kernel*
 	- `tcpdump`: *network packet analyzer*
 	- `wireshark`: *network protocol analyzer*
@@ -203,8 +215,15 @@ $ sudo ifconfig br1 10.1.3.10 netmask 255.255.255.0
 $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=192.168.50.128
 ```
 
-  **Note**:
-    `remote_ip`: **MUST** be address of other node, `host-1`. 
+**Note**:
+<dl>
+    <dt>
+      <b>remote_ip</b>
+    </dt>
+    <dd>
+        <b>MUST</b> be address of other node, <code>host-0</code>.
+    </dd>
+</dl>	 
 
 - Full `openvSwitch` configuration on `host-0`:
 
@@ -365,6 +384,16 @@ $ sudo ovs-vsctl show
   ````
       What are Advantages & Disadvantages of using `VXLA` network in a Datacenter?
   ````
+### Advantages:
+- **Scalibility**: Solving limitations in terms of L2 identitifier quantity. In fact, VLAN supports only 4096 segments at maximum but VXLAN can reach up to 16 millions with 24bit VNI.
+- **Multi-tenancy & Isolation**: As 
+- **IP Mobility**: 
+- ****
+- **Hardware Support**: Increasing become a standard. Supported by multiple modern switching devices.
+
+### Disadvantages:
+- **Increase in Packet Size:** with the tunneling tech of `VXLAN`, up to 50 extra bytes are added to a single packet. It requires a transport network that capable of support packets of such size.
+- **Configuration Complexity**:
 
 ## **V. REFERENCES & TUTORIALS**:
 - [Configuring VXLAN & GRE Tunnel on openvswitch](http://networkstatic.net/configuring-vxlan-and-gre-tunnels-on-openvswitch/)
