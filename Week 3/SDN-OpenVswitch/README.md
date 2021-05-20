@@ -117,14 +117,21 @@ $ sudo apt install openvswitch-switch
 $ sudo ovs-vswitchd
 ```
 
+- (*Recommended*) Disable `ens38` after all packages installed:
+```
+$ sudo ifconfig ens38 down
+```
+
 ## **B. NETWORK CONFIGURATIONS**:
 
 ### Service Functionality & Version check
 
 - Check status of `OpenvSwitch` service:
+
 ```
 $ systemctl status ovs-vswitchd
 ```
+
 
 > **Node 0**
 
@@ -171,13 +178,14 @@ $ sudo ovs-vsctl add-port br0 ens33
 - Disbale `ens33` & Configure IP for `br0`
 
 **Note**
- > At this point, `br0` posseses **IP**, **netmask**, **MAC address** of `ens33`.
+ > *At this point, `br0` posseses **IP**, **netmask**, **MAC address** of `ens33`.*
 
 ```
 $ sudo ifconfig ens33 0 && sudo ifconfig br0 192.168.50.130 netmask 255.255.255.0
 ```
 
 - (Optional) Modify `default gateway` - *Allocated by VMware for mother machine*
+
 ```
 $ sudo route add default gw 192.168.50.1 br0
 ```
@@ -195,8 +203,8 @@ $ sudo ifconfig br1 10.1.3.10 netmask 255.255.255.0
 $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=192.168.50.128
 ```
 
-**Note**:
-	- `remote_ip`: **MUST** be address of other node, `host-1`. 
+  **Note**:
+    `remote_ip`: **MUST** be address of other node, `host-1`. 
 
 - Full `openvSwitch` configuration on `host-0`:
 
@@ -252,7 +260,14 @@ $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:
 ```
 
 **Note**:
-	- `remote_ip`: **MUST** be address of other node, `host-0`. 
+<dl>
+    <dt>
+      <b>remote_ip</b>
+    </dt>
+    <dd>
+        <b>MUST</b> be address of other node, <code>host-0</code>.
+    </dd>
+</dl>	
 
 - Full `openvSwitch` configuration on `host-1`:
 
@@ -271,25 +286,28 @@ $ sudo ovs-vsctl show
 	- `host-1`: Sends `icmp` echo requests
 
 - Check connection to other node via `VXLAN` with Ping:
-	- **Host 0 ----> Host 1**
-```
-$ ping -I br1 10.1.3.11
-```
+	- **Host 0 ----> Host 1** 
+
+        ````
+          $ ping -I br1 10.1.3.11
+        ````
+
 	- **Host 1 ----> Host 0**
-```
-$ ping -I br1 10.1.3.10
-```
+
+        ```
+        $ ping -I br1 10.1.3.10
+        ```
 
 - Captures & Store data packets with `tcpdump`: *Perform these operations simultaneously as described below*
  	- (**Host 1**) Send an ICMP echo request packet:
-```
-$ ping -I br1 10.1.3.11
-```
+        ```
+        $ ping -I br1 10.1.3.11
+        ```
 
  	- (**Host 0**) Captures & write data packets to `vxlan.pcap`: 
-```
-$ sudo tcpdump -i any -c 10 -nn -s 0 -w vxlan.pcap
-```
+        ```
+        $ sudo tcpdump -i any -c 10 -nn -s 0 -w vxlan.pcap
+        ```
 **Options**:
 <dl>
     <dt>
@@ -321,16 +339,14 @@ $ sudo tcpdump -i any -c 10 -nn -s 0 -w vxlan.pcap
 <img src="./imgs/dump-correct-nic.png">
 
 - (**Host 0**) Decapsulate & Analyze packets with `wireshark`:
-	1. Start `wireshark` from `Terminal`:
-```
-$ wireshark
-```
-
-> Starting `wireshark`
-
-<img src="./imgs/wireshark-cli.png">
+	- Start `wireshark` from `Terminal`:
+  ```
+  $ wireshark
+  ```
+  <img src="./imgs/wireshark-cli.png">
 	
-	2. Open `vxlan.pcap` & view detail analysis of packets: 
+	
+  -  Open `vxlan.pcap` & view detail analysis of packets: 
 
 > Open file on `wireshark` GUI
 
@@ -341,11 +357,14 @@ $ wireshark
 
 ## **C. EXPECTED OUTCOME**:
 
-**Packet is successfully encapuslated with VXLAN header, this `VXLAN` deployment works**
+> **Packet is successfully encapuslated with VXLAN header, this `VXLAN` deployment works**
 
 <img src="./imgs/wireshark-success-output.png">
 
 ## **IV. Q/A Section**:
+  ````
+      What are Advantages & Disadvantages of using `VXLA` network in a Datacenter?
+  ````
 
 ## **V. REFERENCES & TUTORIALS**:
 - [Configuring VXLAN & GRE Tunnel on openvswitch](http://networkstatic.net/configuring-vxlan-and-gre-tunnels-on-openvswitch/)
