@@ -59,7 +59,7 @@
 ## **A. Knowledge Requirements:**
 
 - Basics on **Linux**, **Networking**.
-  - [**VXLAN**](https://support.huawei.com/enterprise/en/doc/EDOC1100086966) - *Please try to understand the simple workflow, components of this protocol* (*To be honest, my `networking` is awful* :stuck_out_tongue:)
+  - [**VXLAN**](https://support.huawei.com/enterprise/en/doc/EDOC1100086966) - *Please try to understand some terminologies & basic workflow of this protocol* (*To be honest, my `networking` is awful* :stuck_out_tongue:)
 
 - Basics on [**OpenvSwitch**](https://www.openvswitch.org/).
 	- Recommended understand how to manage `Docker` resources (images, ) commands.
