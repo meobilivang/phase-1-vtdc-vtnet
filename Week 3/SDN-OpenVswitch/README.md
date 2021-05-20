@@ -26,11 +26,9 @@
 
 ## [V. References & Tutorials](#IV.-REFERENCES)
 
-## SET UP
-- Network interfaces: `Host-only`
 
 # **I. OVERVIEW**:
-## CONCEPTS:
+## **A. VXLAN**:
 - `Overlay Network`
 - VXLAN:
 	- Create a phys L2 over IP
@@ -38,18 +36,31 @@
 	- `VTEP`: 
 		+ VXLAN Tunnel End Point -> stays on Hypervisor on host of VMs
 		+ Can be on switch/ phys server or phys/software
+  
+## **B. OpenvSwitch**:
 
 # **II. PREREQUISITE**:
 ## **A. Knowledge Requirements:**
 
-- Basics on Linux, Networking.
-  - [**VXLAN**](https://support.huawei.com/enterprise/en/doc/EDOC1100086966) - *Please try to understand the simple workflow, components of this protocol* (To be honest, my `networking` is poor :stuck_out_tongue:)
+- Basics on **Linux**, **Networking**.
+  - [**VXLAN**](https://support.huawei.com/enterprise/en/doc/EDOC1100086966) - *Please try to understand the simple workflow, components of this protocol* (*To be honest, my `networking` is awful* :stuck_out_tongue:)
 
-- Basics on [OpenvSwitch](https://www.openvswitch.org/).
+- Basics on [**OpenvSwitch**](https://www.openvswitch.org/).
 	- Recommended understand how to manage `Docker` resources (images, ) commands.
 
 ## **B. Infrastructure Requirements:** 
+**Network Topology Diagram**
 
+
+- **Operating System**: Ubuntu Server (**Ubuntu 20.04** in below practice: [Download Ubuntu Server](https://ubuntu.com/download/server)) 
+
+- **Network Configuration**:
+    - `host-0`: 
+      - **ens33**: *Host-only* - `192.168.80.130`
+      - **ens38**: *NAT*
+    - `host-1`:
+      - **ens33**: *Host-only* - `192.168.80.128`
+      - **ens38**: *NAT*
 
 # **III. STEP-BY-STEP**:
 
