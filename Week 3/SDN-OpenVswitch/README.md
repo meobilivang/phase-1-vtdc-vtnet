@@ -49,7 +49,7 @@
 	- Recommended understand how to manage `Docker` resources (images, ) commands.
 
 ## **B. Infrastructure Requirements:** 
-**Network Topology Diagram**
+#### **Network Topology Diagram**
 ````
           
           
@@ -67,7 +67,7 @@
                       +--------------+                                  +---------------+
                       |     br0      |                                  |     br0       |
     +---------+       +--------------+                                  +---------------+       +---------+
-    |  ens38  |       |     ens33    |--------------------------------- |     ens33     |       |  ens38  |   
+    |  ens38  |       |    ens33     |----------------------------------|    ens33      |       |  ens38  |   
     +---------+       +--------------+                                  +---------------+       +---------+
   192.168.80.0/24      172.168.50.130                                    192.168.50.128       192.168.80.0/24
 
@@ -76,7 +76,7 @@
 
 - **Operating System**: Ubuntu Server (**Ubuntu 20.04** in below practice: [Download Ubuntu Server](https://ubuntu.com/download/server)) 
 
-- **Network Configuration**: 
+- **Network**: 
 
     - `host-0`: 
       - **ens33**: *Host-only* - `192.168.80.130`
@@ -85,7 +85,9 @@
       - **ens33**: *Host-only* - `192.168.80.128`
       - **ens38**: *NAT*        - `192.168.80.0/24`
 
-**Note**
+**Notes on `NICs`**
+- `ens33`is **mainly used**.
+- `ens38` (**NAT**) is for **Internet Connection** only. Can disable it after all dependencies/packages are installed
 
 # **III. STEP-BY-STEP**:
 
