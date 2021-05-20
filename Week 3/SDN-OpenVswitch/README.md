@@ -1,6 +1,5 @@
-# WEEK-3 PRACTICES DOCUMENTATION
-# OPENVSWITCH
-
+# WEEK-3 PRACTICE DOCUMENTATION
+# Sec. 2: SOFTWARE DEFINED NETWORKING (SDN) w/ `OpenvSwitch`
 ---
 
 ## **Author:** *Julian (Phong) Ng.* 
@@ -13,17 +12,19 @@
 
 ## [I. Overview](#**I.-OVERVIEW**)
 
-## [II. Step-by-step](#**II.-STEP-BY-STEP**)
+## [II. Prerequisite](#**II.-PREREQUISITE**)
 
-### A. Set Up Environment(#A.-SET-UP-ENVIRONMENT)
+## [III. Step-by-step](#**II.-STEP-BY-STEP**)
 
-### B. Network Configurations (#B.-Network-Configurations):
+- ### [A. Set Up Environment](#A.-SET-UP-ENVIRONMENT)
 
-### C. VXLAN Connectivity between 2 Nodes: (#C.-VXLAN-CONNECTIVITY-BETWEEN-2-NODES)
+- ### [B. Network Configurations](#B.-Network-Configurations):
 
-## [III. Q/A](#III. Q/A)
+- ### [C. VXLAN Connectivity between 2 Nodes](#C.-VXLAN-CONNECTIVITY-BETWEEN-2-NODES)
 
-## [IV. References & Tutorials](#IV.-REFERENCES)
+## [IV. Q/A](#III.-Q/A)
+
+## [V. References & Tutorials](#IV.-REFERENCES)
 
 ## SET UP
 - Network interfaces: `Host-only`
@@ -38,8 +39,19 @@
 		+ VXLAN Tunnel End Point -> stays on Hypervisor on host of VMs
 		+ Can be on switch/ phys server or phys/software
 
+# **II. PREREQUISITE**:
+## **A. Knowledge Requirements:**
 
-# **II. STEP-BY-STEP**:
+- Basics on Linux, Networking.
+  - [**VXLAN**](https://support.huawei.com/enterprise/en/doc/EDOC1100086966) - *Please try to understand the simple workflow, components of this protocol* (To be honest, my `networking` is poor :stuck_out_tongue:)
+
+- Basics on [OpenvSwitch](https://www.openvswitch.org/).
+	- Recommended understand how to manage `Docker` resources (images, ) commands.
+
+## **B. Infrastructure Requirements:** 
+
+
+# **III. STEP-BY-STEP**:
 
 ## **A. SET UP ENVIRONMENT**:
 
@@ -295,9 +307,9 @@ $ wireshark
 
 <img src="./imgs/wireshark-success-output.png">
 
-## **III. Q/A Section**:
+## **IV. Q/A Section**:
 
-## **IV. REFERENCES & TUTORIALS**:
+## **V. REFERENCES & TUTORIALS**:
 - [Configuring VXLAN & GRE Tunnel on openvswitch](http://networkstatic.net/configuring-vxlan-and-gre-tunnels-on-openvswitch/)
 
 - [VXLAN w/ OpenvSwitch](https://github.com/hocchudong/thuctap012017/blob/master/XuanSon/Netowork%20Protocol/VXLAN-GRE%20Protocol.md)
