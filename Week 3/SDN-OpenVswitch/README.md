@@ -36,8 +36,12 @@
     - `Encapsulation`: VXLAN encapsulate Ethernet frame on Layer 2 into a UDP datagram & send it over Layer 3.
     - `Tunneling`: establish connection via `tunnel` between the sender & destination devices. Network traffic are encapsulated & forward through such route.
 
-- **Component**:
-	- `VTEP`: *VXLAN Tunnel Endpoint*
+- **Terms**:
+  - `VNI`: *VXLAN network identifier*
+    - Uniquely identify the VXLAN network
+    - Likewise `VLANID`, but with **24 bits**
+
+  - `VTEP`: *VXLAN Tunnel Endpoint*
       - Stays on Hypervisor on host of VMs
       - Responsible for `encapsulating` & `decapsulating` Layer 2 traffic.
 
@@ -380,24 +384,31 @@ $ sudo ovs-vsctl show
 
 <img src="./imgs/wireshark-success-output.png">
 
-## **IV. Q/A Section**:
+## **IV. Q/A**:
   ````
       What are Advantages & Disadvantages of using `VXLA` network in a Datacenter?
   ````
 ### Advantages:
-- **Scalibility**: Solving limitations in terms of L2 identitifier quantity. In fact, VLAN provides only 4095 possible segments at maximum but VXLAN can reach up to 16 millions with 24bit VNI.
+
+- **Scalibility**: Solving constraints in terms of L2 identitifier quantity. In fact, VLAN provides only 4095 possible segments at maximum but VXLAN can reach up to 16 millions with 24bit VNI.
+
 - **Isolation & Security**: `VXLAN` employs `VNI` to ensure the isolation of traffic. Each segment, definied by `VNI`, is an isolated environment, which expects to enhance the network traffic security.
-- **Multi-tenancy**: `Segmentation` & `Isolation` of `VXLAN` enables multi-tentant model. Multiple tenants can share the same infrastructure, and this leads to more efficient resources usage.  
+
+- **Multi-tenancy**: `Segmentation` & `Isolation` of `VXLAN` enables multi-tentant model. Multiple entities can share the same infrastructure, and this leads to more efficient resources usage.  
+
 - **VM Mobility**: VM migration is now independent of physical network configuration. Those machines can be moved from a subnet on a host to another host with another subnet while its IP remains unchanged.
-- ****
+
 - **Hardware Support**: Increasing become a standard. Supported by multiple modern switching devices.
 
 ### Disadvantages:
-- **Increase in Packet Size:** with the tunneling tech of `VXLAN`, up to 50 extra bytes are added to a single packet. It requires a transport network that capable of support packets of such size.
-- **Configuration Complexity**:
+- **Increase in Packet Size & Performance Reduction:** with the tunneling tech of `VXLAN`, up to 50 extra bytes are added to a single packet. Increase in terms of bytes comes with more adding & removing operations to be executed on headers, which results in more workload for CPU.
+- **Management & Configuration Complexity**: Append a layer of abstraction to system. As virtual & physical networks are independent, each of them is managed, provisioned in differently. 
 
 ## **V. REFERENCES & TUTORIALS**:
 - [Configuring VXLAN & GRE Tunnel on openvswitch](http://networkstatic.net/configuring-vxlan-and-gre-tunnels-on-openvswitch/)
 
 - [VXLAN w/ OpenvSwitch](https://github.com/hocchudong/thuctap012017/blob/master/XuanSon/Netowork%20Protocol/VXLAN-GRE%20Protocol.md)
 
+- [VXLan – What Is it & Quick Tutorial](https://www.pcwdld.com/vxlan)
+
+- Other Github Repos
