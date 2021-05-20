@@ -50,17 +50,42 @@
 
 ## **B. Infrastructure Requirements:** 
 **Network Topology Diagram**
+````
+          
+          
+              HOST 0                                                                    HOST 1
+                            
+                      +--------------+                                   +--------------+ 
+                      |     br1      |                                   |     br1      |                       
+                      +--------------+   10.1.3.10                       +--------------+   10.1.3.11
+                      |    vxlan1    |                                   |    vxlan1    |
+                      +--------------+                                   +--------------+
+                            |                                                  |
+                            |                                                  |
+                            |                                                  |
+                            |                                                  | 
+                      +--------------+                                  +---------------+
+                      |     br0      |                                  |     br0       |
+    +---------+       +--------------+                                  +---------------+       +---------+
+    |  ens38  |       |     ens33    |--------------------------------- |     ens33     |       |  ens38  |   
+    +---------+       +--------------+                                  +---------------+       +---------+
+  192.168.80.0/24      172.168.50.130                                    192.168.50.128       192.168.80.0/24
 
+
+````
 
 - **Operating System**: Ubuntu Server (**Ubuntu 20.04** in below practice: [Download Ubuntu Server](https://ubuntu.com/download/server)) 
 
-- **Network Configuration**:
+- **Network Configuration**: 
+
     - `host-0`: 
       - **ens33**: *Host-only* - `192.168.80.130`
-      - **ens38**: *NAT*
+      - **ens38**: *NAT*        - `192.168.80.0/24`
     - `host-1`:
       - **ens33**: *Host-only* - `192.168.80.128`
-      - **ens38**: *NAT*
+      - **ens38**: *NAT*        - `192.168.80.0/24`
+
+**Note**
 
 # **III. STEP-BY-STEP**:
 
