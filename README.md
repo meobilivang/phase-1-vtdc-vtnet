@@ -1,6 +1,8 @@
 # VIETTEL DIGITAL TALENT 2021
 ## Phase 1: Training - Viettelnet
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/meobilivang/Phase-1-Training-VTDT-VTNET/blob/master/LICENSE)
+
 ### Week 1: 
 1. `Cloud`
 2. `Virtualization`
