@@ -9,7 +9,7 @@
 > Welcome back! This is the documentation for my second training project at **Viettel Network**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
 
 ---
-# **Table of Contents:** TODO
+# **Table of Contents:**
 
 ## [I. Overview](#**I.-OVERVIEW**)
 
@@ -18,6 +18,8 @@
 ### A. Set Up Environment(#A.-SET-UP-ENVIRONMENT)
 
 ### B. Network Configurations (#B.-Network-Configurations):
+
+### C. VXLAN Connectivity between 2 Nodes: (#C.-VXLAN-CONNECTIVITY-BETWEEN-2-NODES)
 
 ## [III. Q/A](#III. Q/A)
 
@@ -212,7 +214,7 @@ $ sudo ovs-vsctl show
 
 <img src="./imgs/host-1-ovs-show.png">
 
-## **B. `VXLAN` CONNECTIVITY BETWEEN 2 NODES**:
+## **C. `VXLAN` CONNECTIVITY BETWEEN 2 NODES**:
 
 **Configuration Remark**
 	- `host-0`: Reply & Captures request from remote host `host-1`
