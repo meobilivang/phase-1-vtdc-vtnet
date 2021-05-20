@@ -21,7 +21,7 @@
 
 ## [III. Q/A](#III. Q/A)
 
-## [IV. References](#IV.-REFERENCES)
+## [IV. References & Tutorials](#IV.-REFERENCES)
 
 ## SET UP
 - Network interfaces: `Host-only`
@@ -40,91 +40,193 @@
 # **II. STEP-BY-STEP**:
 
 ## **A. SET UP ENVIRONMENT**:
-- `Must-have` packages: `net-tools`, `tcpdump`
-```
-$ sudo apt install net-tools
-```
 
-- Installing `OpenVswitch` via `apt`:
+- Update `apt`:
 ```
 $ sudo apt update
 $ sudo apt upgrade
+```
+
+- `Must-have` packages via `apt`: `net-tools`, `tcpdump`, `wireshark`
+	- `net-tools`: *collection of programs for controlling the network subsystem of the Linux kernel*
+	- `tcpdump`: *network packet analyzer*
+	- `wireshark`: *network protocol analyzer*
+```
+$ sudo apt install -y net-tools tcpdump wireshark
+```
+
+- Installing `OpenVswitch` (*`virtual switch`*) via `apt`:
+```
 $ sudo apt install openvswitch-switch
 ```
 
-- Starting `OpenVswitch`:
+- Starting `OpenSwitch`:
 ```
 $ sudo ovs-vswitchd
 ```
 
-- Check status of service:
+## **B. NETWORK CONFIGURATIONS**:
+
+### Service Functionality & Version check
+
+- Check status of `OpenvSwitch` service:
 ```
 $ systemctl status ovs-vswitchd
 ```
 
-## **B. NETWORK CONFIGURATIONS**:
+> **Node 0**
 
-### **1. Host 1**:
+<img src="./imgs/openvswitch-status-node-0.png">
 
-- Adding Bridges:
+> **Node 1**
+
+<img src="./imgs/openvswitch-status-node-1.png">
+
+- Check version of `OpenvSwitch` service:
+```
+$ sudo ovs-vsctl --version 
+```
+
+### `MUST-KNOW` Networking Diagonistic Commands:
+
+- Check network interfaces:
+```
+$ sudo ifconfig
+```
+
+- Show `routing table`:
+```
+$ route -n
+```
+
+### **1. Host 0**:
+
+- Adding 2 network bridges: `br0`, `br1`
 
 ```
 $ sudo ovs-vsctl add-br br0
-$ sudo ovs-vsctl add-br br1
+$ sudo ovs-vsctl add-br br1			
 ```
 
+**Note**
+> `br1` should be considered as a dummy interface - **physically not exist**
+
+- Attaching `ens33` to `br0`:
 ```
 $ sudo ovs-vsctl add-port br0 ens33
 ```
 
+- Disbale `ens33` & Configure IP for `br0`
+
+**Note**
+ > At this point, `br0` posseses **IP**, **netmask**, **MAC address** of `ens33`.
+
 ```
-# (removes) the IP address assigned to interface ens33
 $ sudo ifconfig ens33 0 && sudo ifconfig br0 192.168.50.130 netmask 255.255.255.0
+```
 
+- (Optional) Modify `default gateway` - *Allocated by VMware for mother machine*
+```
 $ sudo route add default gw 192.168.50.1 br0
+```
 
+<img src="./imgs/default-gw.png">
+
+- Configure IP of `br1`:
+```
 $ sudo ifconfig br1 10.1.3.10 netmask 255.255.255.0
+```
 
+- Configure VXLAN tunnel for `br1`:
+
+```
 $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=192.168.50.128
 ```
 
-### **2. HOST 2**:
+- Full `openvSwitch` configuration on `host-0`:
+
+```
+$ sudo ovs-vsctl show
+```
+
+<img src="./imgs/host-0-ovs-show.png">
+
+
+### **2. HOST 1**:
+
+- Adding 2 network bridges: `br0`, `br1`
+
 ```
 $ sudo ovs-vsctl add-br br0
+$ sudo ovs-vsctl add-br br1			
+```
 
-$ sudo ovs-vsctl add-br br1
+**Note**
+> `br1` should be considered as a dummy interface - **physically not exist**
 
+- Attaching `ens33` to `br0`:
+```
 $ sudo ovs-vsctl add-port br0 ens33
 ```
 
+- Disbale `ens33` & Configure IP for `br0`
+
+**Note**
+ > At this point, `br0` posseses **IP**, **netmask**, **MAC address** of `ens33`.
+
 ```
-# (removes) the IP address assigned to interface ens33
 $ sudo ifconfig ens33 0 && sudo ifconfig br0 192.168.50.128 netmask 255.255.255.0
+```
 
+- (Optional) Modify `default gateway` - *Allocated by VMware for mother machine*
+```
 $ sudo route add default gw 192.168.50.1 br0
+```
 
-$ sudo ifconfig br1 10.1.3.11 netmask 255.255.255.0
+<img src="./imgs/default-gw.png">
 
-$ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=192.168.50.130
+- Configure IP of `br1`:
+```
+$ sudo ifconfig br1 10.1.3.10 netmask 255.255.255.0
+```
+
+- Configure VXLAN tunnel for `br1`:
 
 ```
+$ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=192.168.50.130
+```
+
+
+- Full `openvSwitch` configuration on `host-1`:
+
+```
+$ sudo ovs-vsctl show
+```
+
+<img src="./imgs/host-1-ovs-show.png">
 
 ## **B. `VXLAN` CONNECTIVITY BETWEEN 2 NODES**:
-**Configuration**
+
+**Configuration Remark**
 > 
 
 - Check connection to other node via `VXLAN` with Ping:
-	- **Host 1**
+	- **Host 0 ----> Host 1**
 ```
 $ ping -I br1 10.1.3.11
 ```
-	- **Host 2**
+	- **Host 1 ----> Host 0**
 ```
 $ ping -I br1 10.1.3.10
 ```
 
-- Captures & Store data packets with `tcpdump` on `host-0`:
+- Captures & Store data packets with `tcpdump`: *Perform these operations simultaneously as described below*
+ 	- (**Host 1**) Send an ICMP echo request packet:
+```
+$ ping -I br1 10.1.3.11
+```
 
+ 	- (**Host 0**) Captures & write data packets to `vxlan.pcap`: 
 ```
 $ sudo tcpdump -i any -c 10 -nn -s 0 -w vxlan.pcap
 ```
@@ -134,26 +236,58 @@ $ sudo tcpdump -i any -c 10 -nn -s 0 -w vxlan.pcap
       <b>-i</b>
     </dt>
     <dd>
-       Defined Internal Network interface.
-       <dd><b>Current deployment</b>: ens33 - 192.168.80.137</dd>
+       Selecting interface
     </dd>
-	
+    <dt>
+      <b>-c</b>
+    </dt>
+    <dd>
+       Restrict the size of the output file to a specific number
+    </dd>
+    <dt>
+      <b>-nn</b>
+    </dt>
+    <dd>
+       Prevent hostname and port resolution (speed up process)
+    </dd>
+    <dt>
+      <b>-w</b>
+    </dt>
+    <dd>
+       Write to file
+    </dd>
 </dl>
+
 <img src="./imgs/dump-correct-nic.png">
 
-- Decapsulate & Analyze packets with `wireshark`:
+- (**Host 0**) Decapsulate & Analyze packets with `wireshark`:
+	1. Start `wireshark` from `Terminal`:
 ```
 $ wireshark
 ```
 
+> Starting `wireshark`
 
-> **Packet is successfully Encapuslated, this `VXLAN` deployment works**
+<img src="./imgs/wireshark-cli.png">
+	
+	2. Open `vxlan.pcap` & view detail analysis of packets: 
+
+> Open file on `wireshark` GUI
+
+<img src="./imgs/wireshark-gu.png">
+
+**Note**
+> Interactive GUI of `wireshark` would be automatically starts with above command.
+
+## **C. EXPECTED OUTCOME**:
+
+**Packet is successfully encapuslated with VXLAN header, this `VXLAN` deployment works**
 
 <img src="./imgs/wireshark-success-output.png">
 
-## Q/A Section:
+## **III. Q/A Section**:
 
-## REFERENCES:
+## **IV. REFERENCES & TUTORIALS**:
 - [Configuring VXLAN & GRE Tunnel on openvswitch](http://networkstatic.net/configuring-vxlan-and-gre-tunnels-on-openvswitch/)
 
 - [VXLAN w/ OpenvSwitch](https://github.com/hocchudong/thuctap012017/blob/master/XuanSon/Netowork%20Protocol/VXLAN-GRE%20Protocol.md)
