@@ -93,7 +93,7 @@
 - **Operating System**: Ubuntu Server (**Ubuntu 20.04** in below practice: [Download Ubuntu Server](https://ubuntu.com/download/server)) 
 
 - **Network**: 
-
+ 
     - `host-0`: 
       - **ens33**: *Host-only* - `192.168.80.130`
       - **ens38**: *NAT*        - `192.168.80.0/24`
@@ -236,6 +236,9 @@ $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:
 $ sudo ovs-vsctl show
 ```
 
+**Note**
+> Pardon me for the mismatch of `remote_ip` for `vxlan1`. This was changed due to `DHCP`.
+
 <img src="./imgs/host-0-ovs-show.png">
 
 
@@ -298,16 +301,27 @@ $ sudo ovs-vsctl add-port br1 vxlan1 -- set interface vxlan1 type=vxlan options:
 ```
 $ sudo ovs-vsctl show
 ```
-**Note**
-> Pardon me for the mismatch of `remove_ip` for `vxlan1`. This was changed due to `DHCP`.
 
 <img src="./imgs/host-1-ovs-show.png">
 
 ## **C. `VXLAN` CONNECTIVITY BETWEEN 2 NODES**:
 
 **Configuration Remark**
-	- `host-0`: Reply & Captures request from remote host `host-1`
-	- `host-1`: Sends `icmp` echo requests
+<dl>
+    <dt>
+      <b>host-0</b>
+    </dt>
+    <dd>
+      Reply & Captures request from remote host `host-1`
+    </dd>
+    <dt>
+      <b>host-1</b>
+    </dt>
+    <dd>
+       Sends `icmp` echo requests
+    </dd>
+</dl>
+
 
 - Check connection to other node via `VXLAN` with Ping:
 	- **Host 0 ----> Host 1** 
@@ -379,9 +393,7 @@ $ sudo ovs-vsctl show
 **Note**
 > Interactive GUI of `wireshark` would be automatically starts with above command.
 
-## **C. EXPECTED OUTCOME**:
-
-> **Packet is successfully encapuslated with VXLAN header, this `VXLAN` deployment works**
+- **Packet is successfully encapuslated with `VXLAN` header**
 
 <img src="./imgs/wireshark-success-output.png">
 
