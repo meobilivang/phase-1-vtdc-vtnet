@@ -185,7 +185,7 @@ $ sudo ovs-vsctl add-br br1
 ```
 
 **Note**
-> `br1` should be considered as a dummy interface - **physically not exist**
+> `br1` should be considered as a **dummy** interface.
 
 - Attaching `ens33` to `br0`:
 ```
@@ -252,7 +252,7 @@ $ sudo ovs-vsctl add-br br1
 ```
 
 **Note**
-> `br1` should be considered as a dummy interface - **physically not exist**
+> `br1` should be considered as a **dummy** interface
 
 - Attaching `ens33` to `br0`:
 ```
@@ -398,9 +398,9 @@ $ sudo ovs-vsctl show
 <img src="./imgs/wireshark-success-output.png">
 
 ## **IV. Q/A**:
-  ````
-      What are Advantages & Disadvantages of using `VXLA` network in a Datacenter?
-  ````
+``
+#### What are *advantages* & *disadvantages* of using `VXLA` network in a Datacenter?
+``
 ### Advantages:
 
 - **Scalibility**: Solving constraints in terms of L2 identitifier quantity. In fact, VLAN provides only 4095 possible segments at maximum but VXLAN can reach up to 16 millions with 24bit VNI.
@@ -415,7 +415,7 @@ $ sudo ovs-vsctl show
 
 ### Disadvantages:
 - **Increase in Packet Size & Performance Reduction:** with the tunneling tech of `VXLAN`, up to 50 extra bytes are added to a single packet. Increase in terms of bytes comes with more adding & removing operations to be executed on headers, which results in more workload for CPU.
-- **Management & Configuration Complexity**: Append a layer of abstraction to system. As virtual & physical networks are independent, each of them is managed, provisioned in differently. 
+- **Management & Configuration Complexity**: Appending a layer to system. As virtual & physical networks are independent, each of them is managed, provisioned in differently manners. 
 
 ## **V. REFERENCES & TUTORIALS**:
 - [Configuring VXLAN & GRE Tunnel on openvswitch](http://networkstatic.net/configuring-vxlan-and-gre-tunnels-on-openvswitch/)
