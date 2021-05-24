@@ -14,7 +14,9 @@ $ kubectl get pods --namespace kube-system
 
 ### III. Step-by-step Guide
 
-### IV. References
+## IV. DEBUGGING:
+
+### V. References
 
 
 
@@ -42,7 +44,8 @@ application/
 
 ## 1. INSTALL & DEPLOY `Minikube`:
 
-## 2. Start & Manage `Minikube`
+## 2. Start & Manage `Minikube`:
+
 - Change user on Linux machine:
 
 ````bash
@@ -62,7 +65,10 @@ $ minikube stop
 ## B. DEPLOYING `WordPress` & `MariaDB` with `Persistent Volumes`
 ### Create & Manage K8S Objects:
 
-### 1. `Secret`
+### 1. `Secret`:
+- Create `secret-wordpress`:
+```
+
 
 ### 2. `Deployment`
 
@@ -70,8 +76,48 @@ $ minikube stop
 
 ### B2. DEPLOY:
 
+- Check Running `Service`:
+````bash
+$  kubectl get services (<Service-name>)
+````
 
-# REFERENCES:
+**Note**
+> `EXTERNAL-IP` always `<Pedning>` because `Minikube` exposes Services through `NodePort` only.
+
+- Check IP of `wordpress`:
+```bash
+$ minikube service wordpress --url
+```
+
+# IV. DEBUGGING:
+
+- Entering a `Container` in K8S with `bash`:
+```bash
+$ kubectl exec --stdin --tty <Pod-name> -- /bin/bash
+```
+
+- View logs:
+```bash
+$ kubectl logs <pod-name>
+```
+
+## 1. `Deployment in version "v1" cannot be handled as a Deployment...`
+
+- Bug detected:
+```bash
+ env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: yes
+```
+
+- **Correct**: *Adding quotation marks* 
+```bash
+ env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+```
+
+# V. REFERENCES:
 
 - [**kubectl** `apply` or `create`](https://www.digitalocean.com/community/tutorials/imperative-vs-declarative-kubernetes-management-a-digitalocean-comic)
 
