@@ -66,13 +66,17 @@ $ minikube stop
 ### Create & Manage K8S Objects:
 
 ### 1. `Secret`:
-- Create `secret-wordpress`:
+- Create `secret-mariadb`:
+```
 ```
 
+- Create `secret-wordpress`:
+```
+```
 
-### 2. `Deployment`
+### 2. `Deployment`:
 
-### 3. `Service`
+### 3. `Service`:
 
 ### B2. DEPLOY:
 
@@ -87,6 +91,27 @@ $  kubectl get services (<Service-name>)
 - Check IP of `wordpress`:
 ```bash
 $ minikube service wordpress --url
+```
+
+- Port forwarding:
+
+- Allow `Packet Forwarding`: 
+```bash
+$ sudo vi /etc/sysctl.conf
+
+----
+net.ipv4.ip_forward = 1
+```
+
+````bash
+$ sudo iptables -t nat -A PREROUTING -i ens33 -d 192.168.80.133 -p tcp --dport 32122 -j  DNAT --to-destination 192.168.49.2:32123
+````
+<!-- ````bash
+$ sudo iptables -t nat -A PREROUTING -p tcp --dport 32122 -j DNAT --to-destination 192.168.49.2:32123
+```` -->
+
+```bash
+$ kubectl port-forward wordpress-75ff9b8497-f8qd7 32124
 ```
 
 # IV. DEBUGGING:
