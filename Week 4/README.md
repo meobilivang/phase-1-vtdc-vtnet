@@ -10,40 +10,55 @@
 ---
 
 ## TABLE OF CONTENTS
-### I. Overview
+### [I. Overview](#I.-OVERVIEW)
 
-### II. Prequisite:
+### [II. Prerequisite](#II.-PREREQUISITE:)
 
-### III. Architecture:
+### [III. Architecture](#III.-ARCHITECTURE)
 
-### IV. Step-by-step Guide
+### [IV. Step-by-step Guide](#IV.-STEP-BY-STEP-GUILD)
 
-### V. Troubleshooting:
+### [V. Troubleshooting](#V.-TROUBLESHOOTING)
 
-### VI. References
+### [VI. References](#VI.-REFERENCES)
 
 
 # **I. OVERVIEW:**
 
 ## **1. `KUBERNETES`**
 
+- A portable, extensible, open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.
+
 ## **2. `MINIKUBE`**
 
 # **II. PREREQUISITE:**
 
 ## **A. Knowledge:**
+- Basics on **Linux**, **Networking**.
 
+- Basics on [**Kubernetes**](https://kubernetes.io/docs/home/).
+	- Should know basic K8S's CLI `kubectl` commands
+	- Understand `Kubernetes Objects`.
+
+- Basics on [**Docker**](https://docs.docker.com/).
+	- Some Docker commands
+	- Understand `Kubernetes Objects`.
+ 
 
 ## **B. Infrastructure:**
 
 - Showing components of `K8S cluster`
+
 ````bash
+
 $ kubectl get pods --namespace kube-system
+
 ````
 
 # **III. STEP-BY-STEP GUIDE** 
 
 **Suggested Directories Layout**
+
 ````bash
 application/
 │
@@ -88,7 +103,7 @@ $ minikube stop
 
 ### **B1. Create & Manage `Kubernetes` Objects:**
 
-### 1. `Secret`:
+### **1. `Secret`**:
  
 **Note**: *All `data` fields in `Secret` should be `base64` encoded*
 	- **db_user**: pnguyen
@@ -134,7 +149,7 @@ data:
   db_password: MTIzNDU2Nzg=
 ```
 
-### 2. `Service`:
+### **2. `Service`**:
 
 #### **Note**: With each container, `Service`, `Deployment`, `PersistentVolumeClaim` can stored within a single `yaml` file. This deployment includes 2 files:
 	- `mariadb-deployment.yml`
@@ -180,7 +195,7 @@ spec:
 
 ```
 
-### 3. `PersistentVolumeClaim`:
+### **3. `PersistentVolumeClaim`**:
 
 - `Volume` for `mariadb`:
 
@@ -219,7 +234,7 @@ spec:
       storage: 2Gi
 ```
 
-### 4. `Deployment`:
+### **4. `Deployment`**:
 
 - `Deployment` for `mariadb`:
 ```bash
@@ -332,7 +347,7 @@ spec:
           claimName: wordpress-volume
 ````
 
-### B2. DEPLOY APPLICATIONS WITH `Kubernetes`:
+### **B2. DEPLOY APPLICATIONS WITH `Kubernetes`**:
 - Create `mariadb` Secret object:
 
 ````bash
@@ -357,8 +372,6 @@ $ kubectl apply -f ./secret-wordpress.yml
 $ kubectl get secrets
 
 ````
-
-
 
 - Deploy `mariadb`:
 ````bash
@@ -404,7 +417,7 @@ $  kubectl get services (<Service-name>)
 <img src="./imgs/services-list.png">
 
 
-## C. ACCESS APPLICATION:
+## **C. ACCESS APPLICATION:**
 - Check IP of `wordpress`:
 
 ```bash
@@ -424,9 +437,9 @@ $ curl http://<CLUSTER-IP>:<High-PORT>
 
 <img src="./imgs/success-landing-page-curl.png">
 
-# IV. TROUBLESHOOTING:
+# **IV. TROUBLESHOOTING:**
 
-## `MUST-KNOW` DEBUG COMMANDS
+## **`MUST-KNOW` DEBUG COMMANDS**
 - Entering a `Container` in K8S with `bash`:
 ```bash
 $ kubectl exec --stdin --tty <Pod-name> -- /bin/bash
@@ -453,7 +466,7 @@ $ kubectl logs <pod-name>
           value: "yes"
 ```
 
-# V. REFERENCES:
+# **V. REFERENCES:**
 
 - [**kubectl** `apply` or `create`](https://www.digitalocean.com/community/tutorials/imperative-vs-declarative-kubernetes-management-a-digitalocean-comic)
 
