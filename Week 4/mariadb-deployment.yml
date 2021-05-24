@@ -48,9 +48,24 @@ spec:
         containers:
         - name: mariadb
           image: bitnami/mariadb:latest
-          envFrom:
-          - secretRef:
-              name: secret-mariadb
+          env:
+          - name: ALLOW_EMPTY_PASSWORD
+            value: yes
+          - name: MARIADB_USER
+            valueFrom:
+              secretKeyRef:
+                name: secret-mariadb
+                key: db_user
+          - name: MARIADB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: secret-mariadb
+                key: db_name
+          - name: MARIADB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secret-mariadb
+                key: db_password
         restartPolicy: Never
         ports:
         - containerPort: 3306
