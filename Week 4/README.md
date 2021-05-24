@@ -18,7 +18,7 @@
 
 ### IV. Step-by-step Guide
 
-### V. Debugging:
+### V. Troubleshooting:
 
 ### VI. References
 
@@ -85,7 +85,8 @@ $ minikube stop
 ``` 
 
 ## **B. DEPLOYING `WordPress` & `MariaDB` with `Persistent Volumes`**
-### **B1. Create & Manage K8S Objects:**
+
+### **B1. Create & Manage `Kubernetes` Objects:**
 
 ### 1. `Secret`:
  
@@ -134,6 +135,10 @@ data:
 ```
 
 ### 2. `Service`:
+
+#### **Note**: With each container, `Service`, `Deployment`, `PersistentVolumeClaim` can stored within a single `yaml` file. This deployment includes 2 files:
+	- `mariadb-deployment.yml`
+	- `wordpress-deployment.yml`
 
 - `Service` for `mariadb`:
 
@@ -271,7 +276,7 @@ spec:
           claimName: wordpress-mariadb-volume
 ```
 
-- `Deployment` for `wordpress`
+- `Deployment` for `wordpress`:
 
 ````bash
 
@@ -327,25 +332,101 @@ spec:
           claimName: wordpress-volume
 ````
 
-### B2. DEPLOY:
-
-- Check Running `Service`:
+### B2. DEPLOY APPLICATIONS WITH `Kubernetes`:
+- Create `mariadb` Secret object:
 
 ````bash
+$ kubectl apply -f ./secret-mariadb.yml
+````
+
+<img src="./imgs/create-mariadb-secret.png">
+
+- Create `wordpress` Secret object:
+
+````bash
+
+$ kubectl apply -f ./secret-wordpress.yml
+
+````
+
+<img src="./imgs/create-wordpress-secret.png">
+
+- Verify added secrets existence:
+````bash
+
+$ kubectl get secrets
+
+````
+
+
+
+- Deploy `mariadb`:
+````bash
+
+$ kubectl apply -f ./mariadb-deployment.yml
+
+````
+
+<img src="./imgs/service-persistent-deployment-mariadb.png">
+
+
+- Deploy `wordpress`:
+````bash
+
+$ kubectl apply -f ./wordpress-deployment.yml
+
+````
+
+<img src="./imgs/service-persistent-deployment-wordpress.png">
+
+
+- Check `Pod`(s):
+
+````bash
+$  kubectl get pods
+````
+
+<img src="./imgs/running-pods.png">
+
+- Check `Service`:
+
+````bash
+
+
 $  kubectl get services (<Service-name>)
+
 ````
 
 **Note**
-> `EXTERNAL-IP` always `<Pedning>` because `Minikube` exposes Services through `NodePort` only.
+> `EXTERNAL-IP` always `<Pending>` because `Minikube` exposes Services through `NodePort` only.
 
+
+<img src="./imgs/services-list.png">
+
+
+## C. ACCESS APPLICATION:
 - Check IP of `wordpress`:
+
 ```bash
+
 $ minikube service wordpress --url
+
 ```
 
+<img src="./imgs/view-url-wordpress.png">
 
-# IV. DEBUGGING:
 
+- Visit Landing page:
+
+```bash
+$ curl http://<CLUSTER-IP>:<High-PORT>
+```
+
+<img src="./imgs/success-landing-page-curl.png">
+
+# IV. TROUBLESHOOTING:
+
+## `MUST-KNOW` DEBUG COMMANDS
 - Entering a `Container` in K8S with `bash`:
 ```bash
 $ kubectl exec --stdin --tty <Pod-name> -- /bin/bash
