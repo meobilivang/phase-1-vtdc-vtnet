@@ -155,20 +155,182 @@ spec:
 
 ```
 
-- Create `secret-wordpress`:
+- `Service` for `wordpress`:
+
 ```bash
 
-$ vi secrets/secret-wordpress.yml
-
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress-k8s
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: wordpress-k8s
+    tier: frontend
+  type: LoadBalancer
 
 ```
 
+### 3. `PersistentVolumeClaim`:
 
-### 3. `Deployment`:
+- `Volume` for `mariadb`:
+
+```bash
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: wordpress-mariadb-volume
+  labels:
+    app: wordpress-k8s
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+```
+
+
+- `Volume` for `wordpress`:
+
+```bash
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-volume
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+```
+
+### 4. `Deployment`:
+
+- `Deployment` for `mariadb`:
+```bash
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-mariadb
+  labels:
+    app: wordpress-k8s
+spec:
+  selector: 
+    matchLabels:
+      app: wordpress-k8s
+      tier: mariadb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress-k8s
+        tier: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: bitnami/mariadb:latest
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: yes
+        - name: MARIADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-mariadb
+              key: db_user
+        - name: MARIADB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: secret-mariadb
+              key: db_name
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-mariadb
+              key: db_password
+        ports:
+        - containerPort: 3306
+        name: mariadb
+        volumeMounts:
+        - name: mariadb-volume
+          mountPath: /var/lib/mariadb
+      volumes:
+      - name: mariadb-volume
+        persistentVolumeClaim:
+          claimName: wordpress-mariadb-volume
+```
+
+- `Deployment` for `wordpress`
+
+````bash
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress-k8s
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-k8s
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress-k8s
+        tier: frontend
+    spec:
+      containers:
+      - name: wordpress
+        image: bitnami/wordpress:latest
+        env:
+          - name: ALLOW_EMPTY_PASSWORD
+            value: yes
+          - name: WORDPRESS_DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: secret-wordpress
+                key: db_user
+          - name: WORDPRESS_DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: secret-wordpress
+                key: db_name
+          - name: WORDPRESS_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secret-wordpress
+                key: db_password
+        ports:
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-storage
+        persistentVolumeClaim:
+          claimName: wordpress-volume
+````
 
 ### B2. DEPLOY:
 
 - Check Running `Service`:
+
 ````bash
 $  kubectl get services (<Service-name>)
 ````
