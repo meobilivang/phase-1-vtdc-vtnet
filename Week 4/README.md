@@ -254,6 +254,16 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 
 ## **2. Manage `Minikube`:**
 
+- Add new user `minikube` & Add to `sudo` group:
+
+````bash
+$ sudo adduser minikube
+
+$ sudo usermod -aG sudo minikube
+````
+
+
+
 - Change user on Linux machine:
 
   ````bash
@@ -310,11 +320,13 @@ $ sudo apt install virtualbox virtualbox-ext-pack
   - **db_password**: 12345678
 
 - Encode to `base64`: *Repeat for data fields*
+
 ````bash
 $ echo "<input>" | base64
 ````
 
 - Create `secret-mariadb`:
+
 ```bash
 
 $ vi secrets/secret-mariadb.yml
@@ -332,6 +344,7 @@ data:
 ```
 
 - Create `secret-wordpress`:
+
 ```bash
 
 $ vi secrets/secret-wordpress.yml
@@ -351,12 +364,14 @@ data:
 ### **2. `Service`**:
 
 #### **Note**: 
+
  - *With each container, `Service`, `Deployment`, `PersistentVolumeClaim` can stored within a single `yaml` file. This deployment includes 2 files:*
-	- `mariadb-deployment.yml`
+  - `mariadb-deployment.yml`
 	- `wordpress-deployment.yml`
 
 
 - `Service` for `mariadb`:
+  - `Mariadb` is available **ONLY WITHIN CLUSTER**.
 
 ```bash
 
@@ -376,7 +391,9 @@ spec:
 
 ```
 
+
 - `Service` for `wordpress`:
+  - `Wordpress` is available **to outside via a LoadBalaner/High Port**.
 
 ```bash
 
@@ -398,6 +415,15 @@ spec:
 
 ### **3. `PersistentVolumeClaim`**:
 
+- **Notes**: 
+
+  - `PersistentVolumeClaim` == `Volume` for data storage. A `PersistentVolume` is dynamically provisioned as a `PersistentVolumeClaim` is created.
+
+  - `PersistentVolumeClaim` & `PersistentVolume` are *independent* from `Pod lifecycles` & preserve data through Pods' operations.
+
+  - `MariaDB` & `WordPress` all require a `PersistentVolume` each.
+
+
 - `Volume` for `mariadb`:
 
 ```bash
@@ -415,7 +441,6 @@ spec:
     requests:
       storage: 2Gi
 ```
-
 
 - `Volume` for `wordpress`:
 
@@ -611,7 +636,7 @@ $  kubectl get services (<Service-name>)
 <img src="./imgs/services-list.png">
 
 
-## **C. ACCESS APPLICATION:**
+## **C. ACCESS `Wordpress` page:**
 - Check IP of `wordpress`:
 
 ```bash
