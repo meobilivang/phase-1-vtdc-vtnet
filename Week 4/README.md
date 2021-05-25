@@ -154,7 +154,7 @@
 
 #### **`Minikube` Architecture**:
 
-<img src="./imgs/minikube-architecture.png">
+<img src="./imgs/minikube-architecture-diagram.png">
 
 - Showing components of `K8S cluster`
 
