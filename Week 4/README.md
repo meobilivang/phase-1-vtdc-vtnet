@@ -27,7 +27,7 @@
 
 ## **1. `KUBERNETES`**
 
-### **General Information:**
+### **General Info:**
 
 - **Purposes?** *An open-source system for **automating deployment**, **scaling**, and **orchestration of containerized applications**.*
 
@@ -61,7 +61,7 @@
 
 ## **2. `MINIKUBE`**:
 - **What it is?** *A `Kubernetes` Deployment solution*.
--  **How it works?** *runs a **all-in-one** Kubernetes cluster on local machine*.
+- **How it works?** *runs a **all-in-one** Kubernetes cluster on local machine*.
 
 <img src="./imgs/minikube-logo.png">
 
@@ -80,7 +80,21 @@
 	- Understand **`Containerization`**.
  
 
-## **B. Infrastructure:**
+## **B. Infrastructure:** 
+
+- **Desktop Hypervisor:** VMware Workstation (Other options: *Virtual Box, etc*) 
+
+- **Operating System**: Ubuntu Server (**Ubuntu 20.04** in below practice: [Download Ubuntu Server](https://ubuntu.com/download/server)) 
+
+- **Network**: 1 **NIC**
+
+- **Hardware specifications**: **A Single Virtual Machine** with below configurations
+| Criterias | Minimal | Personal Usage |
+| ----------- | ----------- | ----------- |
+|  CPU | 2 cores | 2 cores |
+| RAM | 2 GB | 2 GB |
+|  Storage | 20 GB | 20 GB |
+
 
 
 # **III. ARCHITECTURE:**
@@ -538,7 +552,8 @@ $ kubectl logs <pod-name>
 
 - [**kubectl** `apply` or `create`](https://www.digitalocean.com/community/tutorials/imperative-vs-declarative-kubernetes-management-a-digitalocean-comic)
 
-- [Using Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#secret-types)
+- [**Using Secrets in `K8S`**](https://kubernetes.io/docs/concepts/configuration/secret/#secret-types)
 
-- [Official Docs Example](https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/)
+- [**Official Docs Example**](https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/)
 
+- [**Install Minikube on Ubuntu 20.04**](https://phoenixnap.com/kb/install-minikube-on-ubuntu)
