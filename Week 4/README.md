@@ -211,7 +211,7 @@ $ sudo apt-get install curl apt-transport-https docker.io
 $ sudo apt install virtualbox virtualbox-ext-pack
 ````
 
-**Why another Hypervisor?** *To set up the single (host) node cluster with Minikube, which may includes inner VM inside*
+**Why another Hypervisor?** *To set up the single (host) node cluster with Minikube, which may includes inner VM(s) inside.*
 
 <img src="./imgs/install-virtual-box.png">
 
