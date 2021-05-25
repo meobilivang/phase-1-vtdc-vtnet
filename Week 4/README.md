@@ -148,7 +148,7 @@ $ kubectl get pods --namespace kube-system
 
 # **IV. STEP-BY-STEP GUIDE** 
 
-#### **:construction: Suggested Directories Layout**
+#### **:construction: Directories Layout**
 
 ````bash
 application/
