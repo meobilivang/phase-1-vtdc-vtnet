@@ -8,7 +8,7 @@
 
 **Date of issue**: *May 25th 2021*
 
-> Welcome back! This is the documentation for my second training project at **Viettel Network**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
+> Welcome back! The 4th training project in a row at **Viettel Network**! Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
 
 ---
 

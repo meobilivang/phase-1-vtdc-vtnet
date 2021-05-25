@@ -17,3 +17,6 @@ Management`
 1. `IaaS - Openstack`
 2. `Sofware Defined Network (SDN) - Network Functions Virtualization (NFV)`
 
+### Week 4: 
+1. `IaaS - Platform as A Service with Kubernetes`
+
