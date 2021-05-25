@@ -12,19 +12,36 @@
 
 ---
 
-## TABLE OF CONTENTS
+# TABLE OF CONTENTS
 
-### [I. Overview](#I.-OVERVIEW)
+## [I. Overview](#I.-OVERVIEW)
+  
+  - ### [1. Kubernetes](#1.-Kubernetes)
+  
+  - ### [2. Minikube](#2.-Minikube)
 
-### [II. Prerequisite](#II.-PREREQUISITE:)
 
-### [III. Architecture](#III.-ARCHITECTURE)
+## [II. Prerequisite](#II.-PREREQUISITE:)
+  - ### [Knowledge](#Knowledge)
 
-### [IV. Step-by-step Guide](#IV.-STEP-BY-STEP-GUILD)
+  - ### [Infrastructure](#Infrastructure)
 
-### [V. Troubleshooting](#V.-TROUBLESHOOTING)
+## [III. Architecture](#III.-ARCHITECTURE)
+  
+  - ### [1. Minimum Viable Deployment](#Minimum-Viable-Deployment)
+  - ### [2. Minikube Deployment](#Minikube-Deployment)
 
-### [VI. References](#VI.-REFERENCES)
+## [IV. Step-by-step Guide](#IV.-STEP-BY-STEP-GUILD)
+  
+  - ### [A. Minikube](#A.-Minikube)
+  
+  - ### [B. Deploying Wordpress & MariaDB with Persistent Volumes](#B.-Deploying-Wordpress-&-MariaDB-with-Persistent-Volumes)
+
+  - ### [C. Accessing WordPress page](#C.-Accessing-WordPress-page)
+
+## [V. Troubleshooting](#V.-TROUBLESHOOTING)
+
+## [VI. References](#VI.-REFERENCES)
 
 
 # **I. OVERVIEW:**
@@ -181,10 +198,10 @@ application/
 $ sudo apt-get update -y
 ````
 
-- (*If not installed*) Install packages:
+- (*If not installed*) Install packages: `curl`, `apt-transport-https`, `docker.io`
 
 ````bash
-$ sudo apt-get install curl apt-transport-https
+$ sudo apt-get install curl apt-transport-https docker.io
 ````
 
 - Install `VirtualBox` Hypervisor:
@@ -254,13 +271,26 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 
 ## **2. Manage `Minikube`:**
 
-- Add new user `minikube` & Add to `sudo` group:
+- Add user `minikube` & Configure Permissions: 
+  - Add new user `minikube`:
 
-````bash
-$ sudo adduser minikube
+  ````bash
+  $ sudo adduser minikube
+  ````
 
-$ sudo usermod -aG sudo minikube
-````
+  - Add User to `sudo` & `docker` group:
+
+  ````bash
+  $ sudo usermod -aG sudo minikube
+
+  $ sudo usermod -aG docker $USER 
+
+  $ newgrp docker
+  ````
+
+
+
+- 
 
 
 
@@ -269,6 +299,12 @@ $ sudo usermod -aG sudo minikube
   ````bash
   $ su minikube
   ````
+
+- Start `Minukube`: **Must start `Minikube` before proceeding**
+
+  ```bash
+  $ minikube start
+  ``` 
 
 - Management Commands `Minikube`:
   - Start `Minukube`: **Must start `Minikube` before proceeding**
@@ -393,7 +429,7 @@ spec:
 
 
 - `Service` for `wordpress`:
-  - `Wordpress` is available **to outside via a LoadBalaner/High Port**.
+  - `Wordpress` is exposed **to outside via a LoadBalaner/High Port**.
 
 ```bash
 
