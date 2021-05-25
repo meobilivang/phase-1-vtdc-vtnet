@@ -238,11 +238,19 @@ $ sudo apt install virtualbox virtualbox-ext-pack
   $ chmod +x ./kubectl
   ````
 
+  - Move downloaded package to `/usr/local/bin/kubectl`
+
+  ````bash
+  $ sudo mv ./kubectl /usr/local/bin/kubectl
+  ````
+
   - Verify installed `kubectl` version:
   
   ````bash
   $ kubectl version -o json
   ````
+
+  <img src="./imgs/kubectl-installed.png">
 
 ## **2. Manage `Minikube`:**
 
@@ -251,7 +259,7 @@ $ sudo apt install virtualbox virtualbox-ext-pack
   ````bash
   $ su minikube
   ````
-  
+
 - Management Commands `Minikube`:
   - Start `Minukube`: **Must start `Minikube` before proceeding**
 
