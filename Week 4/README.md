@@ -140,7 +140,7 @@
 - Where `Pods` are deployed. Perform most laborious tasks. 
 - Components:
 	- `kubelet`: *Receive commands from `master` node*.
-	- `kube-proxy`: *Network agent. Hanldes request forwarding*
+	- `kube-proxy`: *Network agent. Handles request forwarding*
 
 
 ## **:one: Minimum Viable Deployment**:
