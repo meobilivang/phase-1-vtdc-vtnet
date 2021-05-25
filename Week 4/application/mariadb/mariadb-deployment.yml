@@ -7,7 +7,7 @@ metadata:
     app: wordpress-k8s
 spec:
   ports:
-    - port 3306
+    - port: 3306
   selector:
     app: wordpress-k8s
     tier: mariadb
@@ -19,9 +19,9 @@ metadata:
   name: wordpress-mariadb-volume
   labels:
     app: wordpress-k8s
-  spec:
-    accessModes:
-      - ReadWriteOnce
+spec:
+  accessModes:
+    - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
@@ -37,28 +37,42 @@ spec:
     matchLabels:
       app: wordpress-k8s
       tier: mariadb
-    strategy:
-      type: Recreate
-    template:
-      metadata:
-        labels:
-          app: wordpress-k8s
-          tier: mariadb
-      spec:
-        containers:
-        - name: mariadb
-          image: bitnami/mariadb:latest
-          envFrom:
-          - secretRef:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress-k8s
+        tier: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: bitnami/mariadb:latest
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: yes
+        - name: MARIADB_USER
+          valueFrom:
+            secretKeyRef:
               name: secret-mariadb
-        restartPolicy: Never
+              key: db_user
+        - name: MARIADB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: secret-mariadb
+              key: db_name
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-mariadb
+              key: db_password
         ports:
         - containerPort: 3306
-          name: mariadb
+        name: mariadb
         volumeMounts:
         - name: mariadb-volume
-        mountPath: /var/lib/mariadb
-        volumes:
-        - name: mariadb-volume
-          persistentVolumeClaim:
-            claimName: wordpress-mariadb-volume
+          mountPath: /var/lib/mariadb
+      volumes:
+      - name: mariadb-volume
+        persistentVolumeClaim:
+          claimName: wordpress-mariadb-volume

@@ -48,9 +48,23 @@ spec:
       - name: wordpress
         image: bitnami/wordpress:latest
         env:
-          envFrom:
-          - secretRef:
-              name: secret-wordpress
+          - name: ALLOW_EMPTY_PASSWORD
+            value: yes
+          - name: WORDPRESS_DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: secret-wordpress
+                key: db_user
+          - name: WORDPRESS_DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: secret-wordpress
+                key: db_name
+          - name: WORDPRESS_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secret-wordpress
+                key: db_password
         ports:
         - containerPort: 80
           name: wordpress
