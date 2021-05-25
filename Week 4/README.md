@@ -288,12 +288,6 @@ $ sudo apt install virtualbox virtualbox-ext-pack
   $ newgrp docker
   ````
 
-
-
-- 
-
-
-
 - Change user on Linux machine:
 
   ````bash
@@ -303,16 +297,12 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 - Start `Minukube`: **Must start `Minikube` before proceeding**
 
   ```bash
-  $ minikube start
-  ``` 
+  $ minikube start --driver=docker
+  ```
+
+  <img src="./imgs/start-minikube-init.png">
 
 - Management Commands `Minikube`:
-  - Start `Minukube`: **Must start `Minikube` before proceeding**
-
-  ```bash
-  $ minikube start
-  ``` 
-
   - Stop `Minukube`:
   
   ```bash
