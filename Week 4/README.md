@@ -135,7 +135,7 @@
 
 #### **`Minikube` Architecture**:
 
-<img src="./imgs/Minikube-architecture.png">
+<img src="./imgs/minikube-architecture.png">
 
 - Showing components of `K8S cluster`
 ````bash
