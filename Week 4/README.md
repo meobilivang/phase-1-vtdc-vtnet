@@ -1,8 +1,11 @@
 # WEEK-4 PRACTICE DOCUMENTATION
-# PaaS - Platform as A Service w/ **`Kubernetes`** :cloud:
+
+## PaaS - Platform as A Service with **`Kubernetes`** :cloud:
+
 ---
 
 ## **Author:** *Julian (Phong) Ng.* 
+
 **Date of issue**: *May 25th 2021*
 
 > Welcome back! This is the documentation for my second training project at **Viettel Network**. Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
@@ -27,7 +30,7 @@
 
 ## **1. `KUBERNETES`**
 
-### **General Info:**
+### **:notebook_with_decorative_cover:	General Info:**
 
 - **Purposes?** *An open-source system for **automating deployment**, **scaling**, and **orchestration of containerized applications**.*
 
@@ -44,7 +47,7 @@
 <img src="./imgs/k8s-logo.png">
 
 
-### **Terminologies:**
+### :page_with_curl: **Terminologies:**
 
 - **`Cluster`**:
 	- Collection of `Nodes` combines together
@@ -68,7 +71,7 @@
 
 # **II. PREREQUISITE:**
 
-## **A. Knowledge:**
+## **:books: Knowledge:**
 - Basics on **Linux**, **Networking**. *Sorry for keep repeating this one but these are cores of `Cloud Computing`* :wink:
 
 - Basics on [**Kubernetes**](https://kubernetes.io/docs/home/).
@@ -80,7 +83,7 @@
 	- Understand **`Containerization`**.
  
 
-## **B. Infrastructure:** 
+## **:computer: Infrastructure:** 
 
 - **Desktop Hypervisor:** VMware Workstation (Other options: *Virtual Box, etc*) 
 
@@ -89,21 +92,21 @@
 - **Network**: 1 **NIC**
 
 - **Hardware specifications**: **A Single Virtual Machine** with below configurations
-| Criterias | Minimal | Personal Usage |
+
+| Specification(s) | Minimal | Personal Usage |
 | ----------- | ----------- | ----------- |
 |  CPU | 2 cores | 2 cores |
 | RAM | 2 GB | 2 GB |
 |  Storage | 20 GB | 20 GB |
 
 
-
 # **III. ARCHITECTURE:**
 
-#### **Architecture Philosophy**: `Master-slave architecture`
+## **:rocket: Architecture Philosophy**: `Master-slave architecture`
 
 ## **Main Components:**
 
-### **a. `Master Node`**: *`Master`*
+### :guardsman: **Master Node**: *`Master`*
 - Perform management & adminstrative tasks on `Cluser` - set of worker nodes.
 - Components:
 	- `etcd`: *key-value datastore*.
@@ -112,7 +115,7 @@
 	- `kube-apiserver`: *Exposed point of `Kubernetes` to outside. Acts as a gateway for `Cluster`, all interaction among components must go through*.
 
 
-### **b. `Worker Node(s)`**: *`Slave`*
+### **:construction_worker: Worker Node(s)**: *`Slave`*
 - Where `Pods` are deployed. Perform most laborious tasks. 
 - Components:
 	- `kubelet`: *Receive commands from `master` node*.
@@ -120,7 +123,7 @@
 
 <img src="./imgs/k8s-full-diagram.png">
 
-## **1. Minimum Viable Deployment**:
+## **:one: Minimum Viable Deployment**:
 - A sample `Kubernetes` Deployment with:
 	- **1 Master Node (Control plane)**
 	- **3 Worker Nodes**
@@ -128,18 +131,20 @@
 <img src="./imgs/k8s-production.png">
 
 
-## **2. `Minikube` Deployment**: *For educational & developement purposes*
+## **:two: `Minikube` Deployment**: *For educational & developement purposes*
+
 - Showing components of `K8S cluster`
 
 ````bash
 
 $ kubectl get pods --namespace kube-system
-
 ````
+
+<img src="./imgs/minikube-architecture-cli.png">
 
 # **IV. STEP-BY-STEP GUIDE** 
 
-**Suggested Directories Layout**
+#### **:construction: Suggested Directories Layout**
 
 ````bash
 application/
@@ -187,10 +192,11 @@ $ minikube stop
 
 ### **1. `Secret`**:
  
-**Note**: *All `data` fields in `Secret` should be `base64` encoded*
-	- **db_user**: pnguyen
-	- **db_name**: wordpress_k8s
-	- **db_password**: 12345678
+
+- **Note**: *All `data` fields in `Secret` should be `base64` encoded*
+  - **db_user**: pnguyen
+  - **db_name**: wordpress_k8s
+  - **db_password**: 12345678
 
 - Encode to `base64`: *Repeat for data fields*
 ````bash
@@ -233,9 +239,11 @@ data:
 
 ### **2. `Service`**:
 
-#### **Note**: With each container, `Service`, `Deployment`, `PersistentVolumeClaim` can stored within a single `yaml` file. This deployment includes 2 files:
+#### **Note**: 
+ - *With each container, `Service`, `Deployment`, `PersistentVolumeClaim` can stored within a single `yaml` file. This deployment includes 2 files:*
 	- `mariadb-deployment.yml`
 	- `wordpress-deployment.yml`
+
 
 - `Service` for `mariadb`:
 
@@ -430,6 +438,7 @@ spec:
 ````
 
 ### **B2. DEPLOY APPLICATIONS WITH `Kubernetes`**:
+
 - Create `mariadb` Secret object:
 
 ````bash
@@ -441,9 +450,7 @@ $ kubectl apply -f ./secret-mariadb.yml
 - Create `wordpress` Secret object:
 
 ````bash
-
 $ kubectl apply -f ./secret-wordpress.yml
-
 ````
 
 <img src="./imgs/create-wordpress-secret.png">
@@ -452,14 +459,12 @@ $ kubectl apply -f ./secret-wordpress.yml
 ````bash
 
 $ kubectl get secrets
-
 ````
 
 - Deploy `mariadb`:
 ````bash
 
 $ kubectl apply -f ./mariadb-deployment.yml
-
 ````
 
 <img src="./imgs/service-persistent-deployment-mariadb.png">
@@ -469,10 +474,9 @@ $ kubectl apply -f ./mariadb-deployment.yml
 ````bash
 
 $ kubectl apply -f ./wordpress-deployment.yml
-
 ````
 
-<img src="./imgs/service-persistent-deployment-wordpress.png">
+<img src="./imgs/service-persistent-deploynent-wordpress.png">
 
 
 - Check `Pod`(s):
@@ -486,10 +490,7 @@ $  kubectl get pods
 - Check `Service`:
 
 ````bash
-
-
 $  kubectl get services (<Service-name>)
-
 ````
 
 **Note**
@@ -503,9 +504,7 @@ $  kubectl get services (<Service-name>)
 - Check IP of `wordpress`:
 
 ```bash
-
 $ minikube service wordpress --url
-
 ```
 
 <img src="./imgs/view-url-wordpress.png">
@@ -517,38 +516,45 @@ $ minikube service wordpress --url
 $ curl http://<CLUSTER-IP>:<High-PORT>
 ```
 
+> :heavy_check_mark: **Exptected outcome**
+
 <img src="./imgs/success-landing-page-curl.png">
 
 # **V. TROUBLESHOOTING:**
 
 ## **`MUST-KNOW` DEBUG COMMANDS**
+
 - Entering a `Container` in K8S with `bash`:
+
 ```bash
 $ kubectl exec --stdin --tty <Pod-name> -- /bin/bash
 ```
 
 - View logs:
+
 ```bash
 $ kubectl logs <pod-name>
 ```
 
 ## 1. `Deployment in version "v1" cannot be handled as a Deployment...`
 
-- Bug detected:
+:x: Bug detected:
+
 ```bash
  env:
         - name: ALLOW_EMPTY_PASSWORD
           value: yes
 ```
 
-- **Correct**: *Adding quotation marks* 
+:heavy_check_mark: Adding quotation marks: 
+
 ```bash
  env:
         - name: ALLOW_EMPTY_PASSWORD
           value: "yes"
 ```
 
-# **VI. REFERENCES:**
+# **VI. :newspaper: REFERENCES**
 
 - [**kubectl** `apply` or `create`](https://www.digitalocean.com/community/tutorials/imperative-vs-declarative-kubernetes-management-a-digitalocean-comic)
 
