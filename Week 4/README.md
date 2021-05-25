@@ -80,9 +80,32 @@
 
 # **III. ARCHITECTURE:**
 
-## Production-ready Deployment:
+#### Architecture Philosophy: `Master-slave architecture`
 
-## `Minikube` Deployment:
+## **Main Components:**
+
+### **a. `Master Node`**: *`Master`*
+
+- Components:
+	- `etcd`: *Receive commands from `master` node*.
+	- `kube-scheduler`: *Network agent. Hanldes request forwarding*
+	- `kube-controller-manager`: *Receive commands from `master` node*.
+	- `kube-apiserver`: *Receive commands from `master` node*.
+
+
+### **b. `Worker Node(s)`**: *`Slave`*
+- Where `Pods` are deployed. Perform most laborious tasks. 
+- Components:
+	- `kubelet`: *Receive commands from `master` node*.
+	- `kube-proxy`: *Network agent. Hanldes request forwarding*
+
+
+## **1. Minimum Viable Deployment**:
+
+<img src="./imgs/k8s-full-diagram.png">
+
+
+## **2. `Minikube` Deployment**: *For educational & developement purposes*
 - Showing components of `K8S cluster`
 
 ````bash
