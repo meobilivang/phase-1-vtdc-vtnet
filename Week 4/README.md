@@ -133,14 +133,18 @@
 
 ## **:two: `Minikube` Deployment**: *For educational & developement purposes*
 
-- Showing components of `K8S cluster`
+#### **`Minikube` Architecture**:
 
+<img src="./imgs/Minikube-architecture.png">
+
+- Showing components of `K8S cluster`
 ````bash
 
 $ kubectl get pods --namespace kube-system
 ````
 
 <img src="./imgs/minikube-architecture-cli.png">
+
 
 # **IV. STEP-BY-STEP GUIDE** 
 
