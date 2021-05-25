@@ -81,8 +81,8 @@
 
 
 ## **2. `MINIKUBE`**:
-- **What it is?** *A `Kubernetes` Deployment solution*.
-- **How it works?** *runs a **all-in-one** Kubernetes cluster on local machine*.
+- **What is `Minikube`?** *A `Kubernetes` Deployment solution*.
+- **How it works?** *runs an **all-in-one** Kubernetes cluster on local machine*.
 
 <img src="./imgs/minikube-logo.png">
 
