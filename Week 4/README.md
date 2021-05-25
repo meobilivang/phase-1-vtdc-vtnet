@@ -1,5 +1,5 @@
 # WEEK-4 PRACTICE DOCUMENTATION
-# PaaS - Platform as A Service w/ **`Kubernetes`**
+# PaaS - Platform as A Service w/ **`Kubernetes`** :cloud:
 ---
 
 ## **Author:** *Julian (Phong) Ng.* 
@@ -27,26 +27,62 @@
 
 ## **1. `KUBERNETES`**
 
-- A portable, extensible, open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.
+### **General Information:**
 
-## **2. `MINIKUBE`**
+- **Purposes?** *An open-source system for **automating deployment**, **scaling**, and **orchestration of containerized applications**.*
+
+- **Title `Kubernetes`** - Greek for *"helmsman"* or *"pilot"* :man_pilot:. 
+
+- **Origin?** A `Graduated Project` from `Cloud Native Computing Foundation`. Initially developed by **Google** before donated to `CNCF` in 2014.
+
+- **Core Characteristics**: `portable`, `extensible`, `open-source`.
+
+- **Current Status** *large, rapidly growing ecosystem*. *Available with a range of services, support, and tools.*
+
+- **Release Cycle**: *3-4 months*
+
+<img src="./imgs/k8s-logo.png">
+
+
+### **Terminologies:**
+
+- **`Cluster`**:
+	- Collection of `Nodes` combines together
+
+- **`Node`**:
+	- Hardware component -> can be either a `VM` or a `Physical machine`.
+
+- **`Pod`**:
+	- simplest unit within K8S cluster. 
+	- contains one or more container(s).
+
+- **`kubectl`**: CLI of `Kubernetes`
+
+
+## **2. `MINIKUBE`**:
 
 # **II. PREREQUISITE:**
 
 ## **A. Knowledge:**
-- Basics on **Linux**, **Networking**.
+- Basics on **Linux**, **Networking**. *Sorry for keep repeating this one but these are cores of `Cloud Computing`* :wink:
 
 - Basics on [**Kubernetes**](https://kubernetes.io/docs/home/).
-	- Should know basic K8S's CLI `kubectl` commands
+	- Should know basic K8S's CLI `kubectl` commands.
 	- Understand `Kubernetes Objects`.
 
 - Basics on [**Docker**](https://docs.docker.com/).
-	- Some Docker commands
-	- Understand `Kubernetes Objects`.
+	- Docker's Image & Container Management commands
+	- Understand **`Containerization`**.
  
 
 ## **B. Infrastructure:**
 
+
+# **III. ARCHITECTURE:**
+
+## Production-ready Deployment:
+
+## `Minikube` Deployment:
 - Showing components of `K8S cluster`
 
 ````bash
@@ -55,7 +91,7 @@ $ kubectl get pods --namespace kube-system
 
 ````
 
-# **III. STEP-BY-STEP GUIDE** 
+# **IV. STEP-BY-STEP GUIDE** 
 
 **Suggested Directories Layout**
 
@@ -437,7 +473,7 @@ $ curl http://<CLUSTER-IP>:<High-PORT>
 
 <img src="./imgs/success-landing-page-curl.png">
 
-# **IV. TROUBLESHOOTING:**
+# **V. TROUBLESHOOTING:**
 
 ## **`MUST-KNOW` DEBUG COMMANDS**
 - Entering a `Container` in K8S with `bash`:
@@ -466,7 +502,7 @@ $ kubectl logs <pod-name>
           value: "yes"
 ```
 
-# **V. REFERENCES:**
+# **VI. REFERENCES:**
 
 - [**kubectl** `apply` or `create`](https://www.digitalocean.com/community/tutorials/imperative-vs-declarative-kubernetes-management-a-digitalocean-comic)
 
