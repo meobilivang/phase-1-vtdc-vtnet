@@ -60,6 +60,11 @@
 
 
 ## **2. `MINIKUBE`**:
+- **What it is?** *A `Kubernetes` Deployment solution*.
+-  **How it works?** *runs a **all-in-one** Kubernetes cluster on local machine*.
+
+<img src="./imgs/minikube-logo.png">
+
 
 # **II. PREREQUISITE:**
 
@@ -80,17 +85,17 @@
 
 # **III. ARCHITECTURE:**
 
-#### Architecture Philosophy: `Master-slave architecture`
+#### **Architecture Philosophy**: `Master-slave architecture`
 
 ## **Main Components:**
 
 ### **a. `Master Node`**: *`Master`*
-
+- Perform management & adminstrative tasks on `Cluser` - set of worker nodes.
 - Components:
-	- `etcd`: *Receive commands from `master` node*.
-	- `kube-scheduler`: *Network agent. Hanldes request forwarding*
-	- `kube-controller-manager`: *Receive commands from `master` node*.
-	- `kube-apiserver`: *Receive commands from `master` node*.
+	- `etcd`: *key-value datastore*.
+	- `kube-scheduler`: *making decisions for pod-related operations on cluster*
+	- `kube-controller-manager`: *manages all of the controllers - which maintains the state/status of `Cluster`*.
+	- `kube-apiserver`: *Exposed point of `Kubernetes` to outside. Acts as a gateway for `Cluster`, all interaction among components must go through*.
 
 
 ### **b. `Worker Node(s)`**: *`Slave`*
@@ -99,10 +104,14 @@
 	- `kubelet`: *Receive commands from `master` node*.
 	- `kube-proxy`: *Network agent. Hanldes request forwarding*
 
+<img src="./imgs/k8s-full-diagram.png">
 
 ## **1. Minimum Viable Deployment**:
+- A sample `Kubernetes` Deployment with:
+	- **1 Master Node (Control plane)**
+	- **3 Worker Nodes**
 
-<img src="./imgs/k8s-full-diagram.png">
+<img src="./imgs/k8s-production.png">
 
 
 ## **2. `Minikube` Deployment**: *For educational & developement purposes*
