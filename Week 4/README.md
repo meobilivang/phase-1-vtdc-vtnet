@@ -196,6 +196,8 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 
 **Why another Hypervisor?** *To set up the single (host) node cluster with Minikube, which may includes inner VM inside*
 
+<img src="./imgs/install-virtual-box.png">
+
 - Install **`Minikube`**:
   - Download latest **`Minikube`** binary package:
 
@@ -221,6 +223,8 @@ $ sudo apt install virtualbox virtualbox-ext-pack
   $ minikube version
   ````
 
+  <img src="./imgs/minikube-version.png">
+
 - Install `kubectl` - CLI tool of `Kubernetes`:
   - Download `Kubectl` binary package with `wget`:
 
@@ -240,16 +244,16 @@ $ sudo apt install virtualbox virtualbox-ext-pack
   $ kubectl version -o json
   ````
 
-
-## **2. Start & Manage `Minikube`:**
+## **2. Manage `Minikube`:**
 
 - Change user on Linux machine:
 
   ````bash
   $ su minikube
   ````
+  
 - Management Commands `Minikube`:
-  - Start `Minukube`:
+  - Start `Minukube`: **Must start `Minikube` before proceeding**
 
   ```bash
   $ minikube start
@@ -287,7 +291,7 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 
 ## **B. DEPLOYING `WordPress` & `MariaDB` with `Persistent Volumes`**
 
-### **B1. Create & Manage `Kubernetes` Objects:**
+## **Create & Manage `Kubernetes` Objects:**
 
 ### **1. `Secret`**:
  
@@ -536,7 +540,7 @@ spec:
           claimName: wordpress-volume
 ````
 
-### **B2. DEPLOY APPLICATIONS WITH `Kubernetes`**:
+### **DEPLOY APPLICATIONS WITH `Kubernetes`**:
 
 - Create `mariadb` Secret object:
 
@@ -615,7 +619,7 @@ $ minikube service wordpress --url
 $ curl http://<CLUSTER-IP>:<High-PORT>
 ```
 
-> :heavy_check_mark: **Exptected outcome**
+:heavy_check_mark: **Exptected outcome:**
 
 <img src="./imgs/success-landing-page-curl.png">
 
@@ -654,6 +658,8 @@ $ kubectl logs <pod-name>
 ```
 
 # **VI. :newspaper: REFERENCES**
+
+- [**Official Documentation** `Kubernetes`](https://kubernetes.io/docs/)
 
 - [**kubectl** `apply` or `create`](https://www.digitalocean.com/community/tutorials/imperative-vs-declarative-kubernetes-management-a-digitalocean-comic)
 
