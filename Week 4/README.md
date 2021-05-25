@@ -13,6 +13,7 @@
 ---
 
 ## TABLE OF CONTENTS
+
 ### [I. Overview](#I.-OVERVIEW)
 
 ### [II. Prerequisite](#II.-PREREQUISITE:)
@@ -106,7 +107,10 @@
 
 ## **Main Components:**
 
+<img src="./imgs/k8s-full-diagram.png">
+
 ### :guardsman: **Master Node**: *`Master`*
+
 - Perform management & adminstrative tasks on `Cluser` - set of worker nodes.
 - Components:
 	- `etcd`: *key-value datastore*.
@@ -121,7 +125,6 @@
 	- `kubelet`: *Receive commands from `master` node*.
 	- `kube-proxy`: *Network agent. Hanldes request forwarding*
 
-<img src="./imgs/k8s-full-diagram.png">
 
 ## **:one: Minimum Viable Deployment**:
 - A sample `Kubernetes` Deployment with:
@@ -130,7 +133,6 @@
 
 <img src="./imgs/k8s-production.png">
 
-
 ## **:two: `Minikube` Deployment**: *For educational & developement purposes*
 
 #### **`Minikube` Architecture**:
@@ -138,6 +140,7 @@
 <img src="./imgs/minikube-architecture.png">
 
 - Showing components of `K8S cluster`
+
 ````bash
 
 $ kubectl get pods --namespace kube-system
@@ -154,16 +157,16 @@ $ kubectl get pods --namespace kube-system
 application/
 │
 │
-│──secrets
+│──secrets                          ----> Storing secrets
 │   ├── secret-mariadb.yml
 │   └── secret-wordpress.yml
 │
 │
-│──mariadb
+│──mariadb                          ----> Deloyment file(s) for `Mariadb` 
 │   	└── mariadb-deployment.yml
 │
 │
-└──wordpress
+└──wordpress                        ----> Deloyment file(s) for `WordPress`
     └── wordpress-deployment.yml
 
 ````
@@ -172,23 +175,115 @@ application/
 
 ## **1. INSTALL & DEPLOY `Minikube`:**
 
+- Update `apt`:
+
+````bash
+$ sudo apt-get update -y
+````
+
+- (*If not installed*) Install packages:
+
+````bash
+$ sudo apt-get install curl apt-transport-https
+````
+
+- Install `VirtualBox` Hypervisor:
+  - **`Yes`** to all `user prompts`.
+
+````bash
+$ sudo apt install virtualbox virtualbox-ext-pack
+````
+
+**Why another Hypervisor?** *To set up the single (host) node cluster with Minikube, which may includes inner VM inside*
+
+- Install **`Minikube`**:
+  - Download latest **`Minikube`** binary package:
+
+  ````bash
+  $ wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+  ````
+
+  - Move downloaded package to `/usr/local/bin/minikube`
+  
+  ````bash
+  $ sudo mv minikube-linux-amd64 /usr/local/bin/minikube
+  ````
+
+  - Add `execute` permission to directory
+  
+  ````bash
+  $ sudo chmod 755 /usr/local/bin/minikube
+  ```` 
+
+  - Verify installed `Minikube` version
+  
+  ````bash
+  $ minikube version
+  ````
+
+- Install `kubectl` - CLI tool of `Kubernetes`:
+  - Download `Kubectl` binary package with `wget`:
+
+  ````bash
+  $ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+  ````
+
+  - Add `Execute` permission to package:
+  
+  ````bash
+  $ chmod +x ./kubectl
+  ````
+
+  - Verify installed `kubectl` version:
+  
+  ````bash
+  $ kubectl version -o json
+  ````
+
+
 ## **2. Start & Manage `Minikube`:**
 
 - Change user on Linux machine:
 
-````bash
-$ su minikube
-````
+  ````bash
+  $ su minikube
+  ````
+- Management Commands `Minikube`:
+  - Start `Minukube`:
 
-- Start `Minukube`:
-```bash
-$ minikube start
-``` 
+  ```bash
+  $ minikube start
+  ``` 
 
-- Stop `Minukube`:
-```bash
-$ minikube stop
-``` 
+  - Stop `Minukube`:
+  
+  ```bash
+  $ minikube stop
+  ``` 
+
+  - Status `Minukube` Cluster:
+  
+  ```bash
+  $ minikube status
+  ``` 
+
+  - SSH into `Minukube` VM:
+  
+  ```bash
+  $ minikube ssh
+  ``` 
+
+  - Remove `Minukube` cluster:
+  
+  ```bash
+  $ minikube delete
+  ``` 
+
+  - View installed `add-ons`/`plugins` on `Minukube` cluster:
+  
+  ```bash
+  $ minikube addons list
+  ``` 
 
 ## **B. DEPLOYING `WordPress` & `MariaDB` with `Persistent Volumes`**
 
