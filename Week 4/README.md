@@ -283,12 +283,12 @@ $ sudo apt install virtualbox virtualbox-ext-pack
   ````bash
   $ sudo usermod -aG sudo minikube
 
-  $ sudo usermod -aG docker $USER 
+  $ sudo usermod -aG docker minikube 
 
   $ newgrp docker
   ````
 
-- Change user on Linux machine:
+  - Change user on Linux machine:
 
   ````bash
   $ su minikube
