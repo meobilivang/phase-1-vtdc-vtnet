@@ -662,6 +662,15 @@ $  kubectl get services (<Service-name>)
 
 <img src="./imgs/services-list.png">
 
+- Check `PersistentVolumeClaim`(s) && `PersistentVolume`(s):
+
+```bash
+$  kubectl get pvc
+$  kubectl get pv
+```
+
+<img src="./imgs/pv-pvc.png">
+
 
 ## **C. ACCESS `Wordpress` page:**
 - Check IP of `wordpress`:
