@@ -158,10 +158,10 @@
 
 - Showing components of `K8S cluster`
 
-````bash
+```bash
 
 $ kubectl get pods --namespace kube-system
-````
+```
 
 <img src="./imgs/minikube-architecture-cli.png">
 
@@ -170,7 +170,7 @@ $ kubectl get pods --namespace kube-system
 
 #### **:construction: Directories Layout**
 
-````bash
+```bash
 application/
 │
 │
@@ -186,7 +186,7 @@ application/
 └──wordpress                        ----> Deloyment file(s) for `WordPress`
     └── wordpress-deployment.yml
 
-````
+```
 
 ## **A. `Minikube`:**
 
@@ -194,22 +194,22 @@ application/
 
 - Update `apt`:
 
-````bash
+```bash
 $ sudo apt-get update -y
-````
+```
 
 - (*If not installed*) Install packages: `curl`, `apt-transport-https`, `docker.io`
 
-````bash
+```bash
 $ sudo apt-get install curl apt-transport-https docker.io
-````
+```
 
 - Install `VirtualBox` Hypervisor:
   - **`Yes`** to all `user prompts`.
 
-````bash
+```bash
 $ sudo apt install virtualbox virtualbox-ext-pack
-````
+```
 
 **Why another Hypervisor?** *To set up the single (host) node cluster with Minikube, which may includes inner VM(s) inside.*
 
@@ -218,54 +218,54 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 - Install **`Minikube`**:
   - Download latest **`Minikube`** binary package:
 
-  ````bash
+  ```bash
   $ wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-  ````
+  ```
 
   - Move downloaded package to `/usr/local/bin/minikube`
   
-  ````bash
+  ```bash
   $ sudo mv minikube-linux-amd64 /usr/local/bin/minikube
-  ````
+  ```
 
   - Add `execute` permission to directory
   
-  ````bash
+  ```bash
   $ sudo chmod 755 /usr/local/bin/minikube
-  ```` 
+  ``` 
 
   - Verify installed `Minikube` version
   
-  ````bash
+  ```bash
   $ minikube version
-  ````
+  ```
 
   <img src="./imgs/minikube-version.png">
 
 - Install `kubectl` - CLI tool of `Kubernetes`:
   - Download `Kubectl` binary package with `wget`:
 
-  ````bash
+  ```bash
   $ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-  ````
+  ```
 
   - Add `Execute` permission to package:
   
-  ````bash
+  ```bash
   $ chmod +x ./kubectl
-  ````
+  ```
 
   - Move downloaded package to `/usr/local/bin/kubectl`
 
-  ````bash
+  ```bash
   $ sudo mv ./kubectl /usr/local/bin/kubectl
-  ````
+  ```
 
   - Verify installed `kubectl` version:
   
-  ````bash
+  ```bash
   $ kubectl version -o json
-  ````
+  ```
 
   <img src="./imgs/kubectl-installed.png">
 
@@ -274,25 +274,25 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 - Add user `minikube` & Configure Permissions: 
   - Add new user `minikube`:
 
-  ````bash
+  ```bash
   $ sudo adduser minikube
-  ````
+  ```
 
   - Add User to `sudo` & `docker` group:
 
-  ````bash
+  ```bash
   $ sudo usermod -aG sudo minikube
 
   $ sudo usermod -aG docker minikube 
 
   $ newgrp docker
-  ````
+  ```
 
   - Change user on Linux machine:
 
-  ````bash
+  ```bash
   $ su minikube
-  ````
+  ```
 
 - Start `Minukube`: **Must start `Minikube` before proceeding**
 
@@ -347,13 +347,13 @@ $ sudo apt install virtualbox virtualbox-ext-pack
 
 - Encode to `base64`: *Repeat for data fields*
 
-````bash
+```bash
 $ echo "<input>" | base64
-````
+```
 
 - Create `secret-mariadb`:
 
-```bash
+```yaml
 
 $ vi secrets/secret-mariadb.yml
 
@@ -371,7 +371,7 @@ data:
 
 - Create `secret-wordpress`:
 
-```bash
+```yaml
 
 $ vi secrets/secret-wordpress.yml
 
@@ -399,8 +399,8 @@ data:
 - `Service` for `mariadb`:
   - `Mariadb` is available **ONLY WITHIN CLUSTER**.
 
-```bash
-
+```yaml
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -421,8 +421,8 @@ spec:
 - `Service` for `wordpress`:
   - `Wordpress` is exposed **to outside via a LoadBalaner/High Port**.
 
-```bash
-
+```yaml
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -452,8 +452,8 @@ spec:
 
 - `Volume` for `mariadb`:
 
-```bash
-
+```yaml
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata: 
@@ -470,8 +470,8 @@ spec:
 
 - `Volume` for `wordpress`:
 
-```bash
-
+```yaml
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -489,8 +489,9 @@ spec:
 ### **4. `Deployment`**:
 
 - `Deployment` for `mariadb`:
-```bash
 
+```yaml
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -545,8 +546,8 @@ spec:
 
 - `Deployment` for `wordpress`:
 
-````bash
-
+```yaml
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -597,63 +598,63 @@ spec:
       - name: wordpress-storage
         persistentVolumeClaim:
           claimName: wordpress-volume
-````
+```
 
 ### **DEPLOY APPLICATIONS WITH `Kubernetes`**:
 
 - Create `mariadb` Secret object:
 
-````bash
+```bash
 $ kubectl apply -f ./secret-mariadb.yml
-````
+```
 
 <img src="./imgs/create-mariadb-secret.png">
 
 - Create `wordpress` Secret object:
 
-````bash
+```bash
 $ kubectl apply -f ./secret-wordpress.yml
-````
+```
 
 <img src="./imgs/create-wordpress-secret.png">
 
 - Verify added secrets existence:
-````bash
+```bash
 
 $ kubectl get secrets
-````
+```
 
 - Deploy `mariadb`:
-````bash
+```bash
 
 $ kubectl apply -f ./mariadb-deployment.yml
-````
+```
 
 <img src="./imgs/service-persistent-deployment-mariadb.png">
 
 
 - Deploy `wordpress`:
-````bash
+```bash
 
 $ kubectl apply -f ./wordpress-deployment.yml
-````
+```
 
 <img src="./imgs/service-persistent-deploynent-wordpress.png">
 
 
 - Check `Pod`(s):
 
-````bash
+```bash
 $  kubectl get pods
-````
+```
 
 <img src="./imgs/running-pods.png">
 
 - Check `Service`:
 
-````bash
+```bash
 $  kubectl get services (<Service-name>)
-````
+```
 
 **Note**
 > `EXTERNAL-IP` always `<Pending>` because `Minikube` exposes Services through `NodePort` only.
@@ -702,7 +703,7 @@ $ kubectl logs <pod-name>
 
 :x: Bug detected:
 
-```bash
+```yaml
  env:
         - name: ALLOW_EMPTY_PASSWORD
           value: yes
@@ -710,7 +711,7 @@ $ kubectl logs <pod-name>
 
 :heavy_check_mark: Adding quotation marks: 
 
-```bash
+```yaml
  env:
         - name: ALLOW_EMPTY_PASSWORD
           value: "yes"
