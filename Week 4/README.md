@@ -516,7 +516,7 @@ spec:
         image: bitnami/mariadb:latest
         env:
         - name: ALLOW_EMPTY_PASSWORD
-          value: yes
+          value: "yes"
         - name: MARIADB_USER
           valueFrom:
             secretKeyRef:
@@ -572,7 +572,7 @@ spec:
         image: bitnami/wordpress:latest
         env:
           - name: ALLOW_EMPTY_PASSWORD
-            value: yes
+            value: "yes"
           - name: WORDPRESS_DATABASE_USER
             valueFrom:
               secretKeyRef:
