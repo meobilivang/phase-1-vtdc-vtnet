@@ -392,7 +392,7 @@ data:
 #### **Note**: 
 
  - *With each container, `Service`, `Deployment`, `PersistentVolumeClaim` can stored within a single `yaml` file. This deployment includes 2 files:*
-  - `mariadb-deployment.yml`
+  	- `mariadb-deployment.yml`
 	- `wordpress-deployment.yml`
 
 
