@@ -156,6 +156,12 @@
 
 <img src="./imgs/minikube-architecture-diagram.png">
 
+- An model `Minikube` Deployment with:
+	- **1 Master Node (Control plane)**
+	- **1 Worker Nodes**: `2 running Pods`
+		- `MariaDB`
+		- `WordPress`
+
 - Showing components of `K8S cluster`
 
 ```bash
@@ -710,12 +716,12 @@ $ kubectl logs <pod-name>
 
 ## 1. `Deployment in version "v1" cannot be handled as a Deployment...`
 
-:x: Bug detected:
+:x: Incorrect type formatting:
 
 ```yaml
  env:
         - name: ALLOW_EMPTY_PASSWORD
-          value: yes
+          value: yes			#parsed as `boolean`
 ```
 
 :heavy_check_mark: Adding quotation marks: 
@@ -723,7 +729,7 @@ $ kubectl logs <pod-name>
 ```yaml
  env:
         - name: ALLOW_EMPTY_PASSWORD
-          value: "yes"
+          value: "yes"			#parsed as `string`
 ```
 
 # **VI. :newspaper: REFERENCES**
