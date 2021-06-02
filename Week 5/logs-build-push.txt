@@ -1,0 +1,103 @@
++ docker build -t pnguyen01/simple-to-do-nodejs-app:1.41 .
+Sending build context to Docker daemon  519.2kB
+
+Step 1/7 : FROM node:lts
+ ---> 9153ee3e2ced
+Step 2/7 : WORKDIR /usr/src/app
+ ---> Using cache
+ ---> a15134f4644d
+Step 3/7 : COPY package*.json ./
+ ---> Using cache
+ ---> 49f32decbb18
+Step 4/7 : RUN npm install
+ ---> Using cache
+ ---> 71a6f34822b5
+Step 5/7 : COPY . .
+ ---> 83e51a8d6dcd
+Step 6/7 : EXPOSE 3400
+ ---> Running in af217f701072
+Removing intermediate container af217f701072
+ ---> 4c6b3632ce39
+Step 7/7 : CMD [ "node", "server.js" ]
+ ---> Running in 878a8ee9dd2a
+Removing intermediate container 878a8ee9dd2a
+ ---> f93dd8cad25b
+Successfully built f93dd8cad25b
+Successfully tagged pnguyen01/simple-to-do-nodejs-app:1.41
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Image to DockerHub)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withDockerRegistry
+$ docker exec --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** ******************** docker login -u pnguyen01 -p ******** https://index.docker.io/v1/
+
+Login Succeeded
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] sh
++ docker tag pnguyen01/simple-to-do-nodejs-app:1.41 pnguyen01/simple-to-do-nodejs-app:1.41
+[Pipeline] isUnix
+[Pipeline] sh
++ docker push pnguyen01/simple-to-do-nodejs-app:1.41
+The push refers to repository [docker.io/pnguyen01/simple-to-do-nodejs-app]
+020b802e3ae5: Preparing
+0c46acf3eacd: Preparing
+59a0a9c1f408: Preparing
+d91648fbd134: Preparing
+b238f928d38b: Preparing
+4a844761bb65: Preparing
+b1501adb3037: Preparing
+b257e69d416f: Preparing
+1e9c28d06610: Preparing
+cddb98d77163: Preparing
+ed0a3d9cbcc7: Preparing
+8c8e652ecd8f: Preparing
+2f4ee6a2e1b5: Preparing
+ed0a3d9cbcc7: Waiting
+8c8e652ecd8f: Waiting
+2f4ee6a2e1b5: Waiting
+4a844761bb65: Waiting
+b1501adb3037: Waiting
+b257e69d416f: Waiting
+1e9c28d06610: Waiting
+cddb98d77163: Waiting
+b238f928d38b: Layer already exists
+4a844761bb65: Layer already exists
+b1501adb3037: Layer already exists
+b257e69d416f: Layer already exists
+d91648fbd134: Pushed
+59a0a9c1f408: Pushed
+1e9c28d06610: Layer already exists
+020b802e3ae5: Pushed
+cddb98d77163: Layer already exists
+ed0a3d9cbcc7: Layer already exists
+8c8e652ecd8f: Layer already exists
+2f4ee6a2e1b5: Layer already exists
+0c46acf3eacd: Pushed
+1.41: digest: sha256:1c97fc6023d5aea35e48d16ff53e26ba26c3f673111ab04a3aa0065bb3fdb051 size: 3053
+[Pipeline] }
+[Pipeline] // withDockerRegistry
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+$ docker stop --time=1 2bdcd92e8c4d541ea918e80c41b19544c66f28ba88d170d0bc19390496a9de3f
+$ docker rm -f 2bdcd92e8c4d541ea918e80c41b19544c66f28ba88d170d0bc19390496a9de3f
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
