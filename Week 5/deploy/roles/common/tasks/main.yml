@@ -37,7 +37,5 @@
     port: "{{ item | int }}"
     proto: tcp
   loop:
-    - 8080
-    - 8443
-    - 3306
+    - 3400
 
