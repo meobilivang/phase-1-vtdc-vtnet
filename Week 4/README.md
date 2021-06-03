@@ -663,10 +663,19 @@ $  kubectl get services (<Service-name>)
 ```
 
 **Note**
-> `EXTERNAL-IP` always `<Pending>` because `Minikube` exposes Services through `NodePort` only.
-
+> `EXTERNAL-IP` always `<Pending>` because `Minikube` exposes Services through `NodePort`.
 
 <img src="./imgs/services-list.png">
+
+- **Other alternative**: To use `EXTERNAL-IP` we can do as below
+	- On a new terminal, start `tunnel`:
+	```bash
+	$ minikube tunnel
+	```
+	<img src="./imgs/imgs/load-balancer-running.png">
+	
+	- Now `EXTERNAL-IP` is available for usage: 
+	<img src="./imgs/load-balancer-on.png">
 
 - Check `PersistentVolumeClaim`(s) && `PersistentVolume`(s):
 
