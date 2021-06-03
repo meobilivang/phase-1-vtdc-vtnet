@@ -672,7 +672,7 @@ $  kubectl get services (<Service-name>)
 	```bash
 	$ minikube tunnel
 	```
-	<img src="./imgs/imgs/load-balancer-running.png">
+	<img src="./imgs/load-balancer-running.png">
 	
 	- Now `EXTERNAL-IP` is available for usage: 
 	<img src="./imgs/load-balancer-on.png">
