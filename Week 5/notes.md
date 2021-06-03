@@ -1,4 +1,47 @@
-- Logs of `Jenkins`
+# WEEK-4 PRACTICE DOCUMENTATION
+
+## Microservices & CI/CD
+---
+
+## **Author:** *Julian (Phong) Ng.* 
+
+**Date of issue**: *May 25th 2021*
+
+> Welcome back! The 4th training project in a row at **Viettel Network**! Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
+
+---
+
+# TABLE OF CONTENTS
+
+## [I. Overview](#I.-OVERVIEW)
+  
+  - ### [1. Kubernetes](#1.-Kubernetes)
+  
+  - ### [2. Minikube](#2.-Minikube)
+
+
+## [II. Prerequisite](#II.-PREREQUISITE:)
+  - ### [Knowledge](#Knowledge)
+
+  - ### [Infrastructure](#Infrastructure)
+
+## [III. Architecture](#III.-ARCHITECTURE)
+  
+  - ### [1. Minimum Viable Deployment](#Minimum-Viable-Deployment)
+  - ### [2. Minikube Deployment](#Minikube-Deployment)
+
+## [IV. Step-by-step Guide](#IV.-STEP-BY-STEP-GUILD)
+  
+  - ### [A. Minikube](#A.-Minikube)
+  
+  - ### [B. Deploying Wordpress & MariaDB with Persistent Volumes](#B.-Deploying-Wordpress-&-MariaDB-with-Persistent-Volumes)
+
+  - ### [C. Accessing WordPress page](#C.-Accessing-WordPress-page)
+
+## [V. Troubleshooting](#V.-TROUBLESHOOTING)
+
+## [VI. References](#VI.-REFERENCES)
+
 
 ## Jenkins:
 - Withou CI Story: wait for the code base of project is built --> deployed to staging server --> Testing
