@@ -78,6 +78,34 @@ $ sudo docker run \
   docker:dind \
   --storage-driver overlay2 
 ```
+
+```sh
+$ sudo docker run \
+  --name docker-jk-second \
+  -d \
+  --privileged \
+  --network host \
+  --env DOCKER_TLS_CERTDIR=/certs \
+  --volume docker-certs-jk-second:/certs/client \
+  --volume persistence-jk-second:/var/jenkins_home \
+  docker:dind \
+  --storage-driver overlay2 
+```
+
+```sh
+$ sudo docker run \
+  --name docker-jk-third \
+  -d \
+  --privileged \
+  --network host \
+  --env DOCKER_TLS_CERTDIR=/certs \
+  --volume docker-certs-jk:/certs/client \
+  --volume persistence-jk:/var/jenkins_home \
+  docker:dind \
+  --storage-driver overlay2 
+```
+
+
 **Explain fields**
 
 - Build Customized `Jenkins`:
@@ -123,6 +151,34 @@ $ sudo docker run \
   jenkins-cus:0.1
 ```
 
+```bash
+$ sudo docker run \
+  --name jenkins-second \
+  -d \
+  --network host \
+  --env DOCKER_HOST=tcp://localhost:2376 \
+  --env DOCKER_CERT_PATH=/certs/client \
+  --env DOCKER_TLS_VERIFY=1 \
+  -v persistence-jk-second:/var/jenkins_home \
+  -v docker-certs-jk-second:/certs/client:ro \
+  jenkins-cus:0.1
+
+```
+
+```bash
+$ sudo docker run \
+  --name jenkins-third \
+  -d \
+  --network host \
+  --env DOCKER_HOST=tcp://localhost:2376 \
+  --env DOCKER_CERT_PATH=/certs/client \
+  --env DOCKER_TLS_VERIFY=1 \
+  -v persistence-jk:/var/jenkins_home \
+  -v docker-certs-jk:/certs/client:ro \
+  jenkins-cus:0.1
+
+```
+
 **Explain fields**
 
 
@@ -157,8 +213,13 @@ $
 ```
 <img src="">
 
+- Install `Plugins`: 
+**Note**
+*There are multiple plugins to install as `Jenkins` is designed to be highly modular. Errors are expected to occur during these installations*
+	- **Docker**
+	- **Pipeline**
 
-- Integrating `GitHub` with `Jenkins`:
+- Create a `Pipeline` on `Jenkins` :
 	- Create job:
 	
 	- Add metadata & Add GitHub Repository:
@@ -281,7 +342,9 @@ Finished: SUCCESS
 
 - Configure `Jenkinsfile`
 
-- Enter `docker-jk`:
+- Enter `docker-jk` container:
+**Note**: *May need to repeat every stop/start container*
+
 ```bash
 
 $ chmod 666 /var/run/docker.sock
@@ -305,6 +368,32 @@ $ chmod 666 /var/run/docker.sock
 
 ```
 
+## CD:
+### Environment Setup
+- Configure host-machine (jenkins-slave):
+	- Install packages for `jenkins`
+	```bash
+	$ sudo apt-get install -y openjdk-8-jdk sshpass
+	```
+	- Generate SSH key:
+	```bash
+	$ ssh-keygen
+	```
+
+	- Add Public key:
+	```bash
+	$ sudo mkdir -p /var/lib/pnguyen/.ssh 
+	$ sudo cp /home/pnguyen/.ssh/id_rsa.pub /var/lib/pnguyen/.ssh/authorized_keys
+	```
+	
+	- Retrieve `private key`:
+	```bash
+	$ cat /home/pnguyen/.ssh/id_rsa
+	```
+
+	- Add `Private key` to `Credentials` on `Jenkins` Dashboard:
+
+	- Add `Agent` on `Jenkins` Dashboard
 
 
 ## Troubleshooting
@@ -358,6 +447,10 @@ $ chmod 666 /var/run/docker.sock
 [Integrating Ansible - Jenkins CI/CD process](https://www.redhat.com/en/blog/integrating-ansible-jenkins-cicd-process)
 
 [Building Docker Images to Docker Hub using Jenkins Pipelines](https://dzone.com/articles/building-docker-images-to-docker-hub-using-jenkins#:~:text=Setting%20Up%20Your%20Environment,definition%20to%20your%20Github%20repository.)
+
+[Building Images for Ansible](https://geektechstuff.com/2020/02/10/ansible-in-a-docker-container/)
+
+[Bulding Jenkins Inside Ephemeral Docker Container](https://technology.riotgames.com/news/building-jenkins-inside-ephemeral-docker-container)
 
 ### Troubleshooting:
 - [Bash file - Permission Denied](https://stackoverflow.com/questions/46766121/permission-denied-error-jenkins-shell-script)

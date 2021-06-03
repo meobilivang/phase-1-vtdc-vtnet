@@ -94,8 +94,10 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["service docker start", "&& node" ]
 
+docker run -t -d -u 1000:1000 -p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock  pnguyen01/node-docker:1.1 
+
 docker run -it -v /var/run/docker.sock:/var/run/docker.sock
 
  pnguyen01/node-docker:1.1
 
-docker run -t -d -u 1000:1000 -p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock  pnguyen01/node-docker:latest
+docker run --name node-docker -t -d -u 1000:1000 -p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock  pnguyen01/node-docker:latest

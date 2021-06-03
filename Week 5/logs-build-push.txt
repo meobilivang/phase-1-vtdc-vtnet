@@ -101,3 +101,193 @@ $ docker rm -f 2bdcd92e8c4d541ea918e80c41b19544c66f28ba88d170d0bc19390496a9de3f
 [Pipeline] // node
 [Pipeline] End of Pipeline
 Finished: SUCCESS
+
+
+
+
+----------------
+
+
++ ./jenkins/scripts/deploy.sh
+--------------------------------------------------------------------
+						     			  
+VI. Phase Six
+						     			  
+=============DEPLOYING TO-DO APPLICATION TO REMOTE HOST=============
+						     			  
+						     			  
+--------------------------------------------------------------------
+						     
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 319e796671976d9031bd56b8617f98ff239c2a36 # timeout=10
+[DEPRECATION WARNING]: The TRANSFORM_INVALID_GROUP_CHARS settings is set to 
+allow bad characters in group names by default, this will change, but still be 
+user configurable on deprecation. This feature will be removed in version 2.10.
+ Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+[WARNING]: Invalid characters were found in group names but not replaced, use
+-vvvv to see details
+PLAY [Install To-Do App on a remote Host] **************************************
+
+TASK [common : Ping Deployment Node] *******************************************
+ok: [192.168.80.133]
+
+TASK [common : Show ping result] ***********************************************
+ok: [192.168.80.133] => {
+    "ping_result": {
+        "ansible_facts": {
+            "discovered_interpreter_python": "/usr/bin/python3"
+        },
+        "changed": false,
+        "failed": false,
+        "ping": "pong"
+    }
+}
+
+TASK [common : Update apt] *****************************************************
+ok: [192.168.80.133]
+
+TASK [common : Install essentials packages] ************************************
+ok: [192.168.80.133]
+
+TASK [common : Set vim as default editor] **************************************
+ok: [192.168.80.133]
+
+TASK [common : Install Docker & Docker SDK] ************************************
+ok: [192.168.80.133]
+
+TASK [common : Ensure Docker is running] ***************************************
+ok: [192.168.80.133]
+
+TASK [common : Allow access to specific ports] *********************************
+ok: [192.168.80.133] => (item=3400)
+
+TASK [docker : Create "to-do-app-net" network] *********************************
+ok: [192.168.80.133]
+
+TASK [docker : Start To-Do-App container] **************************************
+[DEPRECATION WARNING]: Please note that docker_container handles networks 
+slightly different than docker CLI. If you specify networks, the default 
+network will still be attached as the first network. (You can specify 
+purge_networks to remove all networks not explicitly listed.) This behavior 
+will change in Ansible 2.12. You can change the behavior now by setting the new
+ `networks_cli_compatible` option to `yes`, and remove this warning by setting 
+it to `no`. This feature will be removed in version 2.12. Deprecation warnings 
+can be disabled by setting deprecation_warnings=False in ansible.cfg.
+changed: [192.168.80.133]
+
+PLAY RECAP *********************************************************************
+192.168.80.133             : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+---------------------------------------------
+						     			  
+						     			  
+						     			  
+=============DEPLOYMENT COMPLETED=============
+						     			  
+						     			  
+---------------------------------------------
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+
+
+--------------------
+
++ ./jenkins/scripts/deploy.sh
+--------------------------------------------------------------------
+						     			  
+VI. Phase Six
+						     			  
+=============DEPLOYING TO-DO APPLICATION TO REMOTE HOST=============
+						     			  
+						     			  
+--------------------------------------------------------------------
+						     
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f afce22bc1ff179bc7a9b69ac0d276c785d69062a # timeout=10
+[DEPRECATION WARNING]: The TRANSFORM_INVALID_GROUP_CHARS settings is set to 
+allow bad characters in group names by default, this will change, but still be 
+user configurable on deprecation. This feature will be removed in version 2.10.
+ Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+[WARNING]: Invalid characters were found in group names but not replaced, use
+-vvvv to see details
+PLAY [Install To-Do App on a remote Host] **************************************
+
+TASK [common : Ping Deployment Node] *******************************************
+ok: [192.168.80.164]
+
+TASK [common : Show ping result] ***********************************************
+ok: [192.168.80.164] => {
+    "ping_result": {
+        "ansible_facts": {
+            "discovered_interpreter_python": "/usr/bin/python3"
+        },
+        "changed": false,
+        "failed": false,
+        "ping": "pong"
+    }
+}
+
+TASK [common : Update apt] *****************************************************
+changed: [192.168.80.164]
+
+TASK [common : Install essentials packages] ************************************
+changed: [192.168.80.164]
+
+TASK [common : Set vim as default editor] **************************************
+changed: [192.168.80.164]
+
+TASK [common : Install Docker & Docker SDK] ************************************
+changed: [192.168.80.164]
+
+TASK [common : Ensure Docker is running] ***************************************
+ok: [192.168.80.164]
+
+TASK [common : Allow access to specific ports] *********************************
+changed: [192.168.80.164] => (item=3400)
+
+TASK [docker : Create "to-do-app-net" network] *********************************
+changed: [192.168.80.164]
+
+TASK [docker : Start To-Do-App container] **************************************
+[DEPRECATION WARNING]: Please note that docker_container handles networks 
+slightly different than docker CLI. If you specify networks, the default 
+network will still be attached as the first network. (You can specify 
+purge_networks to remove all networks not explicitly listed.) This behavior 
+will change in Ansible 2.12. You can change the behavior now by setting the new
+ `networks_cli_compatible` option to `yes`, and remove this warning by setting 
+it to `no`. This feature will be removed in version 2.12. Deprecation warnings 
+can be disabled by setting deprecation_warnings=False in ansible.cfg.
+changed: [192.168.80.164]
+
+PLAY RECAP *********************************************************************
+192.168.80.164             : ok=10   changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+---------------------------------------------
+						     			  
+						     			  
+						     			  
+=============DEPLOYMENT COMPLETED=============
+						     			  
+						     			  
+---------------------------------------------
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] End of Pipeline
+Finished: SUCCESS
