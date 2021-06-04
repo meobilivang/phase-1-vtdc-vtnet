@@ -84,7 +84,15 @@
 
 <img src="./imgs/jenkins-logo.png">
 
-- What is a **Jenkin Plugin**
+- **What is Jenkins?**
+  - `Continuous Integration` server
+  - Written in Java
+  - supports the full development life cycle of software from building, testing, documenting the software, deploying, and other stages of the software development life cycle. 
+
+- **Why Jenkins?**
+  - Battle-hardened
+  - Great Community supports
+...
 
 # **II. REQUIREMENTS**
 
