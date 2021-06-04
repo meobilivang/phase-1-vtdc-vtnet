@@ -79,7 +79,9 @@
 
 - `System Engineering`:
   - `Docker`
-  - 
+  - Continuous Integration/Continuous Delivery
+  - Webserver
+  ...
 
 ## :gear: Technical Specifications
 
@@ -156,7 +158,7 @@
 
 **Architecture**: `Monolithic` - *traditional unified model. The whole codebase remains in a single directory hierarchy*
 **Documentation & Usage**: Please refer to these documentation for more details
-  - [To-do-app Repository](https://github.com/meobilivang/super-ultra-simple-to-do-app)
+  - [To-do-app Repository](https://github.com/meobilivang/super-ultra-simple-to-do-app) (**Path**: `./docs`)
   - [API Testing Documentation](https://documenter.getpostman.com/view/11913865/TzCMdnyq)
 
 **Components**: 
@@ -167,6 +169,7 @@
   - **Features**: 
      - Exposing an interface for clients to communicate with application in a well-defined, structured, and secure way.
      - Receiving, processing & responsding to request from clients
+  - Expected to run as `Docker Container`. Image of this application can be found on DockerHub via this [**link**](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app).  
 
   **2. `MongoDB Database`**
 
@@ -201,6 +204,8 @@ Includes 2 nodes, with following addresses:
       - A `Docker Engine` is available in this container.  
       - Used as an environment to lauch another containers on later stages.
 
+- Be utilized as an `agent` for `Jenkins` server in `jenkins-third` container. [*What is a Jenkins agent*](https://www.jenkins.io/doc/book/glossary/#:~:text=Agent,Build)?
+
 `remote-host`: host where `To-do-app` to be deployed
 
 <img src="./imgs/Infra setup.png">
@@ -210,7 +215,7 @@ Includes 2 nodes, with following addresses:
 
 **Note**: **Planning saves time!** It is easy to get lost while working on a greater size project, and setting specific milestones overhead saves your life.
 
-#### **:construction: Deployment Idea**
+#### **:bulb: Deployment Idea**
 This project can be divided into 2 main sections: 
   - **Web Server Development**: *yes, we gonna do lots of coding here*
   - **CI/CD**: *but this one is the Protagonist of the whole project* 
@@ -225,14 +230,39 @@ This project can be divided into 2 main sections:
 
 ## `Express` Web Server: *Super-simple-to-do-app*
 
-## Container
+### :whale: Containerize Application with Docker
+**Note**
 
-- Create `Dockerfile`
+- Create `Dockerfile` to containerize application:
 
-### CI
+```bash
+FROM node:lts
 
-- Create `Jenkinsfile`
-  - Explain terms: [Explain terms](https://www.jenkins.io/doc/book/glossary/#:~:text=Agent,Build)
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy project's metadata file
+COPY package*.json ./
+
+# Install Dependencies
+RUN npm install
+
+# Bundle app source
+COPY . .
+
+# Expose application port
+EXPOSE 3400
+
+# Start Express web server
+CMD [ "node", "server.js" ]
+
+```
+  - Test Image Build:
+  ```bash
+  $ docker build -t node
+  ```
+
+- Create a `docker-compose.yml` to run application as `Container`:
 
 #### **Directory Structuring**
 
