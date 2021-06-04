@@ -18,5 +18,8 @@ Management`
 2. `Sofware Defined Network (SDN) - Network Functions Virtualization (NFV)`
 
 ### Week 4: 
-1. `IaaS - Platform as A Service with Kubernetes`
+1. `PaaS - Platform as A Service with Kubernetes`
+
+### Week 5: 
+1. `Microservices - Continuous Integration & Continuous Delivery`
 
