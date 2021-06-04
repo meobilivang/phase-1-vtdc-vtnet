@@ -150,12 +150,14 @@
 
 # **III. ARCHITECTURE**
 
-## :wrench: [Express.JS Web Server](#Web-Server)
+## :wrench: [Express.JS Web Server](#Web-Server): `To-do-app`
 
 *A simple Web Server built with `Express` framework.*
 
 **Architecture**: `Monolithic` - *traditional unified model. The whole codebase remains in a single directory hierarchy*
-
+**Documentation & Usage**: Please refer to these documentation for more details
+  - [To-do-app Repository](https://github.com/meobilivang/super-ultra-simple-to-do-app)
+  - [API Testing Documentation](https://documenter.getpostman.com/view/11913865/TzCMdnyq)
 
 **Components**: 
 
@@ -174,11 +176,21 @@
 
 <img src="./imgs/backend.png">
 
-## :bulb: [CI/CD Workflow](#CI/CD-WORK-FLOW):
+## :bulb: [CI/CD Workflow](#CI/CD-WORK-FLOW)
+
+*A **basic workflow** for this CI/CD pipeline can be described in this diagram:*
+
 <img src="./imgs/CI_CD Workfliow.png">
 
+- The CI/CD Pipeline can be defined with 5 core stages:
+      **1. Build Project**
+      **2. Unit Test**
+      **3. Build Image**
+      **4. Publish Image**
+      **5. Deploy**
+
 ## :desktop_computer: [Infrastructure](#INFRASTRUCTURE)
-Includes 2 nodes, with following addreses:
+Includes 2 nodes, with following addresses:
   - `jenkins`/`host-vm`: **192.168.80.133**
   - `remote-host`: **192.168.80.164**
 
@@ -189,8 +201,7 @@ Includes 2 nodes, with following addreses:
       - A `Docker Engine` is available in this container.  
       - Used as an environment to lauch another containers on later stages.
 
-`remote-host`: 
-
+`remote-host`: host where `To-do-app` to be deployed
 
 <img src="./imgs/Infra setup.png">
 
@@ -201,18 +212,9 @@ Includes 2 nodes, with following addreses:
 
 #### **:construction: Deployment Idea**
 This project can be divided into 2 main sections: 
-  - Web Server Development: *yes, we gonna do lots of coding here*
-  - CI/CD: *but this one is the Protagonist of the whole project* 
+  - **Web Server Development**: *yes, we gonna do lots of coding here*
+  - **CI/CD**: *but this one is the Protagonist of the whole project* 
 
-Within `CI/CD`, there are 5 main stages:
-  - Continuous Integration:
-    1. Build Project:
-    2. Unit Test
-    3. Build Image 
-    4. Publish Image
-
-  - Continuous Delivery:
-    4. Deploy
 
 #### **:construction: Directory Structuring**
 ```bash
