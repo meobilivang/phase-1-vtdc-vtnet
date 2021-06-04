@@ -64,32 +64,50 @@
 
 # **II. REQUIREMENTS**
 
-## A. Knowledge
+## A. To-read topics
 
-## B. Technical
+> This project covers a range of `technological` concepts & practices. Below implementations here are still considered at `begineer level`. I would try to categorize them in `universal` to `domain-specific` order.
 
-### Infrastructure
+- General `Computer Science`:
+  - Basic on `Networking` 
+  - Basic on `Linux`
 
-### Tech stack: 
+- `Software Development`: 
+  - `Javascript Programming`
+  - MongoDB NoSQL Database
+  - RESTful API
+
+- `System Engineering`:
+  - `Docker`
+  - 
+
+## B. Technical Specifications
+
+### :desktop_computer: Infrastructure
+
+### :hammer_and_wrench: Tech stack
 
 **Software Development**
-- Programming Language: Javascript
-- Framework: 
-   - Express
-- Runtime Environment: NodeJS 14.7.0
-- NoSQL Database: MongoDB Atlas
-- API Testing: Postman 
+
+- **Programming Language**: Javascript
+  - **Runtime Environment**: [NodeJS 14.17.0](https://nodejs.org/dist/v14.17.0/)
+- **Framework**: 
+   - **Web Application**: [Express](https://www.npmjs.com/package/express)
+   - **Unit Test**: [Mocha](https://www.npmjs.com/package/mocha) 
+- **NoSQL Database**: [MongoDB Atlas](https://www.mongodb.com/cloud)
+- **API Testing**: [Postman](https://www.postman.com/downloads/)
 
 **DevOps**
-- CI/CD: 
-  - Jenkins
-  - Ansible
-- Hypervisor: VMware Workstation
-- Containerization: Docker
-  - Image Registry: Docker Hub
-    - [**NodeJS App**](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
-    - [**NodeJS Environment**](https://hub.docker.com/repository/docker/pnguyen01/node-docker)
-....
+- **Operating System**: [Ubuntu Server 20.04](https://ubuntu.com/download/server) 
+- **Continuous Integration / Continuous Delivery**: 
+  - **Automation Server**: [Jenkins](https://www.jenkins.io/)
+  - **System Automation Engine**: [Ansible](https://docs.ansible.com/)
+- **Hypervisor**: [VMware Workstation](https://www.vmware.com/asean/products/workstation-pro/workstation-pro-evaluation.html)
+- **Containerization**: [Docker](https://docs.docker.com/)
+  - **Image Registry**: [Docker Hub](https://hub.docker.com/)
+    - [NodeJS App](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
+    - [NodeJS Environment](https://hub.docker.com/repository/docker/pnguyen01/node-docker)
+
 
 # **III. ARCHITECTURE**
 
@@ -148,7 +166,7 @@ Within `CI/CD`, there are 5 main stages:
 
 ## **B. Continuous Integration - Continuous Delivery**
 
-### **1. Continuos Integration**
+### :heavy_plus_sign: **Continuos Integration**
 
 #### **Deployment Ideas** 
 *Before moving ahead, this section can be seperated in to smaller chunks.*
@@ -358,7 +376,7 @@ $ docker logs jenkins-third
    <img src="./imgs/connect-jenkin-github.png">
 
 
-#### **`Continuous Integration`**: :sunglasses: *Well, the fun begins...*
+### :truck: **`Continuous Integration`**: :sunglasses: *Well, the fun begins...*
 
 - **Requirements**: *To proceed, please ensure the following items are satisfied*
 
@@ -418,7 +436,7 @@ $ docker logs jenkins-third
                     }
                 }
                 steps {
-                    sh './jenkins/scripts/build.sh'               //Build script is called
+                    sh './jenkins/scripts/build.sh'               //Build script is called, command: $ npm install --unsafe-perm=true --allow-root
                 }
             }
 
@@ -432,7 +450,7 @@ $ docker logs jenkins-third
                   }
                 }
                 steps {
-                    sh './jenkins/scripts/test.sh'              //Script running Unit Tests is called
+                    sh './jenkins/scripts/test.sh'              //Script running Unit Tests is called, command: $ npm test / mocha --timeout 10000 --exit -R spec
                 }
             }
 
@@ -489,8 +507,10 @@ $ docker logs jenkins-third
   ```
 
   - Hit `Build Now` on `Jenkins` Dashboard to start `CI Pipeline`:
-      - **Debug #3**: ``
-      - **Debug #5**: `Permission denied to Docker daemon socket at unix:///var/run/docker.sock`
+      - Some issues might arise, please refer to below suggestions to debug
+        - **Debug #2**: `./jenkins/scripts/build.sh: Permission denied`
+        - **Debug #3.** `Unable to use npm`:
+        - **Debug #5**: `Permission denied to Docker daemon socket at unix:///var/run/docker.sock`
 
 :heavy_check_mark: **Expected Console Output**
 
@@ -710,7 +730,7 @@ Finished: SUCCESS
 
 <img src="./imgs/success-image-build-push-dockerhub.png">
 
-- View Image on DockerHub: [Sample NodeJS DockerHub](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
+View Image on DockerHub: [Sample NodeJS DockerHub](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
 
 **:joy: Congratulations, it runs. CI down, 1 more to go.**
 
@@ -963,7 +983,7 @@ Finished: SUCCESS
 
 ### Bash:
 
-##### Debug #2. `Permission Denied`
+##### Debug #2. `Permission Denied when running .sh file`
 
 :x: Issue
 
@@ -986,10 +1006,12 @@ $ git push ....
 ```
 
 ##### Debug #3. Unable to use `npm`:
+- **Suggested solution**: adding flags `--unsafe-perm=true --allow-root` to `npm install` (**not a secured solution**)
 ```bash
-
+$ npm install --unsafe-perm=true --allow-root
 ```
-##### Debug #4. ``
+##### Debug #4. `Unable to connect to establish SSH connection to agent`
+- Double-check the key you added to `Credentials` on `Jenkins`'s Dashboard. Please ensure it is an `Private Key`.
 
 
 ### Docker:
@@ -1032,5 +1054,6 @@ $ chmod 666 /var/run/docker.sock
 
 [What is BlueOcean](https://www.jenkins.io/projects/blueocean/about/)
 
-### Troubleshooting:
+### Troubleshooting
+
 [Bash file - Permission Denied](https://stackoverflow.com/questions/46766121/permission-denied-error-jenkins-shell-script)
