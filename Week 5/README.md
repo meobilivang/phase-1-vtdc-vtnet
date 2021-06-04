@@ -64,30 +64,68 @@
 
 # **II. REQUIREMENTS**
 
-## A. To-read topics
+## :books: To-read topics
 
 > This project covers a range of `technological` concepts & practices. Below implementations here are still considered at `begineer level`. I would try to categorize them in `universal` to `domain-specific` order.
 
 - General `Computer Science`:
-  - Basic on `Networking` 
-  - Basic on `Linux`
+  - Basics on `Networking` 
+  - Basics on `Linux`
 
 - `Software Development`: 
-  - `Javascript Programming`
+  - `Javascript` Programming
   - MongoDB NoSQL Database
-  - RESTful API
+  - Bulding  RESTful API
 
 - `System Engineering`:
   - `Docker`
   - 
 
-## B. Technical Specifications
+## :gear: Technical Specifications
 
-### :desktop_computer: Infrastructure
+### :desktop_computer: Infrastructure: *2 VMs are required*
+
+- VMs with according hostnames:
+  - `jenkins`
+  - `remote-host`
+
+#### 1. `jenkins`:
+
+*:heavy_exclamation_mark: As this machine perform most labourious tasks, it should be provisioned with more resources*
+
+- **Operating System**: [Ubuntu Server 20.04](https://ubuntu.com/download/server)
+- **Network**: 1 interface
+    - **IP address**: `192.168.80.133`
+
+- **Hardware**:
+
+| Specification(s) | Usage |
+| ----------- | ----------- |
+|  CPU | 2 cores | 
+| RAM | 2 GB |
+|  Storage | 20 GB |
+| NIC(s) | 1 |
+
+#### 2. `remote-host`:
+
+- **Operating System**: [Ubuntu Server 20.04](https://ubuntu.com/download/server)
+
+- **Network**: 1 interface
+  - **IP address**: `192.168.80.164`
+
+- **Hardware**:
+
+| Specification(s) | Usage |
+| ----------- | ----------- |
+|  CPU | 2 cores | 
+| RAM | 1 GB |
+|  Storage | 20 GB |
+| NIC(s) | 1 |
+
 
 ### :hammer_and_wrench: Tech stack
 
-**Software Development**
+:hammer: **Software Development**
 
 - **Programming Language**: Javascript
   - **Runtime Environment**: [NodeJS 14.17.0](https://nodejs.org/dist/v14.17.0/)
@@ -97,7 +135,8 @@
 - **NoSQL Database**: [MongoDB Atlas](https://www.mongodb.com/cloud)
 - **API Testing**: [Postman](https://www.postman.com/downloads/)
 
-**DevOps**
+:gear: **DevOps**
+
 - **Operating System**: [Ubuntu Server 20.04](https://ubuntu.com/download/server) 
 - **Continuous Integration / Continuous Delivery**: 
   - **Automation Server**: [Jenkins](https://www.jenkins.io/)
@@ -111,17 +150,49 @@
 
 # **III. ARCHITECTURE**
 
-## [Web Server](#Web-Server)
-## [CI/CD Work Flow](#CI/CD-WORK-FLOW)
-## [Infrastructure](#INFRASTRUCTURE)
+## :wrench: [Express.JS Web Server](#Web-Server)
 
-### Environment & Infrastructure Set up:
+*A simple Web Server built with `Express` framework.*
 
-
-### Hardware Requirements:
+**Architecture**: `Monolithic` - *traditional unified model. The whole codebase remains in a single directory hierarchy*
 
 
-### Software for installation:
+**Components**: 
+
+  **1. `Express Web Server`**
+  - Locates on local machine.
+  - **Design Architecture**: REST
+  - **Features**: 
+     - Exposing an interface for clients to communicate with application in a well-defined, structured, and secure way.
+     - Receiving, processing & responsding to request from clients
+
+  **2. `MongoDB Database`**
+
+  - Hosted on [**AWS**](https://aws.amazon.com/) - Cloud Services from `Amazon`
+  - **Features**: persisting collection of data from application.
+
+
+<img src="./imgs/backend.png">
+
+## :bulb: [CI/CD Workflow](#CI/CD-WORK-FLOW):
+<img src="./imgs/CI_CD Workfliow.png">
+
+## :desktop_computer: [Infrastructure](#INFRASTRUCTURE)
+Includes 2 nodes, with following addreses:
+  - `jenkins`/`host-vm`: **192.168.80.133**
+  - `remote-host`: **192.168.80.164**
+
+`jenkins`/`host-vm`:
+- Acquiring 2 containers within `Docker Runtime`:
+    - `jenkins-third`: `Jenkins` server is working inside this container 
+    - `docker-jk-third`: 
+      - A `Docker Engine` is available in this container.  
+      - Used as an environment to lauch another containers on later stages.
+
+`remote-host`: 
+
+
+<img src="./imgs/Infra setup.png">
 
 
 # **IV. STEP-BY-STEP GUIDE**:
@@ -153,13 +224,16 @@ Within `CI/CD`, there are 5 main stages:
 ## `Express` Web Server: *Super-simple-to-do-app*
 
 ## Container
+
 - Create `Dockerfile`
 
 ### CI
+
 - Create `Jenkinsfile`
   - Explain terms: [Explain terms](https://www.jenkins.io/doc/book/glossary/#:~:text=Agent,Build)
 
 #### **Directory Structuring**
+
 ```yaml
 
 ```
@@ -1029,7 +1103,7 @@ $ sudo docker exec -it -u0 docker-jk-third sh
 $ chmod 666 /var/run/docker.sock
 ```
 
-# VI. References
+# :book: References
 
 ### Documentations/Articles
 [Installing Jenkins with Docker](https://www.jenkins.io/doc/book/installing/docker/)
