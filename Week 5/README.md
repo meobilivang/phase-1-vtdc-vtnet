@@ -5,9 +5,9 @@
 
 ## **Author:** *Julian (Phong) Ng.* 
 
-**Date of issue**: *June 4th 2021*
+**Date of issue**: *June 5th 2021*
 
-> Yes, the final week is here! 5th training project in a row at **Viettel Network**! Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
+> Yes, the final week is here! 5th training project in a row at **Viettel Network**. To be honest, this is the toughest project in the past few weeks :scream_cat:! Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
 
 ---
 
@@ -47,9 +47,11 @@
 
 # **I. OVERVIEW:**
 
-## Continuous Integration - Continueous Delivery (CI/CD)
-- CI Story: wait for the code base of project is built --> deployed to staging server --> Testing
- => Tons of bugs
+## Continuous Integration - Continuous Delivery (CI/CD)
+
+*Let's imagine that you are building a software from the beginning for customer. Well at the first few days, your code base is just few hundred lines. Gradually, it builds up. From hundreds to thousands and the number is not likely to stop there :cold_sweat:. Finally, the beta release day it here! You hand over the code to Ops team. They try to build it for Production but... **Build FAILED** :scream:!! You start to look at the stacktraces, doing your best to firgure out where are the :bug:. The logs bring you to code from **ancient time** - a few weeks ago, when :t-rex: and :dragon_face: were still dominating Earth. At this point, to catch up with release date, you nightmare begins....*    
+
+<img src="./imgs/meme-old-code.jpg">
 
 ## `Jenkins`
 
@@ -257,7 +259,7 @@ This project can be divided into 2 main sections:
 #### **Directory Structuring**
 
 ```yaml
-├── ansible
+├── ansible               ----> Ansible playbook
 │   ├── ansible.cfg
 │   ├── hosts
 │   ├── roles
@@ -316,7 +318,6 @@ This project can be divided into 2 main sections:
     └── const.js
 ```
 ### :whale: Containerize Application with Docker
-**Note**
 
 - Create `Dockerfile` to containerize application:
 
