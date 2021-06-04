@@ -45,13 +45,13 @@
 
 ## [VI. References](#VI.-REFERENCES)
 
-# I. OVERVIEW:
+# **I. OVERVIEW:**
 
 ## Continuous Integration - Continueous Delivery (CI/CD)
 - CI Story: wait for the code base of project is built --> deployed to staging server --> Testing
  => Tons of bugs
 
-### `Jenkins`
+## `Jenkins`
 
 - What is a **Jenkin Plugin**
 
@@ -62,15 +62,15 @@
 
 - What is a **Jenkin Plugin**
 
-## II. REQUIREMENTS
+# **II. REQUIREMENTS**
 
-### A. Knowledge
+## A. Knowledge
 
-### B. Technical
+## B. Technical
 
-#### Infrastructure
+### Infrastructure
 
-#### Tech stack: 
+### Tech stack: 
 
 **Software Development**
 - Programming Language: Javascript
@@ -91,22 +91,22 @@
     - [**NodeJS Environment**](https://hub.docker.com/repository/docker/pnguyen01/node-docker)
 ....
 
-## III. ARCHITECTURE
+# **III. ARCHITECTURE**
 
-### [Web Server](#Web-Server)
-### [CI/CD Work Flow](#CI/CD-WORK-FLOW)
-### [Infrastructure](#INFRASTRUCTURE)
+## [Web Server](#Web-Server)
+## [CI/CD Work Flow](#CI/CD-WORK-FLOW)
+## [Infrastructure](#INFRASTRUCTURE)
 
-# Environment & Infrastructure Set up:
-
-
-## Hardware Requirements:
+### Environment & Infrastructure Set up:
 
 
-## Software for installation:
+### Hardware Requirements:
 
 
-# **STEP-BY-STEP GUIDE**:
+### Software for installation:
+
+
+# **IV. STEP-BY-STEP GUIDE**:
 
 **Note**: **Planning saves time!** It is easy to get lost while working on a greater size project, and setting specific milestones overhead saves your life.
 
@@ -150,7 +150,8 @@ Within `CI/CD`, there are 5 main stages:
 
 ### **1. Continuos Integration**
 
-#### **Deployment Ideas** *Before moving ahead, this section can be seperated in to smaller chunks.*
+#### **Deployment Ideas** 
+*Before moving ahead, this section can be seperated in to smaller chunks.*
   
   **1. Enviroment Setup & `Jenkins` Installation**: prepare the workspace for `Continuous Integration` pipeline.
   
@@ -159,10 +160,11 @@ Within `CI/CD`, there are 5 main stages:
   **3. `Continuous Integration`**: including main tasks of this part. They should be executed sequentially as below.
 
 ```
-  Build Project ----->  
-                  Unit Test -----> 
-                              Build Image -----> 
-                                             Publish Image
+  1. Build Project ----->  
+                  2. Unit Test -----> 
+                              3. Build Image -----> 
+                                            4. Publish Image ----->
+                                                            5. Clean Image from Local machine 
 ```
 
 #### **Enviroment Setup & `Jenkins` Installation**: 
@@ -263,7 +265,6 @@ This deployment uses **Docker Container** to run `Jenkins`.
   	USER jenkins              #Run this image as 'jenkins' user
   	```
       **Note**: *Tried to install `BlueOcean` plugins (GUI for CI/CD Pipeline) but did not succeed.*
-sssss
 
   	- Navigate to directory with `Dockerfile` & Build **'jenkins-cus'** image:
 
@@ -383,7 +384,8 @@ $ docker logs jenkins-third
   <img src="./imgs/credentials-added.png">
 
 - Configure `Jenkinsfile`:
-  - Navigate to the Repository of application & create (if not done before)/configure `Jenkinsfile`: *Below is a not-that-optimized pipeline that written in `declarative` format. With advanced implementations, `scripted pipeline` is highly recommended.*
+  - Navigate to the Repository of application 
+  - Create (if not done before)/configure `Jenkinsfile`: *Below is a not-that-optimized pipeline that written in `declarative` format. With advanced implementations, `scripted pipeline` is highly recommended.*
 
   ```groovy
   $ vi <path-to-app-dir>/jenkins/Jenkinsfile
@@ -391,95 +393,104 @@ $ docker logs jenkins-third
   ----
     pipeline {
 
-        agent none 
+        agent none                //Not using any `agent` at Global level
 
+        /** Environment Variables**/
         environment {
           registry = "pnguyen01/simple-to-do-nodejs-app"        //DockerHub - Registry for storing Docker Image
-          registryCredential = 'docker_hub_cred'                //Maps to previously defined
+          registryCredential = 'docker_hub_cred'                //Maps to previously defined credentials for DockerHub
           dockerImage = ''
           CI = 'true'
-          HOME = '.'
+          HOME = '.'                      //Home directory
         }
 
         stages {
-
+            /** Build Project  **/
             stage('Build Project') {
-          agent {
-              docker {
-                reuseNode true
-                image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
-                args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
-              }
-          }
-                steps {
-                    sh './jenkins/scripts/build.sh' 
-                }
-            }
-
-            stage('Basic Test') {
-          agent {
-              docker {
-                  reuseNode true
-                  image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
-                  args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
-              }
-                }
-                steps {
-                    sh './jenkins/scripts/test.sh'
-                }
-            }
-
-      stage('Building Image') {
-        agent {
-                      docker {
-                              reuseNode true
-                              image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
-                              args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
-                      }
-                }
-        steps {
-          script {
-            dockerImage = docker.build registry + ":latest" 
-          }
-        }
-      }
-
-      stage('Push Image to DockerHub') {
-        agent {
-              docker {
-                reuseNode true
-                image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
-                args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
-              }
-        }
-        steps {
-          script {
-            docker.withRegistry('', registryCredential) {
-              dockerImage.push()
-            }
-          }
-        }
-      }
-
-      stage('Remove built image from local machine') {
-        agent {
-                            docker {
-                                    reuseNode true
-                                    image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
-                                    args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
-                            }
+                /**
+                  *  Agent executing this task would be a NodeJS container running in `docker-jk`
+                **/
+                agent {
+                    docker {
+                      reuseNode true
+                      image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                      args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
                     }
+                }
+                steps {
+                    sh './jenkins/scripts/build.sh'               //Build script is called
+                }
+            }
 
-        steps {
-          sh './jenkins/scripts/remove-img.sh'
-        }
-      }
+            /** Run Unit Tests  **/
+            stage('Basic Test') {
+                agent {
+                  docker {
+                      reuseNode true
+                      image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                      args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+                  }
+                }
+                steps {
+                    sh './jenkins/scripts/test.sh'              //Script running Unit Tests is called
+                }
+            }
+
+          /** Build Docker Image  **/
+          stage('Building Image') {
+                agent {
+                    docker {
+                        reuseNode true
+                        image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                        args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+                    }
+                }
+            steps {
+              script {
+                dockerImage = docker.build registry + ":latest"           //Build image with tag `latest`
+              }
+            }
+          }
+
+          /** Publish Image to DockerHub  **/
+          stage('Push Image to DockerHub') {
+              agent {
+                    docker {
+                      reuseNode true
+                      image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                      args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+                    }
+              }
+              steps {
+                script {
+                  docker.withRegistry('', registryCredential) {         //Authencate with DockerHub
+                    dockerImage.push()                                  //Push Image to DockerHub
+                  }
+                }
+              }
+          }
+
+          /** Remove Built Image From Local Machine  **/
+          stage('Remove built image from local machine') {
+            agent {
+                  docker {
+                    reuseNode true
+                    image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                    args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+                  }
+            }
+            steps {
+              sh './jenkins/scripts/remove-img.sh'            //Remove Image from local machine
+            }
+          }
+          ....
     }
 
   ```
 
-- Enter `docker-jk` container:
-**Note**: *May need to repeat every stop/start container*
+  - Hit `Build Now` on `Jenkins` Dashboard to start `CI Pipeline`:
+      - **Debug #3**: ``
+      - **Debug #5**: `Permission denied to Docker daemon socket at unix:///var/run/docker.sock`
 
 :heavy_check_mark: **Expected Console Output**
 
@@ -695,52 +706,266 @@ $ docker rm -f 2bdcd92e8c4d541ea918e80c41b19544c66f28ba88d170d0bc19390496a9de3f
 Finished: SUCCESS
 ```
 
-**:partying_face: Congratulations, it runs. CI down. 1 more to go**
+:heavy_check_mark: **Expected Dashboard Output**:
 
-```bash
+<img src="./imgs/success-image-build-push-dockerhub.png">
 
-$ chmod 666 /var/run/docker.sock
-```
+- View Image on DockerHub: [Sample NodeJS DockerHub](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
 
-- Expected Outcomes: [Sample NodeJS DockerHub](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
+**:joy: Congratulations, it runs. CI down, 1 more to go.**
 
-## CD:
-### Environment Setup
-- Configure host-machine (jenkins-slave):
-  - Install packages for `jenkins`
+## Continuous Delivery:
+
+##### **Deployment Ideas**: *Let's take it easy. Slow down & do some plannings.*
+  
+  **1. Enviroment Setup on `Agent Machine`**.
+  
+  **2. Connect `Agent Machine` to `Jenkins`**
+  
+  **3. `Continuous Delivery`**.
+
+#### Environment Setup
+
+- Configure host `host-vm` (*jenkins-slave*):
+  - Install `Ansible` & `sshpass`: 
+      - **sshpass**: *SSH password-based login. User can specify ssh password in inventory file(s).*
+  
   ```bash
-  $ sudo apt-get install -y openjdk-8-jdk sshpass
+  $ sudo apt install ansible sshpass
   ```
+
+  - Install packages for `jenkins`: ***Java JDK 1.8** is required for a host to be used as a Jenkins's `agent`*
+  
+  ```bash
+  $ sudo apt-get install -y openjdk-8-jdk
+  ```
+  
+#### Connect `Agent Machine` to `Jenkins`
+
+- Working with SSH Keys on `host-vm`
   - Generate SSH key:
   ```bash
   $ ssh-keygen
   ```
+  
+  **Notes**: Please notice that there are **2 SSH keys** 
+  
+  ```bash
+    Public key: /home/<-user->/.ssh/id_rsa.pub 
+    Private key: /home/<-user->/.ssh/id_rsa
+  ```
 
-  - Add Public key:
+  - Move `Public key` to `<path>/.ssh/authorized_keys`:
   ```bash
   $ sudo mkdir -p /var/lib/pnguyen/.ssh 
   $ sudo cp /home/pnguyen/.ssh/id_rsa.pub /var/lib/pnguyen/.ssh/authorized_keys
   ```
   
   - Retrieve `private key`:
+  
   ```bash
   $ cat /home/pnguyen/.ssh/id_rsa
   ```
 
+- Add `host-vm`'s `Private Key` to `Jenkins` Dashboard:
+  - Navigate to `Credentials`:
+  <img src="./imgs/nav-credentials.png">
+
   - Add `Private key` to `Credentials` on `Jenkins` Dashboard:
+    - `Private Key` successfully added:
+    <img src="./imgs/add-ssh.png">
 
-  - Add `Agent` on `Jenkins` Dashboard
+- Add new `host-vm` agent to `Jenkins`:
+  - Navigate to `New Node`:
+  <img src="./imgs/nav-new-node.png">
+
+  - Add `host-vm` Agent on `Jenkins` Dashboard
+    - Selected the recently added `SSH Key` as `Credentials`
+  <img src="./imgs/configure-host.png">
+  
+    - `host-vm` added successfully:
+  <img src="./imgs/agent-success-added.png">
 
 
-## Troubleshooting
+#### :truck: `Continuous Delivery`
+
+*Your package all set! Contact your delivery service :wink:*
+
+- **Requirements**: *To proceed, please ensure the following items are satisfied*
+
+  - **Delivery Agent**: Jenkins's agent performing app distribution stage should be **ready** at this point (`host-vm` in this deployment).  
+
+  - **Continuous Integration**: better runs smoothly at this point. Otherwise, nothing available to deliver :disappointed_relieved:
+
+- Build `Ansible` Playbook to deploy application to a remote host:
+  **Note**: detailed implementation of this `Ansbile` playbook will not be discussed here. View `./application/ansible` directory for a closer view.
+
+  - **Workflow of `Ansible` playbook**: *tasks be carried out on remote host*
+    1. Check connection to remote host
+    2. Update `apt` & Install essential packages 
+    3. Set `vim` as default text editor (*for debugging*)
+    4. Install `Docker` & Ensure `Docker` active status
+    5. Allow access on port `3400`
+    6. Create network for application on `Docker`
+    7. Pull & Start `To-do-app` as Container
+
+- Configure `Jenkinsfile`:
+  - Adding `Deployment` stage to `Jenkinsfile`:
+  ```groovy
+  $ vi <path-to-app-dir>/jenkins/Jenkinsfile
+  
+  -----
+
+    /** Deploy application to Remote machine  **/
+    stage('Deploy') {
+
+        /** Perform this stage on `host-vm` agent **/
+        agent { node 'host-vm' }
+
+        steps {
+          sh './jenkins/scripts/deploy.sh'        //Run ansible playbook: $ansible-playbook -i $(pwd)/ansible/hosts $(pwd)/ansible/site.yml
+        }
+    }
+  ...
+
+  ```
+
+- *Moment of truth*. Let's `Build Now` to start `CD Pipeline`!
+
+:heavy_check_mark: **Expected Terminal Output**:
+
+```bash
+--------------------
+
++ ./jenkins/scripts/deploy.sh
+--------------------------------------------------------------------
+						     			  
+VI. Phase Six
+						     			  
+=============DEPLOYING TO-DO APPLICATION TO REMOTE HOST=============
+						     			  
+						     			  
+--------------------------------------------------------------------
+						     
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f afce22bc1ff179bc7a9b69ac0d276c785d69062a # timeout=10
+[DEPRECATION WARNING]: The TRANSFORM_INVALID_GROUP_CHARS settings is set to 
+allow bad characters in group names by default, this will change, but still be 
+user configurable on deprecation. This feature will be removed in version 2.10.
+ Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+[WARNING]: Invalid characters were found in group names but not replaced, use
+-vvvv to see details
+PLAY [Install To-Do App on a remote Host] **************************************
+
+TASK [common : Ping Deployment Node] *******************************************
+ok: [192.168.80.164]
+
+TASK [common : Show ping result] ***********************************************
+ok: [192.168.80.164] => {
+    "ping_result": {
+        "ansible_facts": {
+            "discovered_interpreter_python": "/usr/bin/python3"
+        },
+        "changed": false,
+        "failed": false,
+        "ping": "pong"
+    }
+}
+
+TASK [common : Update apt] *****************************************************
+changed: [192.168.80.164]
+
+TASK [common : Install essentials packages] ************************************
+changed: [192.168.80.164]
+
+TASK [common : Set vim as default editor] **************************************
+changed: [192.168.80.164]
+
+TASK [common : Install Docker & Docker SDK] ************************************
+changed: [192.168.80.164]
+
+TASK [common : Ensure Docker is running] ***************************************
+ok: [192.168.80.164]
+
+TASK [common : Allow access to specific ports] *********************************
+changed: [192.168.80.164] => (item=3400)
+
+TASK [docker : Create "to-do-app-net" network] *********************************
+changed: [192.168.80.164]
+
+TASK [docker : Start To-Do-App container] **************************************
+[DEPRECATION WARNING]: Please note that docker_container handles networks 
+slightly different than docker CLI. If you specify networks, the default 
+network will still be attached as the first network. (You can specify 
+purge_networks to remove all networks not explicitly listed.) This behavior 
+will change in Ansible 2.12. You can change the behavior now by setting the new
+ `networks_cli_compatible` option to `yes`, and remove this warning by setting 
+it to `no`. This feature will be removed in version 2.12. Deprecation warnings 
+can be disabled by setting deprecation_warnings=False in ansible.cfg.
+changed: [192.168.80.164]
+
+PLAY RECAP *********************************************************************
+192.168.80.164             : ok=10   changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+---------------------------------------------
+						     			  
+						     			  
+						     			  
+=============DEPLOYMENT COMPLETED=============
+						     			  
+						     			  
+---------------------------------------------
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+:heavy_check_mark: **Expected Dashboard Output**:
+<img src="./imgs/success-deploy.png">
+
+:heavy_check_mark: **NodeJS To-Do App running**:
+- Docker container on `remote-host`:
+<img src="./imgs/success-container-start-remote.png">
+
+- API Testing with `Postman`:
+  - Login: `http://192.168.80.164:3400/api/auth/login`
+  <img src="./imgs/api-login-postman.png">
+
+  - Get Board List of specific user: `http://192.168.80.164:3400/api/board/list`
+  <img src="./imgs/api-get-board.png">
+
+
+**:partying_face: Working like a champ after **#62 attempts**! Package delivered. And plz don't forget to rate your shipper :star::star::star::star:**
+
+# V. Troubleshooting
 
 ### Jenkins:
-1 `Invalid agent type "docker" specified....`
-- Install following Plugins:
-	- Docker
-	- Docker Pipeline
 
-2. `Permission Denied`
+##### Debug #1. `Invalid agent type "docker" specified....`
+
+:x: Issue:
+
+<img src="./imgs/tb-docker-plugins.png">
+
+- Install following Plugins:
+  - Docker API Plugin
+  - Docker Commons Plugin
+  - Docker Pipeline
+  - Docker Plugin
+
+### Bash:
+
+##### Debug #2. `Permission Denied`
+
+:x: Issue
 
 ```bash
 + ./jenkins/scripts/build.sh
@@ -753,21 +978,38 @@ $ chmod 666 /var/run/docker.sock
 $ git update-index --chmod=+x <Target-file (path can be included)>
 ```
 
-3. `Cannot connect to the Docker daemon at unix:/var/run/docker.sock. Is the docker daemon running?`
+- Commit changes & Push to Repository:
+
+```
+$ git commit -m ....
+$ git push ....
+```
+
+##### Debug #3. Unable to use `npm`:
+```bash
+
+```
+##### Debug #4. ``
+
+
+### Docker:
+##### Debug #5. `Cannot connect to the Docker daemon at unix:/var/run/docker.sock. Is the docker daemon running?` or `Permission denied to Docker daemon socket at unix:///var/run/docker.sock`
+
+**Note**: *May need to repeat everytime stop/start container*
+
+- Enter `Docker-in-docker` container: 
+```bash
+$ sudo docker exec -it -u0 docker-jk-third sh
+```
+
 - Change permission:
 ```bash
 $ chmod 666 /var/run/docker.sock
 ```
- 
 
-4. Unable to use `npm`:
-```bash
+# VI. References
 
-```
-
-
-## References
-
+### Documentations/Articles
 [Installing Jenkins with Docker](https://www.jenkins.io/doc/book/installing/docker/)
 
 [Build a NodeJS app & React app with `npm`](https://www.jenkins.io/doc/tutorials/build-a-node-js-and-react-app-with-npm/)
@@ -791,4 +1033,4 @@ $ chmod 666 /var/run/docker.sock
 [What is BlueOcean](https://www.jenkins.io/projects/blueocean/about/)
 
 ### Troubleshooting:
-- [Bash file - Permission Denied](https://stackoverflow.com/questions/46766121/permission-denied-error-jenkins-shell-script)
+[Bash file - Permission Denied](https://stackoverflow.com/questions/46766121/permission-denied-error-jenkins-shell-script)
