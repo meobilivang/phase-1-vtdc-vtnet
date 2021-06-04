@@ -223,19 +223,107 @@ This project can be divided into 2 main sections:
 
 #### **:construction: Directory Structuring**
 ```bash
-
+.
+├── application                   ----> Directory storing `to-do` application
+│   ├── ansible
+│   │   └── roles
+│   │       ├── common
+│   │       │   └── tasks
+│   │       └── docker
+│   │           └── tasks
+│   ├── controllerscd:q;cd
+│   │   └── response-models
+│   ├── docs
+│   ├── jenkins                 ------> Storing `jenkins` related files, including `Jenkinsfile` & scripts for CI/CD
+│   │   └── scripts
+│   ├── middlewares
+│   ├── models
+│   ├── postman-collection
+│   ├── routes
+│   ├── test
+│   └── utils
+│
+│
+├── imgs                        ----> Documentation's images
+│
+│   
+└── README.md                   ----> Documentation
 ```
 
 ## **A. Web Server**
 
 ## `Express` Web Server: *Super-simple-to-do-app*
 
+#### **Directory Structuring**
+
+```yaml
+├── ansible
+│   ├── ansible.cfg
+│   ├── hosts
+│   ├── roles
+│   │   ├── common
+│   │   │   └── tasks
+│   │   │       └── main.yml
+│   │   └── docker
+│   │       └── tasks
+│   │           └── main.yml
+│   └── site.yml
+├── app.js
+├── controllers
+│   ├── ..........
+│  
+├── docker-compose.yml
+├── Dockerfile             ----> Docker file for Image build
+├── docs                  ---> Documentation
+│   ├── How-to-use.md
+│   └── stickynotes.jpg
+├── jenkins
+│   ├── Jenkinsfile
+│   ├── Jenkinsfile-declarative
+│   ├── Jenkinsfile - scripted
+│   └── scripts
+│       ├── build.sh
+│       ├── deploy.sh
+│       ├── remove-img.sh
+│       └── test.sh
+├── LICENSE
+├── middlewares
+│   └── require-auth.js
+├── models
+│   ├── boardModel.js
+│   ├── taskModel.js
+│   └── userModel.js
+├── package.json
+├── package-lock.json
+├── postman-collection
+│   └── To-do-app.postman_collection.json
+├── README.md
+├── routes
+│   ├── authRoutes.js
+│   ├── boardRoutes.js
+│   ├── index.js
+│   ├── taskRoutes.js
+│   └── userRoutes.js
+├── server.js
+├── test
+│   ├── board.js
+│   ├── task.js
+│   ├── testConfig.js
+│   └── user.js
+├── test.sh
+└── utils
+    ├── appError.js
+    └── const.js
+```
 ### :whale: Containerize Application with Docker
 **Note**
 
 - Create `Dockerfile` to containerize application:
 
 ```bash
+$ vi Dockerfile
+----
+
 FROM node:lts
 
 # Create app directory
@@ -259,16 +347,31 @@ CMD [ "node", "server.js" ]
 ```
   - Test Image Build:
   ```bash
-  $ docker build -t node
+  $ docker build -t <name> . 
   ```
 
 - Create a `docker-compose.yml` to run application as `Container`:
 
-#### **Directory Structuring**
+```bash
+$ vi docker-compose.yml
+----
 
-```yaml
-
+version: '2'
+services:
+  to-do-app:
+    build: .
+    image: simple-to-do-nodejs-app:1.1 
+    ports:
+      - "3400:3400"
+    environment:
+      NODE_ENVIROMMENT: development
+      PORT: 3400
+      DATABASE: <omitted>
+      JWT_STRING: AhiHidongOk                 
+      JWT_EXPIRES_IN: 1d
 ```
+
+
 
 ## **B. Continuous Integration - Continuous Delivery**
 

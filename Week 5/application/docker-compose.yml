@@ -9,6 +9,5 @@ services:
       NODE_ENVIROMMENT: development
       PORT: 3400
       DATABASE: <omitted>
-      DATABASE_PASSWORD: depzaithimoiconhiuduaiu1234
       JWT_STRING: AhiHidongOk                 
       JWT_EXPIRES_IN: 1d
