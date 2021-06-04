@@ -148,22 +148,43 @@ Within `CI/CD`, there are 5 main stages:
 
 ## **B. Continuous Integration - Continuous Delivery**
 
-### **1. Continues Integration**
+### **1. Continuos Integration**
 
-#### **Operation Ideas**
-Before moving ahead, this section can be seperated in to smaller chunks:
-  1. Enviroment Setup & `Jenkins` Installation: prepare the workspace for `Continuous Integration` pipeline.
-  2. Configure `Jenkins` after Installation & Set up `Pipeline`
-  3. `Continuous Integration`: including main tasks of this part. They should be done sequentially as list below 
-      - Build Project
-      - Unit Test
-      - Build Image 
-      - Publish Image
+#### **Deployment Ideas** *Before moving ahead, this section can be seperated in to smaller chunks.*
+  
+  **1. Enviroment Setup & `Jenkins` Installation**: prepare the workspace for `Continuous Integration` pipeline.
+  
+  **2. Configure `Jenkins` after Installation & Set up `Pipeline`**
+  
+  **3. `Continuous Integration`**: including main tasks of this part. They should be executed sequentially as below.
+
+```
+  Build Project ----->  
+                  Unit Test -----> 
+                              Build Image -----> 
+                                             Publish Image
+```
 
 #### **Enviroment Setup & `Jenkins` Installation**: 
 
 **Note**: To install `Jenkins`, there are 2 recommended options: via `apt`, via `Docker`.
-Please note that this deployment uses **Docker Container** to run `Jenkins`.
+This deployment uses **Docker Container** to run `Jenkins`.
+
+**Docker Container Deployment Model**: 2 containers
+<dl>
+    <dt>
+      <code>docker-jk-third</code>
+    </dt>
+    <dd>
+      Docker-in-docker Container
+    </dd>
+    <dt>
+      <code>jenkins-third</code>
+    </dt>
+    <dd>
+        Running Jenkins on Container. Image of this container is customized.
+    </dd>
+</dl>  
 
 - Enviroment Setup before installing `Jenkins`:
 	- Update `apt`:
@@ -180,7 +201,7 @@ Please note that this deployment uses **Docker Container** to run `Jenkins`.
 
 - `Jenkins` Installation:
 
-  - Pulling & Running `Docker` (**Docker-in-Docker**) container: *yes, you are not getting it wrong. I am running a Docker environment within another Docker Container :zany_face:*
+  - Pulling & Running `docker:dind` (**Docker-in-Docker**) image: *yes, you are not getting it wrong. A Docker environment is about to be ran within another Docker Container :zany_face:*
 
   ```bash
   $ sudo docker run \
@@ -196,17 +217,38 @@ Please note that this deployment uses **Docker Container** to run `Jenkins`.
   ```
 
   **Explain fields**
-
+  <dl>
+    <dt>
+      <b>--privileged</b>
+    </dt>
+    <dd>
+        Running container in <code>privileged</code> mode - allows container to acquire resources/capabilities of host machine. <b>Be catious before using!</b>
+    </dd>
+    <dt>
+      <b>--network</b> host
+    </dt>
+    <dd>
+        Container's network share same namespace with host machine
+    </dd>
+    <dt>
+      <b>--volume</b> persistence-jk:/var/jenkins_home
+    </dt>
+    <dd>
+        Mounting volume <code>persistence-jk</code> to workspace directory of cJenkins
+    </dd>
+</dl>  
 
 
   - Build Customized `Jenkins` Image: *A bit of handy work here.*
   	- Create `Dockerfile`:
-      - Image: [**jenkins/jenkins**](https://hub.docker.com/r/jenkins/jenkins/). (*Do not use [**jenkins**](https://hub.docker.com/_/jenkins). It already **DEPRECATED***)
+      - Image: [**jenkins/jenkins**](https://hub.docker.com/r/jenkins/jenkins/).\
+      (*Do not use [**jenkins**](https://hub.docker.com/_/jenkins) - Already **deprecated***)
   	
   	```bash
   	$ vi Dockerfile
 
   	----
+    
   	FROM jenkins/jenkins:2.277.4-lts-jdk11
   	USER root
   	RUN apt-get update && apt-get install -y apt-transport-https \
@@ -220,81 +262,229 @@ Please note that this deployment uses **Docker Container** to run `Jenkins`.
   	RUN apt-get update && apt-get install -y docker-ce-cli               #Install Docker
   	USER jenkins              #Run this image as 'jenkins' user
   	```
+      **Note**: *Tried to install `BlueOcean` plugins (GUI for CI/CD Pipeline) but did not succeed.*
+sssss
 
-
-**Note**: 
-- *Tried to install `BlueOcean` plugins (GUI for CI/CD Pipeline) but did not succeed.*
-
-  	- Navigate to directory with `Dockerfile` & build Image:
+  	- Navigate to directory with `Dockerfile` & Build **'jenkins-cus'** image:
 
     ```sh
-    $ docker build -t jenkins-cus:0.1 .
+    $ docker build -t jenkins-cus:<some-tag> .
     ```
 
-  - Pulling & running `Jenkins` container:
+    - (Pulling &) Running `Jenkins` container:
 
-  ```bash
-  $ sudo docker run \
-    --name jenkins-third \
-    -d \
-    --network host \
-    --env DOCKER_HOST=tcp://localhost:2376 \
-    --env DOCKER_CERT_PATH=/certs/client \
-    --env DOCKER_TLS_VERIFY=1 \
-    -v persistence-jk:/var/jenkins_home \
-    -v docker-certs-jk:/certs/client:ro \
-    jenkins-cus:0.1
-
-  ```
+    ```bash
+    $ sudo docker run \
+      --name jenkins-third \
+      -d \
+      --network host \
+      --env DOCKER_HOST=tcp://localhost:2376 \
+      --env DOCKER_CERT_PATH=/certs/client \
+      --env DOCKER_TLS_VERIFY=1 \
+      -v persistence-jk:/var/jenkins_home \
+      -v docker-certs-jk:/certs/client:ro \
+      jenkins-cus:0.1
+    ```
   
-  **Explain fields**
+    **Explain fields**
+      <dl>
+        <dt>
+          <b>--network</b> host
+        </dt>
+        <dd>
+            Container's network share same namespace with host machine
+        </dd>
+        <dt>
+          <b>--volume</b> persistence-jk:/var/jenkins_home
+        </dt>
+        <dd>
+          Mounting volume <code>persistence-jk</code> to workspace directory of Jenkins
+        </dd>
+      </dl>  
 
+:heavy_check_mark: **Expected outcome**: *2 containers running*
 
-*Expected outcome*:
-> 2 containers running.
+<img src="./imgs/container-started.png">
 
 #### **Configure `Jenkins` after Installation & Set up `Pipeline`**:
 
-- Access dashboard at: 
-	[`http://localhost:8080/`](http://localhost:8080/)	|   [`http://192.168.80.133:8080/`](http://192.168.80.133:8080/)
+- Access dashboard at: [**`http://192.168.80.133:8080/`**](http://192.168.80.133:8080/)
 
-<img>
+<img src="./imgs/jenkins-init-dashboard.png">
 
-- View logs of `jenkins` container for password:
+- View logs of `jenkins-third` container for password & sign in `Jenkins` Dashboard:
+
 ```bash
-
-$ docker logs jenkins
+$ docker logs jenkins-third
 ```
-<img>
 
-- Use the retrieved password to `unlock` Jenkins:
+<img src="./imgs/jenkins-init-pass.png">
 
 - Choose `Install Suggested Plugins` & Download Plugins:
-<img src="./imgs/dashboard-install-suggested-plugins">
 
-	- Downloading Plugins:
-	<img src="./imgs/dashboard-install-suggested-plugins-downloading">
+<img src="./imgs/dashboard-install-suggested-plugins.png">
+  
+  - Plugin Download in progress:
+
+	<img src="./imgs/dashboard-install-suggested-plugins-downloading.png">
 
 - Create `Admin User` on Dashboard:
-```bash
-$ 
-```
-<img src="">
+<img src="./imgs/create-admin-user.png">
 
-- Install `Plugins`: 
-**Note**
-*There are multiple plugins to install as `Jenkins` is designed to be highly modular. Errors are expected to occur during these installations*
-	- **Docker**
-	- **Pipeline**
+- `Jenkins` ready to roll :metal:
+<img src="./imgs/jenkins-ready.png">
+
+- Install essential `Plugins`: Following **Plugins** must be satisfied
+  - **Docker**
+  - **Pipeline** 
+
+  **Note**
+*There are multiple plugins to install as `Jenkins` is designed to be highly modular. Errors are expected to occur during these installations.*
+
+  :sunglasses: **Keep it cool if seeing this. Everything is under control**
+  <img src="./imgs/missing-plugins.png">
 
 - Create a `Pipeline` on `Jenkins` :
-	- Create job:
-	
-	- Add metadata & Add GitHub Repository:
-  
-#### **Configure & set up Jenkins after `Deployment`**:
+  <img src="./imgs/main-dashboard-jenkins.png">
 
-- Console output:
+	- Create job:
+	<img src="./imgs/create-job.png">
+
+  - Assign `Name` & Choose `Pipeline`:
+  <img src="./imgs/create-job-name-type.png">
+
+  - Configure `metadata` & Add GitHub Repository to `Pipeline`:
+   <img src="./imgs/connect-jenkin-github.png">
+
+
+#### **`Continuous Integration`**: :sunglasses: *Well, the fun begins...*
+
+- **Requirements**: *To proceed, please ensure the following items are satisfied*
+
+  - **Plugins**: these **plugins** below must be installed
+    - Docker API Plugin
+    - Docker Commons Plugin
+    - Docker Pipeline
+    - Docker Plugin
+
+  - **Source Code for NodeJS Application**: RESTful API with NodeJS be ready. The source code should be published to `GitHub`.
+
+  - **DockerHub Account**: Register for an account on [**DockerHub**](https://hub.docker.com/)
+
+- Adding `DockerHub Credentials` to `Jenkins`'s Dashboard:
+  - Navigate to `Global Credentials`:
+    <img src="./imgs/nav-credentials.png">
+    
+  - Enter `username` & `passwords` of personal `DockerHub` account:
+    - TODO: `Credential ID` can be any string, it is named `docker_hub_cred` in this deployment.
+    <img src="./imgs/credentials-added.png">
+
+  - Credential added successfully:
+  <img src="./imgs/credentials-added.png">
+
+- Configure `Jenkinsfile`:
+  - Navigate to the Repository of application & create (if not done before)/configure `Jenkinsfile`: *Below is a not-that-optimized pipeline that written in `declarative` format. With advanced implementations, `scripted pipeline` is highly recommended.*
+
+  ```groovy
+  $ vi <path-to-app-dir>/jenkins/Jenkinsfile
+
+  ----
+    pipeline {
+
+        agent none 
+
+        environment {
+          registry = "pnguyen01/simple-to-do-nodejs-app"        //DockerHub - Registry for storing Docker Image
+          registryCredential = 'docker_hub_cred'                //Maps to previously defined
+          dockerImage = ''
+          CI = 'true'
+          HOME = '.'
+        }
+
+        stages {
+
+            stage('Build Project') {
+          agent {
+              docker {
+                reuseNode true
+                image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+              }
+          }
+                steps {
+                    sh './jenkins/scripts/build.sh' 
+                }
+            }
+
+            stage('Basic Test') {
+          agent {
+              docker {
+                  reuseNode true
+                  image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                  args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+              }
+                }
+                steps {
+                    sh './jenkins/scripts/test.sh'
+                }
+            }
+
+      stage('Building Image') {
+        agent {
+                      docker {
+                              reuseNode true
+                              image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                              args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+                      }
+                }
+        steps {
+          script {
+            dockerImage = docker.build registry + ":latest" 
+          }
+        }
+      }
+
+      stage('Push Image to DockerHub') {
+        agent {
+              docker {
+                reuseNode true
+                image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+              }
+        }
+        steps {
+          script {
+            docker.withRegistry('', registryCredential) {
+              dockerImage.push()
+            }
+          }
+        }
+      }
+
+      stage('Remove built image from local machine') {
+        agent {
+                            docker {
+                                    reuseNode true
+                                    image 'pnguyen01/node-docker:1.1'            // Docker image for testing environment
+                                    args '-p 3400:3400 --privileged -v /var/run/docker.sock:/var/run/docker.sock'
+                            }
+                    }
+
+        steps {
+          sh './jenkins/scripts/remove-img.sh'
+        }
+      }
+    }
+
+  ```
+
+- Enter `docker-jk` container:
+**Note**: *May need to repeat every stop/start container*
+
+:heavy_check_mark: **Expected Console Output**
+
+- `Build`: Source code is cloned from personal public GitHub Repo. Project is built using `npm` - [*Node Package Manager*](https://www.npmjs.com/) to install dependencies.
+
 ```bash
 ....
 + ./jenkins/scripts/build.sh
@@ -302,7 +492,6 @@ $
 						     
 						     
 I. Phase One
-						     
 						     
 ==============Building Project=================
 						     
@@ -326,12 +515,17 @@ found 0 vulnerabilities
 [Pipeline] stage
 [Pipeline] { (Test)
 [Pipeline] sh
+```
+
+- `Unit Test`:
+
+```bash
 + ./jenkins/scripts/test.sh
 -----------------------------------------------
 						     
-						     
+                 						     
 II. Phase Two
-						     
+
 =============Running Test cases================
 -----------------------------------------------
 + npm test
@@ -384,12 +578,114 @@ Application is running on port 3400
   15 passing (5s)
 
 [Pipeline] }
+....
+```
+
+- `Build Image`: execute commands to `containerize` the NodeJS Application:
+
+```bash
+------
++ docker build -t pnguyen01/simple-to-do-nodejs-app:latest .
+Sending build context to Docker daemon  519.2kB
+
+Step 1/7 : FROM node:lts
+ ---> 9153ee3e2ced
+Step 2/7 : WORKDIR /usr/src/app
+ ---> Using cache
+ ---> a15134f4644d
+Step 3/7 : COPY package*.json ./
+ ---> Using cache
+ ---> 49f32decbb18
+Step 4/7 : RUN npm install
+ ---> Using cache
+ ---> 71a6f34822b5
+Step 5/7 : COPY . .
+ ---> 83e51a8d6dcd
+Step 6/7 : EXPOSE 3400
+ ---> Running in af217f701072
+Removing intermediate container af217f701072
+ ---> 4c6b3632ce39
+Step 7/7 : CMD [ "node", "server.js" ]
+ ---> Running in 878a8ee9dd2a
+Removing intermediate container 878a8ee9dd2a
+ ---> f93dd8cad25b
+Successfully built f93dd8cad25b
+Successfully tagged pnguyen01/simple-to-do-nodejs-app:latest
+[Pipeline] }
+```
+
+- `Publish Image`: Push the `containerized` [To-do NodeJS Application](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app) to **DockerHub**:
+
+```bash
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Image to DockerHub)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withDockerRegistry
+$ docker exec --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** ******************** docker login -u pnguyen01 -p ******** https://index.docker.io/v1/
+
+Login Succeeded
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] sh
++ docker tag pnguyen01/simple-to-do-nodejs-app:latest pnguyen01/simple-to-do-nodejs-app:latest
+[Pipeline] isUnix
+[Pipeline] sh
++ docker push pnguyen01/simple-to-do-nodejs-app:latest
+The push refers to repository [docker.io/pnguyen01/simple-to-do-nodejs-app]
+020b802e3ae5: Preparing
+0c46acf3eacd: Preparing
+59a0a9c1f408: Preparing
+d91648fbd134: Preparing
+b238f928d38b: Preparing
+4a844761bb65: Preparing
+b1501adb3037: Preparing
+b257e69d416f: Preparing
+1e9c28d06610: Preparing
+cddb98d77163: Preparing
+ed0a3d9cbcc7: Preparing
+8c8e652ecd8f: Preparing
+2f4ee6a2e1b5: Preparing
+ed0a3d9cbcc7: Waiting
+8c8e652ecd8f: Waiting
+2f4ee6a2e1b5: Waiting
+4a844761bb65: Waiting
+b1501adb3037: Waiting
+b257e69d416f: Waiting
+1e9c28d06610: Waiting
+cddb98d77163: Waiting
+b238f928d38b: Layer already exists
+4a844761bb65: Layer already exists
+b1501adb3037: Layer already exists
+b257e69d416f: Layer already exists
+d91648fbd134: Pushed
+59a0a9c1f408: Pushed
+1e9c28d06610: Layer already exists
+020b802e3ae5: Pushed
+cddb98d77163: Layer already exists
+ed0a3d9cbcc7: Layer already exists
+8c8e652ecd8f: Layer already exists
+2f4ee6a2e1b5: Layer already exists
+0c46acf3eacd: Pushed
+latest: digest: sha256:1c97fc6023d5aea35e48d16ff53e26ba26c3f673111ab04a3aa0065bb3fdb051 size: 3053
+[Pipeline] }
+[Pipeline] // withDockerRegistry
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
 [Pipeline] // stage
 [Pipeline] }
 [Pipeline] // withEnv
 [Pipeline] }
-$ docker stop --time=1 11d31a60f597106dfafd169ea0fef96f0406ed4e3194e388b75d7f68ae26369e
-$ docker rm -f 11d31a60f597106dfafd169ea0fef96f0406ed4e3194e388b75d7f68ae26369e
+$ docker stop --time=1 2bdcd92e8c4d541ea918e80c41b19544c66f28ba88d170d0bc19390496a9de3f
+$ docker rm -f 2bdcd92e8c4d541ea918e80c41b19544c66f28ba88d170d0bc19390496a9de3f
 [Pipeline] // withDockerContainer
 [Pipeline] }
 [Pipeline] // withEnv
@@ -398,19 +694,8 @@ $ docker rm -f 11d31a60f597106dfafd169ea0fef96f0406ed4e3194e388b75d7f68ae26369e
 [Pipeline] End of Pipeline
 Finished: SUCCESS
 ```
-- Build & Push Image:
-	- Install Plugins:
-		- `Docker API Plugin`
-		- `Docker Commons Plugin`
-		- `Docker Pipeline`
-		- `Docker plugin`
 
-	- Configure `Global Credentials` on `Jenkins`'s Dashboard:
-
-- Configure `Jenkinsfile`
-
-- Enter `docker-jk` container:
-**Note**: *May need to repeat every stop/start container*
+**:partying_face: Congratulations, it runs. CI down. 1 more to go**
 
 ```bash
 
