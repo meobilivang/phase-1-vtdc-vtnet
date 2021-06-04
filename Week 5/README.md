@@ -53,14 +53,36 @@
 
 <img src="./imgs/meme-old-code.jpg">
 
-## `Jenkins`
+### Continuous Integration:
 
-- What is a **Jenkin Plugin**
+*Got lost in finding an approach to tackle above issue radically? No worries, have a look at **Continuous Integration** methodology.*
 
-## Web Server
-### NodeJS
-- CI Story: wait for the code base of project is built --> deployed to staging server --> Testing
- => Tons of bugs
+**What is Continuous Integration**? Automating the integration of code changes from multiple contributors into a single repository.
+
+**Why Continuous Integration?** Enhance early bug detect detection & rapid product release capability.
+
+**How Continuous Integration works** Code is frequently committed to Version Control. `A continuous integration service automatically builds and runs unit tests on the new code changes to immediately surface any errors.`
+
+<img src="./imgs/ci.png">
+
+### Continuous Delivery:
+
+- **What is Continuous Delivery?** Bringing all types of changes of software into production, or into the hands of users, safely and quickly in a sustainable way.
+
+- **Why continuous delivery?**
+  - Reducing risk/failures during releases
+  - Shorten release stage
+  - Better Product Quality
+  - Lower costs of operations
+  ...
+
+<img src="./imgs/ci-cd.jpg">
+
+### `Jenkins`
+
+*Need an open-source tool for CI/CD? Oh hi there **Mr. Jenkins***
+
+<img src="./imgs/jenkins-logo.png">
 
 - What is a **Jenkin Plugin**
 
