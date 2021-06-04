@@ -5,9 +5,9 @@
 
 ## **Author:** *Julian (Phong) Ng.* 
 
-**Date of issue**: *May 25th 2021*
+**Date of issue**: *June 4th 2021*
 
-> Welcome back! The 4th training project in a row at **Viettel Network**! Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
+> Yes, the final week is here! 5th training project in a row at **Viettel Network**! Enjoy ur time :smile_cat:. Feel free to hit me up if any edition is needed!
 
 ---
 
@@ -15,61 +15,90 @@
 
 ## [I. Overview](#I.-OVERVIEW)
   
-  - ### [1. Kubernetes](#1.-Kubernetes)
+  - ### [1. CI](#1.-CI)
+
+  - ### [2. CD](#2.-CD)
   
-  - ### [2. Minikube](#2.-Minikube)
+  - ### [3. Web Server](#3.-Web-Server)
 
 
-## [II. Prerequisite](#II.-PREREQUISITE:)
+## [II. Requirements](#II.-PREREQUISITE:)
+  
   - ### [Knowledge](#Knowledge)
+  - ### [Technical](#Technical)
 
-  - ### [Infrastructure](#Infrastructure)
-
-## [III. Architecture](#III.-ARCHITECTURE)
+## [III. Architecture](#)
   
-  - ### [1. Minimum Viable Deployment](#Minimum-Viable-Deployment)
-  - ### [2. Minikube Deployment](#Minikube-Deployment)
+  - ### [Web Server](#Web-Server)
+  - ### [CI/CD Work Flow](#CI/CD-WORK-FLOW)
+  - ### [Infrastructure](#INFRASTRUCTURE)
 
 ## [IV. Step-by-step Guide](#IV.-STEP-BY-STEP-GUILD)
   
-  - ### [A. Minikube](#A.-Minikube)
+  - ### [A. Web Server](#A.-Web-Server)
   
-  - ### [B. Deploying Wordpress & MariaDB with Persistent Volumes](#B.-Deploying-Wordpress-&-MariaDB-with-Persistent-Volumes)
+  - ### [B. Continuous Integration](#B.-Continuous-Integration)
 
-  - ### [C. Accessing WordPress page](#C.-Accessing-WordPress-page)
+  - ### [C. Continuous Delivery](#C.-Continuous-Delivery)
 
 ## [V. Troubleshooting](#V.-TROUBLESHOOTING)
 
 ## [VI. References](#VI.-REFERENCES)
 
+# I. OVERVIEW:
 
-## Jenkins:
-- Withou CI Story: wait for the code base of project is built --> deployed to staging server --> Testing
+## Continuous Integration - Continueous Delivery (CI/CD)
+- CI Story: wait for the code base of project is built --> deployed to staging server --> Testing
+ => Tons of bugs
+
+### `Jenkins`
+
+- What is a **Jenkin Plugin**
+
+## Web Server
+### NodeJS
+- CI Story: wait for the code base of project is built --> deployed to staging server --> Testing
  => Tons of bugs
 
 - What is a **Jenkin Plugin**
 
-# Tech stack:
-## Software Development
-- NodeJS:
-	- Express
-	
-- Database: MongoDB Atlas
-- Testing: Postman
+## II. REQUIREMENTS
 
-## DevOps
-- Jenkins
-- VMware Workstation
-- Docker
-- 
+### A. Knowledge
 
-## DevOps:
-- VMware Workstation 
-- Docker
-- Jenkins
+### B. Technical
+
+#### Infrastructure
+
+#### Tech stack: 
+
+**Software Development**
+- Programming Language: Javascript
+- Framework: 
+   - Express
+- Runtime Environment: NodeJS 14.7.0
+- NoSQL Database: MongoDB Atlas
+- API Testing: Postman 
+
+**DevOps**
+- CI/CD: 
+  - Jenkins
+  - Ansible
+- Hypervisor: VMware Workstation
+- Containerization: Docker
+  - Image Registry: Docker Hub
+    - [**NodeJS App**](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
+    - [**NodeJS Environment**](https://hub.docker.com/repository/docker/pnguyen01/node-docker)
 ....
 
+## III. ARCHITECTURE
+
+### [Web Server](#Web-Server)
+### [CI/CD Work Flow](#CI/CD-WORK-FLOW)
+### [Infrastructure](#INFRASTRUCTURE)
+
 # Environment & Infrastructure Set up:
+
 
 ## Hardware Requirements:
 
@@ -77,158 +106,154 @@
 ## Software for installation:
 
 
-# Step-by-step guide:
+# **STEP-BY-STEP GUIDE**:
 
-## **1. Continues Integration - Jenkins**
+**Note**: **Planning saves time!** It is easy to get lost while working on a greater size project, and setting specific milestones overhead saves your life.
 
-### Jenkins: 
-**Note**
-> Using Docker Container
-- Available Options:
-	- via `apt`
-	- `Docker`
+#### **:construction: Deployment Idea**
+This project can be divided into 2 main sections: 
+  - Web Server Development: *yes, we gonna do lots of coding here*
+  - CI/CD: *but this one is the Protagonist of the whole project* 
 
-- Used Images [**jenkins/jenkins**](https://hub.docker.com/r/jenkins/jenkins/)
+Within `CI/CD`, there are 5 main stages:
+  - Continuous Integration:
+    1. Build Project:
+    2. Unit Test
+    3. Build Image 
+    4. Publish Image
 
-- Before install `Jenkins`:
+  - Continuous Delivery:
+    4. Deploy
+
+#### **:construction: Directory Structuring**
+```bash
+
+```
+
+## **A. Web Server**
+
+## `Express` Web Server: *Super-simple-to-do-app*
+
+## Container
+- Create `Dockerfile`
+
+### CI
+- Create `Jenkinsfile`
+  - Explain terms: [Explain terms](https://www.jenkins.io/doc/book/glossary/#:~:text=Agent,Build)
+
+#### **Directory Structuring**
+```yaml
+
+```
+
+## **B. Continuous Integration - Continuous Delivery**
+
+### **1. Continues Integration**
+
+#### **Operation Ideas**
+Before moving ahead, this section can be seperated in to smaller chunks:
+  1. Enviroment Setup & `Jenkins` Installation: prepare the workspace for `Continuous Integration` pipeline.
+  2. Configure `Jenkins` after Installation & Set up `Pipeline`
+  3. `Continuous Integration`: including main tasks of this part. They should be done sequentially as list below 
+      - Build Project
+      - Unit Test
+      - Build Image 
+      - Publish Image
+
+#### **Enviroment Setup & `Jenkins` Installation**: 
+
+**Note**: To install `Jenkins`, there are 2 recommended options: via `apt`, via `Docker`.
+Please note that this deployment uses **Docker Container** to run `Jenkins`.
+
+- Enviroment Setup before installing `Jenkins`:
 	- Update `apt`:
-	```sh
+  
+  ```bash
+  $ sudo apt-get update
+  ```	
 
-	$ sudo apt-get update
-	```
-	- Install `Docker`:
-	```sh
-	$  sudo apt install docker.io
-	```
-- Create `bridge` network:
-```bash
-$ sudo docker network create jenkins
-```
+	- Install `Docker` on host machine:
 
-- Pulling & Running `Docker` container:
-```sh
-$ sudo docker run \
-  --name docker-jk \
-  -d \
-  --privileged \
-  --network jenkins-net \
-  --network-alias docker-jk \
-  --env DOCKER_TLS_CERTDIR=/certs \
-  --volume docker-certs-jk:/certs/client \
-  --volume persistence-jk:/var/jenkins_home \
-  --publish 3000:3000 \
-  --publish 2376:2376 \
-  docker:dind \
-  --storage-driver overlay2 
-```
-
-```sh
-$ sudo docker run \
-  --name docker-jk-second \
-  -d \
-  --privileged \
-  --network host \
-  --env DOCKER_TLS_CERTDIR=/certs \
-  --volume docker-certs-jk-second:/certs/client \
-  --volume persistence-jk-second:/var/jenkins_home \
-  docker:dind \
-  --storage-driver overlay2 
-```
-
-```sh
-$ sudo docker run \
-  --name docker-jk-third \
-  -d \
-  --privileged \
-  --network host \
-  --env DOCKER_TLS_CERTDIR=/certs \
-  --volume docker-certs-jk:/certs/client \
-  --volume persistence-jk:/var/jenkins_home \
-  docker:dind \
-  --storage-driver overlay2 
-```
-
-
-**Explain fields**
-
-- Build Customized `Jenkins`:
-	- Create `Dockerfile`:
-	
 	```bash
-	$ vi Dockerfile
+  $ sudo apt install docker.io
+  ```
 
-	----
-	FROM jenkins/jenkins:2.277.4-lts-jdk11
-	USER root
-	RUN apt-get update && apt-get install -y apt-transport-https \
-       	ca-certificates curl gnupg2 \
-       	software-properties-common
-	RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-	RUN apt-key fingerprint 0EBFCD88
-	RUN add-apt-repository \
-       "deb [arch=amd64] https://download.docker.com/linux/debian \
-       $(lsb_release -cs) stable"
-	RUN apt-get update && apt-get install -y docker-ce-cli
-	USER jenkins
-	```
+- `Jenkins` Installation:
 
-	- Build:
-	```sh
-	$ docker build -t jenkins-cus:0.1 .
-	```
+  - Pulling & Running `Docker` (**Docker-in-Docker**) container: *yes, you are not getting it wrong. I am running a Docker environment within another Docker Container :zany_face:*
 
-- Pulling & running `Jenkins` container:
-```bash
+  ```bash
+  $ sudo docker run \
+    --name docker-jk-third \
+    -d \
+    --privileged \
+    --network host \
+    --env DOCKER_TLS_CERTDIR=/certs \
+    --volume docker-certs-jk:/certs/client \
+    --volume persistence-jk:/var/jenkins_home \
+    docker:dind \
+    --storage-driver overlay2 
+  ```
 
-$ sudo docker run \
-  --name jenkins \
-  -d \
-  --network jenkins-net \
-  --network-alias jenkins \
-  --env DOCKER_HOST=tcp://docker-jk:2376 \
-  --env DOCKER_CERT_PATH=/certs/client \
-  --env DOCKER_TLS_VERIFY=1 \
-  -p 8080:8080 \
-  -v persistence-jk:/var/jenkins_home \
-  -v docker-certs-jk:/certs/client:ro \
-  jenkins-cus:0.1
-```
+  **Explain fields**
 
-```bash
-$ sudo docker run \
-  --name jenkins-second \
-  -d \
-  --network host \
-  --env DOCKER_HOST=tcp://localhost:2376 \
-  --env DOCKER_CERT_PATH=/certs/client \
-  --env DOCKER_TLS_VERIFY=1 \
-  -v persistence-jk-second:/var/jenkins_home \
-  -v docker-certs-jk-second:/certs/client:ro \
-  jenkins-cus:0.1
 
-```
 
-```bash
-$ sudo docker run \
-  --name jenkins-third \
-  -d \
-  --network host \
-  --env DOCKER_HOST=tcp://localhost:2376 \
-  --env DOCKER_CERT_PATH=/certs/client \
-  --env DOCKER_TLS_VERIFY=1 \
-  -v persistence-jk:/var/jenkins_home \
-  -v docker-certs-jk:/certs/client:ro \
-  jenkins-cus:0.1
+  - Build Customized `Jenkins` Image: *A bit of handy work here.*
+  	- Create `Dockerfile`:
+      - Image: [**jenkins/jenkins**](https://hub.docker.com/r/jenkins/jenkins/). (*Do not use [**jenkins**](https://hub.docker.com/_/jenkins). It already **DEPRECATED***)
+  	
+  	```bash
+  	$ vi Dockerfile
 
-```
+  	----
+  	FROM jenkins/jenkins:2.277.4-lts-jdk11
+  	USER root
+  	RUN apt-get update && apt-get install -y apt-transport-https \
+         	ca-certificates curl gnupg2 \
+         	software-properties-common
+  	RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+  	RUN apt-key fingerprint 0EBFCD88
+  	RUN add-apt-repository \
+         "deb [arch=amd64] https://download.docker.com/linux/debian \
+         $(lsb_release -cs) stable"
+  	RUN apt-get update && apt-get install -y docker-ce-cli               #Install Docker
+  	USER jenkins              #Run this image as 'jenkins' user
+  	```
 
-**Explain fields**
+
+**Note**: 
+- *Tried to install `BlueOcean` plugins (GUI for CI/CD Pipeline) but did not succeed.*
+
+  	- Navigate to directory with `Dockerfile` & build Image:
+
+    ```sh
+    $ docker build -t jenkins-cus:0.1 .
+    ```
+
+  - Pulling & running `Jenkins` container:
+
+  ```bash
+  $ sudo docker run \
+    --name jenkins-third \
+    -d \
+    --network host \
+    --env DOCKER_HOST=tcp://localhost:2376 \
+    --env DOCKER_CERT_PATH=/certs/client \
+    --env DOCKER_TLS_VERIFY=1 \
+    -v persistence-jk:/var/jenkins_home \
+    -v docker-certs-jk:/certs/client:ro \
+    jenkins-cus:0.1
+
+  ```
+  
+  **Explain fields**
 
 
 *Expected outcome*:
 > 2 containers running.
 
-### 2. Configure & set up Jenkins after `Deployment`:
+#### **Configure `Jenkins` after Installation & Set up `Pipeline`**:
 
 - Access dashboard at: 
 	[`http://localhost:8080/`](http://localhost:8080/)	|   [`http://192.168.80.133:8080/`](http://192.168.80.133:8080/)
@@ -266,9 +291,8 @@ $
 	- Create job:
 	
 	- Add metadata & Add GitHub Repository:
-
-- (Optional) Install `Blue Ocean` Plugins: *Better UI*
-
+  
+#### **Configure & set up Jenkins after `Deployment`**:
 
 - Console output:
 ```bash
@@ -395,48 +419,32 @@ $ chmod 666 /var/run/docker.sock
 
 - Expected Outcomes: [Sample NodeJS DockerHub](https://hub.docker.com/repository/docker/pnguyen01/simple-to-do-nodejs-app)
 
-
-
-## `Express` Web Server: *Super-simple-to-do-app*
-
-## Container
-- Create `Dockerfile`
-
-### CI
-- Create `Jenkinsfile`
-	- Explain terms: [Explain terms](https://www.jenkins.io/doc/book/glossary/#:~:text=Agent,Build)
-
-#### **Directory Structuring**
-```yaml
-
-```
-
 ## CD:
 ### Environment Setup
 - Configure host-machine (jenkins-slave):
-	- Install packages for `jenkins`
-	```bash
-	$ sudo apt-get install -y openjdk-8-jdk sshpass
-	```
-	- Generate SSH key:
-	```bash
-	$ ssh-keygen
-	```
+  - Install packages for `jenkins`
+  ```bash
+  $ sudo apt-get install -y openjdk-8-jdk sshpass
+  ```
+  - Generate SSH key:
+  ```bash
+  $ ssh-keygen
+  ```
 
-	- Add Public key:
-	```bash
-	$ sudo mkdir -p /var/lib/pnguyen/.ssh 
-	$ sudo cp /home/pnguyen/.ssh/id_rsa.pub /var/lib/pnguyen/.ssh/authorized_keys
-	```
-	
-	- Retrieve `private key`:
-	```bash
-	$ cat /home/pnguyen/.ssh/id_rsa
-	```
+  - Add Public key:
+  ```bash
+  $ sudo mkdir -p /var/lib/pnguyen/.ssh 
+  $ sudo cp /home/pnguyen/.ssh/id_rsa.pub /var/lib/pnguyen/.ssh/authorized_keys
+  ```
+  
+  - Retrieve `private key`:
+  ```bash
+  $ cat /home/pnguyen/.ssh/id_rsa
+  ```
 
-	- Add `Private key` to `Credentials` on `Jenkins` Dashboard:
+  - Add `Private key` to `Credentials` on `Jenkins` Dashboard:
 
-	- Add `Agent` on `Jenkins` Dashboard
+  - Add `Agent` on `Jenkins` Dashboard
 
 
 ## Troubleshooting
@@ -494,6 +502,8 @@ $ chmod 666 /var/run/docker.sock
 [Building Images for Ansible](https://geektechstuff.com/2020/02/10/ansible-in-a-docker-container/)
 
 [Bulding Jenkins Inside Ephemeral Docker Container](https://technology.riotgames.com/news/building-jenkins-inside-ephemeral-docker-container)
+
+[What is BlueOcean](https://www.jenkins.io/projects/blueocean/about/)
 
 ### Troubleshooting:
 - [Bash file - Permission Denied](https://stackoverflow.com/questions/46766121/permission-denied-error-jenkins-shell-script)
