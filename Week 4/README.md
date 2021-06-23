@@ -594,6 +594,8 @@ spec:
               secretKeyRef:
                 name: secret-wordpress
                 key: db_password
+	  - name: WORDPRESS_DATABASE_HOST	
+	    value: wordpress-mariadb
         ports:
         - containerPort: 80
           name: wordpress
