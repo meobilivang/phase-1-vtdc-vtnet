@@ -1,25 +1,42 @@
-# VIETTEL DIGITAL TALENT 2021
-## Phase 1: Training - Viettelnet
+<h1 align="center">:tada: VIETTEL DIGITAL TALENT 2021 :tada:</h1>
+
+<h2 align="center"> :dart: Phase 1: Training </h2>
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/meobilivang/Phase-1-Training-VTDT-VTNET/blob/master/LICENSE)
 
-### Week 1: 
-1. `Cloud`
-2. `Virtualization`
-3. `Docker`
-4. `Container`
+<h3 align="center"> 📖 Summary On Topics</h2>
 
-### Week 2: 
-1. `Ansible: Automation & Configuration
-Management`
+> In the first 5 weeks, we start our exploration on Cloud :cloud: & DevOps :gear: technologies.
 
-### Week 3: 
-1. `IaaS - Openstack`
-2. `Sofware Defined Network (SDN) - Network Functions Virtualization (NFV)`
+### Week 1
 
-### Week 4: 
-1. `PaaS - Platform as A Service with Kubernetes`
+1. Containerization with [`Docker`](https://www.docker.com/) 🐳
 
-### Week 5: 
-1. `Microservices - Continuous Integration & Continuous Delivery`
+2. Virtualization 
+
+### Week 2 
+
+Infrastructure as Code:
+
+- Using [`Ansible`](https://www.ansible.com/) to manage configurations of Virtual Machines & launch applications.
+
+### Week 3
+
+1. Infrastructure as a Service (IaaS):
+
+- Deploy Openstack :desktop_computer: using `Kolla-Ansible`	
+
+3. Sofware Defined Network (SDN) - Network Functions Virtualization (NFV)
+
+- Set up a `VXLAN` tunnel using `Open vSwitch`.
+
+### Week 4 
+
+1. Platform as A Service (PaaS) with [`Kubernetes`](https://kubernetes.io/) 👨‍✈️
+
+### Week 5
+
+1. Microservices
+2. Continuous Integration & Continuous Delivery (`CI/CD`)
+- Set up a `Jenkins` CI/CD pipeline
 
