@@ -1,34 +1,49 @@
-## SUPER-ULTRA-SIMPE-TO-DO APP
-Server Side implementation for Simple to-do app
+# SUPER-ULTRA-BASIC-TO-DO-APP
 
-## INSTALLATION:
-- Clone this repository:
- ```
-$ git clone https://github.com/meobilivang/super-ultra-simple-to-do-app.git
- ```
-## SET UP DEVELOPEMENT ENVIRONMENT:
-Please ensure that you have the below items to start the application:
-- NodeJS
-- MongoDB
+## Project Goal
+Creating a simple to-do app. User can perform CRUD operations on 2 Objects: Task & Board.
 
-## Database Notes:
-At the moment, the MongoDB server is ready-to-use, which is being hosted on AWS clusters w/ MongoDB Atlas. No further configuration/ Set-up is required. 
+Imagine `Task` like yellow sticky note while `Board` like a wooden board where those notes stick on.
 
-## BUILD AND RUN:
-- Navigate to Project's directory:
-```
-$ cd <Path to dir>/super-ultra-simple-to-do-app
-```
+![Illustration](./docs/stickynotes.jpg "A board w/ sticky notes")
+## Database Schema:
+#### 1. User:
+Person who use the application.
 
-- Install all dependencies: 
-```
-$ npm install 
-```
+#### 2. Board:
+Container for Tasks.
 
-- Run Express Server:
+#### 3. Task:
+Smallest unit. User can track performance/work flow by tracking `Tasks`
+
+## API Usage:
+By default, server runs on port `3000`
+
+For security resons, `token` must be added to `Headers` under `Authorization` field
+
+- URL would have the following structure:
 ```
-$ node server.js
+http://localhost:3000/api/<Object>/<CRUD-operation>/<id of Object>
 ```
 
-## How-to-use
-Please take a look at `How-to-use.md` for usage guidances.
+- Example: Creating new Task
+```
+http://localhost:3000/api/<Object>/<CRUD-operation>/<id of Object>
+```
+
+## API Documentation:
+- Check `postman-collection` directory for more details on each API.
+
+- Or view the below link for better UI:
+```
+https://documenter.getpostman.com/view/11913865/TzCMdnyq
+```
+
+## Future Implementations:
+1. Better User Authorization
+
+2. Enhance complexity & re-design Schema
+
+3. Write Unit Tests
+
+#### If you encounter any issues, feel free to contact me for support :D
