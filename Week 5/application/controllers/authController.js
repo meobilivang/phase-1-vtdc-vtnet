@@ -9,10 +9,10 @@ const { successAuthRes } = require('./response-models/successResponse');
  *  Generate an encrypted JWT Token nested with:
  *  - User ID
  *  - User name
- * 
- * @param {*} userId 
- * @param {*} userName 
- * @returns 
+ *
+ * @param {*} userId
+ * @param {*} userName
+ * @returns
  */
 const createToken = (userId, userName) => {
   return jwt.sign(
@@ -25,11 +25,11 @@ const createToken = (userId, userName) => {
 
 /**
  *  Authenticate & Login to an account
- *  
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 exports.login = async (req, res, next) => {
   try {
@@ -42,15 +42,15 @@ exports.login = async (req, res, next) => {
 
     //Check existence user name
     const user = await User
-                    .findOne({ userName })
-                    .select("+password");           //Includes password
-    
+      .findOne({ userName })
+      .select("+password");           //Includes password
+
     //Check whether Password matches w/ db's password
     const isCorrectPassword = await user.validatePassword(password, user.password);
-    
+
     //Check user existence + validity of password
-    if (!user ||  
-        !isCorrectPassword)  {
+    if (!user ||
+      !isCorrectPassword) {
       return next(new AppError(401, errorDescription.wrongCredentials, errorMessage.wrongCredentials), req, res, next);
     }
 
@@ -59,8 +59,8 @@ exports.login = async (req, res, next) => {
 
     //Successfully authenticated, returns JWT Token to user
     return res
-            .status(200)
-            .json(successAuthRes(successMessage.completeAuthentication, 200, token));
+      .status(200)
+      .json(successAuthRes(successMessage.completeAuthentication, 200, token));
 
   } catch (err) {
     //next(err);    //Debugging
@@ -70,40 +70,40 @@ exports.login = async (req, res, next) => {
 
 /**
  * Sign up new User (CREATE user)
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 exports.signup = async (req, res, next) => {
   try {
 
     //Destructuring req body
-    const { 
-      userName, 
-      fullName, 
-      email, 
+    const {
+      userName,
+      fullName,
+      email,
       description,
-      gender, 
-      password, 
-      passwordConfirm 
+      gender,
+      password,
+      passwordConfirm
     } = req.body;
-    
+
     //Create new User
     const user = await User.create({
-        userName: userName,
-        fullName: fullName,
-        email: email,
-        description: description, 
-        gender: gender,
-        password: password,
-        passwordConfirm: passwordConfirm,
+      userName: userName,
+      fullName: fullName,
+      email: email,
+      description: description,
+      gender: gender,
+      password: password,
+      passwordConfirm: passwordConfirm,
     });
 
-  
+
     if (!user) {
-      return next(new AppError(404, errorDescription.unableCreate, errorMessage.unableCreate), req, res, next);      
+      return next(new AppError(404, errorDescription.unableCreate, errorMessage.unableCreate), req, res, next);
     }
 
     //Generate token
@@ -111,8 +111,8 @@ exports.signup = async (req, res, next) => {
 
     //Successfully authenticated, returns JWT Token to user
     return res
-            .status(200)
-            .json(successAuthRes(successMessage.userSignedUpSuccess, 200, token));
+      .status(200)
+      .json(successAuthRes(successMessage.userSignedUpSuccess, 200, token));
 
   } catch (err) {
     //next(err);  //Debugging

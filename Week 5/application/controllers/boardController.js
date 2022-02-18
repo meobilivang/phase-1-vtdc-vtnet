@@ -1,14 +1,14 @@
 const Board = require('../models/boardModel');
 const { successRes } = require('./response-models/successResponse');
 const AppError = require("../utils/appError");
-const { errorDescription, errorMessage, successMessage } =  require('../utils/const');
+const { errorDescription, errorMessage, successMessage } = require('../utils/const');
 
 /**
  *  Delete A Board
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 exports.deleteBoard = async (req, res, next) => {
     try {
@@ -21,7 +21,7 @@ exports.deleteBoard = async (req, res, next) => {
         res
             .status(200)
             .json(successRes(successMessage.boardDeleted, 200, { id: deleteBoard.id }));
-    
+
     } catch (error) {
         next(error);
     }
@@ -29,10 +29,10 @@ exports.deleteBoard = async (req, res, next) => {
 
 /**
  *  Update Board info
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 exports.updateBoard = async (req, res, next) => {
     try {
@@ -51,17 +51,17 @@ exports.updateBoard = async (req, res, next) => {
             .json(successRes(successMessage.boardUpdated, 200, { id: updateBoard.id }));
 
     } catch (error) {
-        next(error);
-        //next(new AppError(404, errorDescription.unableUpdate, errorMessage.unableUpdate), req, res, next);
+        //next(error);
+        next(new AppError(404, errorDescription.unableUpdate, errorMessage.unableUpdate), req, res, next);
     }
 };
 
 /**
  *  Create a new Board
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 exports.createBoard = async (req, res, next) => {
     try {
@@ -81,17 +81,17 @@ exports.createBoard = async (req, res, next) => {
             .json(successRes(successMessage.boardCreated, 200, { id: createBoard.id }));
 
     } catch (error) {
-        next(error);
-        //next(new AppError(404, errorDescription.unableCreate, errorMessage.unableCreate), req, res, next);
+        //next(error);
+        next(new AppError(404, errorDescription.unableCreate, errorMessage.unableCreate), req, res, next);
     }
 };
 
 /**
  *  Get a Board specified by Id
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 exports.getSingleBoard = async (req, res, next) => {
     try {
@@ -105,7 +105,7 @@ exports.getSingleBoard = async (req, res, next) => {
 
         res
             .status(200)
-            .json(successRes(successMessage.boardFound, 200, { 
+            .json(successRes(successMessage.boardFound, 200, {
                 id: searchBoard.id,
                 title: searchBoard.title,
                 description: searchBoard.description,
@@ -115,29 +115,29 @@ exports.getSingleBoard = async (req, res, next) => {
             }));
 
     } catch (error) {
-        next(error);
-        //next(new AppError(404, errorDescription.notFound, errorMessage.notFound), req, res, next);
+        //next(error);
+        next(new AppError(404, errorDescription.notFound, errorMessage.notFound), req, res, next);
     }
 };
 
 /**
  *  Get List of Boards
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 exports.getBoardList = async (req, res, next) => {
     try {
-        
+
         const boardList = await Board
-                                    .find({ ownerId: req.user.id })
-                                    .select('title')
-                                    .select('description')
-                                    .select('taskCollection')
-                                    .select('ownerId')
-                                    .select('createdAt')
-                                    .select('updatedAt');
+            .find({ ownerId: req.user.id })
+            .select('title')
+            .select('description')
+            .select('taskCollection')
+            .select('ownerId')
+            .select('createdAt')
+            .select('updatedAt');
 
         if (!boardList)
             return next(new AppError(404, errorDescription.notFound, errorMessage.notFound), req, res, next);
@@ -147,8 +147,8 @@ exports.getBoardList = async (req, res, next) => {
             .json(successRes(successMessage.boardListFound, 200, boardList));
 
     } catch (error) {
-        next(error);
-        //next(new AppError(404, errorDescription.notFound, errorMessage.notFound), req, res, next);
+        // next(error);
+        next(new AppError(404, errorDescription.notFound, errorMessage.notFound), req, res, next);
     }
 
 };
